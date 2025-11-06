@@ -2,76 +2,84 @@
 
 [Introduction](./introduction.md)
 
-# Swift Fundamentals
+# Apple's Develop in Swift Framework
 
-- [Swift 6.0 Features](./swift/swift-6.md)
+- [Getting Started with Swift](./apple-framework/getting-started.md)
+- [Swift Playgrounds Integration](./apple-framework/playgrounds.md)
+- [Apple's Learning Path](./apple-framework/learning-path.md)
+
+# Swift Fundamentals (Apple Curriculum)
+
+- [Swift Language Basics](./swift/basics.md)
+- [Collections & Control Flow](./swift/collections.md)
+- [Functions & Closures](./swift/functions.md)
+- [Structures & Classes](./swift/structures.md)
+- [Protocols & Generics](./swift/protocols.md)
 - [Concurrency & Actors](./swift/concurrency.md)
-- [Macros & Metaprogramming](./swift/macros.md)
-- [Memory Management](./swift/memory.md)
 
-# SwiftUI
+# iOS App Development (Apple Tutorials)
 
-- [SwiftUI Essentials](./swiftui/essentials.md)
-- [Advanced Layouts](./swiftui/layouts.md)
-- [Animations & Transitions](./swiftui/animations.md)
-- [Data Flow](./swiftui/data-flow.md)
+- [Your First iOS App](./ios-dev/first-app.md)
+- [SwiftUI Essentials](./ios-dev/swiftui-essentials.md)
+- [Navigation & User Input](./ios-dev/navigation.md)
+- [Working with Data](./ios-dev/data.md)
+- [Networking & APIs](./ios-dev/networking.md)
 
-# Apple Frameworks
+# Apple Frameworks Integration
 
-- [SwiftData](./frameworks/swiftdata.md)
-- [SwiftCharts](./frameworks/swiftcharts.md)
-- [AppIntents](./frameworks/appintents.md)
-- [WidgetKit](./frameworks/widgetkit.md)
-- [CloudKit](./frameworks/cloudkit.md)
+- [SwiftData (Data Persistence)](./frameworks/swiftdata.md)
+- [CloudKit (Cloud Services)](./frameworks/cloudkit.md)
+- [Core ML (Machine Learning)](./frameworks/coreml.md)
+- [WidgetKit (Home Screen Widgets)](./frameworks/widgetkit.md)
+- [AppIntents (Siri & Shortcuts)](./frameworks/appintents.md)
+- [SwiftCharts (Data Visualization)](./frameworks/swiftcharts.md)
 
-# Machine Learning
+# Accessibility & Inclusive Design
 
-- [Core ML](./ml/coreml.md)
-- [Create ML](./ml/createml.md)
-- [Vision Framework](./ml/vision.md)
-- [Natural Language](./ml/natural-language.md)
-- [Foundation Models](./ml/foundation-models.md)
+- [Apple's Accessibility Guidelines](./accessibility/guidelines.md)
+- [VoiceOver Integration](./accessibility/voiceover.md)
+- [Dynamic Type Support](./accessibility/dynamic-type.md)
+- [Color & Contrast](./accessibility/color-contrast.md)
 
-# Platform Development
+# Platform-Specific Development
 
-- [iOS 26](./platforms/ios.md)
-- [macOS 26](./platforms/macos.md)
-- [watchOS 26](./platforms/watchos.md)
-- [iPadOS 26](./platforms/ipados.md)
-- [tvOS 26](./platforms/tvos.md)
-- [visionOS 26](./platforms/visionos.md)
+- [iOS 18+ Features](./platforms/ios.md)
+- [macOS Sequoia](./platforms/macos.md)
+- [watchOS 11](./platforms/watchos.md)
+- [visionOS 2](./platforms/visionos.md)
 
-# Open Source
+# Apple Development Workflow
 
-- [Swift Packages](./opensource/packages.md)
-- [Contributing to Swift](./opensource/contributing.md)
-- [Popular Libraries](./opensource/libraries.md)
-- [Building SDKs](./opensource/sdks.md)
+- [Xcode Best Practices](./workflow/xcode.md)
+- [Testing with XCTest](./workflow/testing.md)
+- [Debugging Techniques](./workflow/debugging.md)
+- [Performance Optimization](./workflow/performance.md)
+- [Xcode Cloud CI/CD](./workflow/xcode-cloud.md)
 
-# Xcode 26
+# App Store & Distribution
 
-- [New Features](./xcode/features.md)
-- [Testing & Debugging](./xcode/testing.md)
-- [Performance Tools](./xcode/performance.md)
-- [Cloud Development](./xcode/cloud.md)
+- [App Store Guidelines](./app-store/guidelines.md)
+- [App Review Process](./app-store/review.md)
+- [StoreKit & Monetization](./app-store/storekit.md)
+- [TestFlight Beta Testing](./app-store/testflight.md)
 
-# Monetization
+# Advanced Topics
 
-- [App Store Strategies](./monetization/app-store.md)
-- [In-App Purchases](./monetization/iap.md)
-- [Subscriptions](./monetization/subscriptions.md)
-- [StoreKit 3](./monetization/storekit.md)
-- [Analytics & GTM](./monetization/analytics.md)
+- [Swift Package Manager](./advanced/spm.md)
+- [Custom Frameworks](./advanced/frameworks.md)
+- [Performance Profiling](./advanced/profiling.md)
+- [Security Best Practices](./advanced/security.md)
 
-# Production
+# Apple Sample Projects
 
-- [Architecture Patterns](./production/architecture.md)
-- [Testing Strategies](./production/testing.md)
-- [CI/CD](./production/cicd.md)
-- [Security Best Practices](./production/security.md)
+- [Scrumdinger (Meeting App)](./projects/scrumdinger.md)
+- [Landmarks (SwiftUI Tutorial)](./projects/landmarks.md)
+- [Earthquake (Data Visualization)](./projects/earthquake.md)
+- [ML Classifier (Core ML)](./projects/ml-classifier.md)
 
-# Resources
+# Resources & Community
 
-- [Code Examples](./resources/examples.md)
-- [Project Templates](./resources/templates.md)
-- [Community](./resources/community.md)
+- [Apple Developer Resources](./resources/apple-resources.md)
+- [WWDC Session References](./resources/wwdc.md)
+- [Swift Community](./resources/community.md)
+- [Certification Preparation](./resources/certification.md)

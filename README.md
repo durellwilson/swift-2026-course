@@ -1,149 +1,145 @@
 # Swift & Apple Platforms 2026: Complete Developer Guide
 
-> 🚀 Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms
+> 🚀 Production-ready Swift development aligned with Apple's "Develop in Swift" educational framework
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
-[![Platform](https://img.shields.io/badge/Platform-iOS%20|%20macOS%20|%20watchOS%20|%20tvOS%20|%20visionOS-lightgrey.svg)](https://developer.apple.com)
+[![Apple Framework](https://img.shields.io/badge/Apple-Develop%20in%20Swift-blue.svg)](https://developer.apple.com/tutorials/develop-in-swift/)
 
 ## 📚 Course Website
 
 **[Read the full course →](https://durellwilson.github.io/swift-2026-course/)**
 
-## 🎯 What's Covered
+## 🍎 Apple's "Develop in Swift" Integration
 
-- ✅ **Swift 6.0** - Concurrency, macros, typed throws, noncopyable types
-- ✅ **SwiftUI** - Declarative UI for all Apple platforms
-- ✅ **Machine Learning** - Core ML, Create ML, Foundation Models, on-device LLMs
-- ✅ **All Platforms** - iOS 26, macOS 26, watchOS 26, iPadOS 26, tvOS 26, visionOS 26
-- ✅ **Apple Frameworks** - SwiftData, AppIntents, WidgetKit, CloudKit, SwiftCharts
-- ✅ **Open Source** - Swift packages, contributing, community libraries
-- ✅ **Xcode 26** - New features, testing, performance tools, cloud development
-- ✅ **Monetization** - App Store optimization, IAP, subscriptions, GTM, analytics
-- ✅ **Production** - Architecture patterns, testing, CI/CD, security
+This course follows Apple's official educational methodology and integrates seamlessly with:
+- **[Develop in Swift Tutorials](https://developer.apple.com/tutorials/develop-in-swift/)** - Apple's comprehensive learning path
+- **Swift Playgrounds** - Interactive coding experiences
+- **Xcode Projects** - Real-world application development
+- **Apple's Accessibility Standards** - Inclusive design principles
 
-## 🚀 Quick Start
+## 🎯 What's Covered (Apple-Aligned)
 
-### Prerequisites
-- macOS 15+
-- Xcode 26+
-- Swift 6.0+
-- Apple Developer account (for deployment)
+- ✅ **Swift Fundamentals** - Following Apple's progressive learning approach
+- ✅ **SwiftUI Essentials** - Apple's declarative UI framework mastery
+- ✅ **App Development** - Complete iOS app lifecycle per Apple standards
+- ✅ **Data & Networking** - Apple's recommended patterns and frameworks
+- ✅ **Advanced Features** - Core ML, CloudKit, and platform-specific APIs
+- ✅ **Accessibility** - Apple's inclusive design principles throughout
+- ✅ **Testing & Debugging** - Apple's development workflow best practices
 
-### Read Online
-Visit [durellwilson.github.io/swift-2026-course](https://durellwilson.github.io/swift-2026-course/)
+## 🚀 Learning Path (Apple Framework)
 
-### Build Locally
-```bash
-# Install mdBook
-brew install mdbook
+### Phase 1: Swift Fundamentals
+*Aligned with Apple's "Swift Fundamentals" curriculum*
+- Variables, constants, and data types
+- Control flow and functions
+- Collections and optionals
+- Protocols and generics
 
-# Clone repository
-git clone https://github.com/durellwilson/swift-2026-course.git
-cd swift-2026-course/book
+### Phase 2: iOS App Development
+*Following Apple's "iOS App Dev Tutorials"*
+- SwiftUI basics and layout
+- Navigation and user input
+- Data persistence with SwiftData
+- Networking and API integration
 
-# Build and serve
-mdbook serve --open
-```
+### Phase 3: Advanced Development
+*Extending Apple's advanced topics*
+- Core ML and machine learning
+- CloudKit and data synchronization
+- Platform-specific features (watchOS, macOS, etc.)
+- App Store deployment and optimization
 
-## 📖 Course Structure
+## 💻 Apple-Standard Code Examples
 
-### 1. Swift Fundamentals
-- Swift 6.0 features and migration
-- Concurrency with actors and async/await
-- Macros and metaprogramming
-- Memory management and ownership
+All examples follow Apple's:
+- ✅ **Swift API Design Guidelines**
+- ✅ **Human Interface Guidelines**
+- ✅ **Accessibility Best Practices**
+- ✅ **Security Recommendations**
+- ✅ **Performance Optimization Patterns**
 
-### 2. SwiftUI
-- Declarative UI essentials
-- Advanced layouts and animations
-- Data flow and state management
-- Cross-platform development
+## 🛠 Prerequisites (Apple Ecosystem)
 
-### 3. Apple Frameworks
-- SwiftData for persistence
-- AppIntents and Shortcuts
-- WidgetKit and Live Activities
-- CloudKit integration
-- SwiftCharts for data visualization
+- **macOS 15+** with Xcode 16+
+- **Apple Developer Account** (free tier available)
+- **Swift Playgrounds** app (iPad/Mac)
+- Access to **Apple's Developer Documentation**
 
-### 4. Machine Learning
-- Core ML integration
-- Create ML workflows
-- Vision and Natural Language frameworks
-- Foundation Models and on-device LLMs
-- Privacy-first ML
+## 📖 Course Modules
 
-### 5. Platform Development
-- iOS 26 features and APIs
-- macOS 26 desktop development
-- watchOS 26 health and fitness
-- iPadOS 26 multi-window support
-- tvOS 26 living room experiences
-- visionOS 26 spatial computing
+### Module 1: Swift Language Mastery
+*Based on Apple's Swift fundamentals*
+- Swift 6.0 features and concurrency
+- Type safety and memory management
+- Protocol-oriented programming
+- Error handling and optionals
 
-### 6. Open Source
-- Creating Swift packages
-- Contributing to Swift ecosystem
-- Popular community libraries
-- Building and distributing SDKs
+### Module 2: SwiftUI Development
+*Following Apple's SwiftUI tutorials*
+- Declarative UI principles
+- State management and data flow
+- Animation and transitions
+- Accessibility integration
 
-### 7. Xcode 26
-- New IDE features
-- Testing and debugging
-- Performance profiling
-- Xcode Cloud CI/CD
-
-### 8. Monetization
-- App Store optimization (ASO)
-- In-app purchases and subscriptions
-- StoreKit 3 implementation
-- Google Tag Manager integration
-- Analytics and conversion tracking
-
-### 9. Production
-- Architecture patterns (MVVM, TCA, etc.)
+### Module 3: iOS App Architecture
+*Apple's recommended patterns*
+- MVVM with SwiftUI
+- Coordinator pattern
+- Dependency injection
 - Testing strategies
-- CI/CD pipelines
-- Security best practices
 
-## 💻 Code Examples
+### Module 4: Apple Frameworks Integration
+- **SwiftData** - Modern data persistence
+- **CloudKit** - Cloud synchronization
+- **Core ML** - On-device machine learning
+- **WidgetKit** - Home screen widgets
+- **AppIntents** - Siri and Shortcuts
 
-All code examples are:
-- ✅ Production-ready
-- ✅ Swift 6.0 compatible
-- ✅ Fully tested
-- ✅ Well-documented
-- ✅ Following best practices
+### Module 5: Platform Development
+- **iOS 18+** - Latest features and APIs
+- **macOS Sequoia** - Desktop development
+- **watchOS 11** - Health and fitness apps
+- **visionOS 2** - Spatial computing
 
-## 🤝 Contributing
+## 🎓 Apple Certification Alignment
 
-Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+This course prepares you for:
+- **Apple Developer Certification** (when available)
+- **Swift Student Challenge** participation
+- **WWDC Scholarship** applications
+- **App Store submission** readiness
 
-### Ways to Contribute
-- 📝 Fix typos or improve documentation
-- 💻 Add code examples
-- 🐛 Report bugs or issues
-- 💡 Suggest new topics
-- 🌍 Translate content
+## 🤝 Contributing (Apple Standards)
 
-## 📄 License
+Follow Apple's contribution guidelines:
+- Use Swift API Design Guidelines
+- Include accessibility considerations
+- Provide comprehensive documentation
+- Test on multiple Apple platforms
 
-MIT License - see [LICENSE](LICENSE) for details
+## 📱 Sample Projects
 
-## 🌟 Acknowledgments
+All projects align with Apple's tutorial structure:
+1. **Scrumdinger** - Meeting management app (Apple tutorial)
+2. **Landmarks** - Location-based SwiftUI app (Apple tutorial)
+3. **Earthquake** - Data visualization with SwiftCharts
+4. **ML Classifier** - Core ML integration example
 
-- Apple Developer Documentation
-- Swift Evolution Proposals
-- WWDC 2025 Sessions
-- Detroit Swift Community
+## 🌟 Apple Resources Integration
 
-## 📬 Contact
+- **Developer Documentation** - Direct links throughout
+- **WWDC Videos** - Relevant session references
+- **Sample Code** - Apple's official examples
+- **Design Resources** - SF Symbols and guidelines
+
+## 📬 Contact & Community
 
 - **GitHub**: [@durellwilson](https://github.com/durellwilson)
-- **Issues**: [GitHub Issues](https://github.com/durellwilson/swift-2026-course/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/durellwilson/swift-2026-course/discussions)
+- **Apple Developer Forums** - Community discussions
+- **Swift Forums** - Language-specific topics
 
 ---
 
-**Built with ❤️ by the Detroit Swift Community**
+**Developed following Apple's educational standards and best practices**
