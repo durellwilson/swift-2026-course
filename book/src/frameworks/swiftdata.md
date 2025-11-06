@@ -1,291 +1,99 @@
-# SwiftData
+# SwiftData - Modern Data Persistence
 
-> **Build a notes app with persistence in 10 minutes**
+> Apple's declarative data modeling framework for Swift applications
 
-## 🎯 What You'll Build
+## 🎯 What is SwiftData?
 
-A fully functional notes app with:
-- ✅ Create, read, update, delete
-- ✅ Automatic persistence
-- ✅ Search
-- ✅ Sorting
-- ✅ Relationships
+SwiftData is Apple's modern replacement for Core Data, providing:
+- **Declarative syntax** with Swift macros
+- **Type safety** at compile time
+- **Automatic CloudKit sync** capabilities
+- **SwiftUI integration** out of the box
 
-**Zero SQL. Zero boilerplate.**
+## 🚀 Getting Started
 
-## 🚀 Step 1: Define Your Model (2 min)
-
+### Basic Model Definition
 ```swift
 import SwiftData
-import Foundation
 
 @Model
-final class Note {
+class Task {
     var title: String
-    var content: String
+    var isCompleted: Bool
     var createdAt: Date
-    var isFavorite: Bool
+    var priority: Priority
     
-    init(title: String, content: String = "") {
+    init(title: String, priority: Priority = .medium) {
         self.title = title
-        self.content = content
+        self.isCompleted = false
         self.createdAt = Date()
-        self.isFavorite = false
+        self.priority = priority
     }
+}
+
+enum Priority: String, Codable, CaseIterable {
+    case low, medium, high
 }
 ```
 
-**That's it.** SwiftData handles:
-- Database schema
-- Migrations
-- Relationships
-- Queries
-
-## 📱 Step 2: Setup App (1 min)
-
+### App Setup
 ```swift
 import SwiftUI
 import SwiftData
 
 @main
-struct NotesApp: App {
+struct TaskApp: App {
     var body: some Scene {
         WindowGroup {
-            NotesListView()
+            ContentView()
         }
-        .modelContainer(for: Note.self)
+        .modelContainer(for: Task.self)
     }
 }
 ```
 
-**Done.** Database is ready.
+## 📱 SwiftUI Integration
 
-## 📝 Step 3: Create Notes (3 min)
-
+### Querying Data
 ```swift
-struct NotesListView: View {
+struct TaskListView: View {
+    @Query private var tasks: [Task]
     @Environment(\.modelContext) private var context
-    @Query(sort: \Note.createdAt, order: .reverse) private var notes: [Note]
-    @State private var showingAddNote = false
     
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(notes) { note in
-                    NavigationLink(value: note) {
-                        NoteRow(note: note)
-                    }
-                }
-                .onDelete(perform: deleteNotes)
+        List {
+            ForEach(tasks) { task in
+                TaskRow(task: task)
             }
-            .navigationTitle("Notes")
-            .navigationDestination(for: Note.self) { note in
-                NoteDetailView(note: note)
-            }
-            .toolbar {
-                Button {
-                    showingAddNote = true
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-            .sheet(isPresented: $showingAddNote) {
-                AddNoteView()
-            }
+            .onDelete(perform: deleteTasks)
         }
     }
     
-    private func deleteNotes(at offsets: IndexSet) {
+    private func deleteTasks(offsets: IndexSet) {
         for index in offsets {
-            context.delete(notes[index])
-        }
-    }
-}
-
-struct NoteRow: View {
-    let note: Note
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack {
-                Text(note.title)
-                    .font(.headline)
-                
-                if note.isFavorite {
-                    Image(systemName: "star.fill")
-                        .foregroundStyle(.yellow)
-                }
-            }
-            
-            Text(note.content)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .lineLimit(2)
-            
-            Text(note.createdAt, style: .relative)
-                .font(.caption)
-                .foregroundStyle(.tertiary)
+            context.delete(tasks[index])
         }
     }
 }
 ```
 
-**Key points**:
-- `@Query` automatically fetches and updates
-- `@Environment(\.modelContext)` for CRUD operations
-- Changes save automatically
-
-## ✏️ Step 4: Edit Notes (2 min)
-
+### Adding Data
 ```swift
-struct NoteDetailView: View {
-    @Bindable var note: Note
-    
-    var body: some View {
-        Form {
-            TextField("Title", text: $note.title)
-            
-            TextEditor(text: $note.content)
-                .frame(minHeight: 200)
-            
-            Toggle("Favorite", isOn: $note.isFavorite)
-        }
-        .navigationTitle("Edit Note")
-    }
-}
-```
-
-**Magic**: `@Bindable` + two-way binding = auto-save!
-
-## ➕ Step 5: Add Notes (2 min)
-
-```swift
-struct AddNoteView: View {
+struct AddTaskView: View {
     @Environment(\.modelContext) private var context
-    @Environment(\.dismiss) private var dismiss
-    
     @State private var title = ""
-    @State private var content = ""
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
-                TextField("Title", text: $title)
-                TextEditor(text: $content)
-                    .frame(minHeight: 200)
-            }
-            .navigationTitle("New Note")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
+                TextField("Task Title", text: $title)
                 
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        saveNote()
-                    }
-                    .disabled(title.isEmpty)
+                Button("Save") {
+                    let task = Task(title: title)
+                    context.insert(task)
+                    try? context.save()
                 }
             }
-        }
-    }
-    
-    private func saveNote() {
-        let note = Note(title: title, content: content)
-        context.insert(note)
-        dismiss()
-    }
-}
-```
-
-## 🔍 Advanced Queries
-
-### Filter by Favorite
-
-```swift
-@Query(
-    filter: #Predicate<Note> { $0.isFavorite },
-    sort: \Note.createdAt,
-    order: .reverse
-) 
-private var favoriteNotes: [Note]
-```
-
-### Search
-
-```swift
-struct SearchableNotesView: View {
-    @Query private var notes: [Note]
-    @State private var searchText = ""
-    
-    var filteredNotes: [Note] {
-        if searchText.isEmpty {
-            return notes
-        }
-        return notes.filter { note in
-            note.title.localizedCaseInsensitiveContains(searchText) ||
-            note.content.localizedCaseInsensitiveContains(searchText)
-        }
-    }
-    
-    var body: some View {
-        List(filteredNotes) { note in
-            NoteRow(note: note)
-        }
-        .searchable(text: $searchText)
-    }
-}
-```
-
-### Dynamic Sorting
-
-```swift
-struct SortableNotesView: View {
-    @State private var sortOrder = SortOrder.date
-    
-    var body: some View {
-        NotesListContent(sortOrder: sortOrder)
-            .toolbar {
-                Menu {
-                    Picker("Sort", selection: $sortOrder) {
-                        Text("Date").tag(SortOrder.date)
-                        Text("Title").tag(SortOrder.title)
-                        Text("Favorites").tag(SortOrder.favorite)
-                    }
-                } label: {
-                    Image(systemName: "arrow.up.arrow.down")
-                }
-            }
-    }
-}
-
-enum SortOrder {
-    case date, title, favorite
-}
-
-struct NotesListContent: View {
-    let sortOrder: SortOrder
-    
-    @Query private var notes: [Note]
-    
-    init(sortOrder: SortOrder) {
-        self.sortOrder = sortOrder
-        
-        switch sortOrder {
-        case .date:
-            _notes = Query(sort: \Note.createdAt, order: .reverse)
-        case .title:
-            _notes = Query(sort: \Note.title)
-        case .favorite:
-            _notes = Query(sort: \Note.isFavorite, order: .reverse)
-        }
-    }
-    
-    var body: some View {
-        List(notes) { note in
-            NoteRow(note: note)
         }
     }
 }
@@ -293,13 +101,12 @@ struct NotesListContent: View {
 
 ## 🔗 Relationships
 
-### One-to-Many (Folders → Notes)
-
+### One-to-Many
 ```swift
 @Model
-final class Folder {
+class Project {
     var name: String
-    @Relationship(deleteRule: .cascade) var notes: [Note] = []
+    var tasks: [Task] = []
     
     init(name: String) {
         self.name = name
@@ -307,34 +114,23 @@ final class Folder {
 }
 
 @Model
-final class Note {
+class Task {
     var title: String
-    var content: String
-    var folder: Folder?
+    var project: Project?
     
-    init(title: String, content: String = "", folder: Folder? = nil) {
+    init(title: String, project: Project? = nil) {
         self.title = title
-        self.content = content
-        self.folder = folder
+        self.project = project
     }
 }
-
-// Usage
-let folder = Folder(name: "Work")
-let note = Note(title: "Meeting notes", folder: folder)
-context.insert(folder)
-context.insert(note)
 ```
 
-**Delete rule**: When folder is deleted, all notes are deleted too.
-
-### Many-to-Many (Notes ↔ Tags)
-
+### Many-to-Many
 ```swift
 @Model
-final class Tag {
+class Tag {
     var name: String
-    var notes: [Note] = []
+    var tasks: [Task] = []
     
     init(name: String) {
         self.name = name
@@ -342,7 +138,7 @@ final class Tag {
 }
 
 @Model
-final class Note {
+class Task {
     var title: String
     var tags: [Tag] = []
     
@@ -350,239 +146,217 @@ final class Note {
         self.title = title
     }
 }
-
-// Usage
-let swift = Tag(name: "Swift")
-let ios = Tag(name: "iOS")
-
-let note = Note(title: "SwiftUI Tips")
-note.tags = [swift, ios]
-
-context.insert(note)
 ```
 
-## 🎯 Advanced Features
+## 🔍 Advanced Querying
 
-### Computed Properties
-
+### Filtered Queries
 ```swift
-@Model
-final class Note {
-    var title: String
-    var content: String
-    var createdAt: Date
-    
-    @Transient
-    var wordCount: Int {
-        content.split(separator: " ").count
-    }
-    
-    @Transient
-    var isLong: Bool {
-        wordCount > 500
-    }
-}
-```
-
-**`@Transient`**: Not saved to database, computed on-the-fly.
-
-### Unique Constraints
-
-```swift
-@Model
-final class User {
-    @Attribute(.unique) var email: String
-    var name: String
-    
-    init(email: String, name: String) {
-        self.email = email
-        self.name = name
-    }
-}
-```
-
-### Custom Migrations
-
-```swift
-enum NotesSchemaV2: VersionedSchema {
-    static var versionIdentifier = Schema.Version(2, 0, 0)
-    
-    static var models: [any PersistentModel.Type] {
-        [Note.self, Folder.self]
-    }
-}
-
-let migrationPlan = SchemaMigrationPlan(
-    schemas: [NotesSchemaV1.self, NotesSchemaV2.self],
-    stages: [
-        MigrationStage.lightweight(fromVersion: NotesSchemaV1.self, toVersion: NotesSchemaV2.self)
-    ]
-)
-```
-
-## 🚀 Performance Tips
-
-### Batch Operations
-
-```swift
-func deleteAllNotes() {
-    let descriptor = FetchDescriptor<Note>()
-    let notes = try? context.fetch(descriptor)
-    
-    notes?.forEach { context.delete($0) }
-    try? context.save()
-}
-```
-
-### Lazy Loading
-
-```swift
-@Model
-final class Note {
-    var title: String
-    
-    // Only load when accessed
-    @Relationship(deleteRule: .cascade, minimumModelCount: 0)
-    var attachments: [Attachment] = []
-}
-```
-
-### Indexing
-
-```swift
-@Model
-final class Note {
-    @Attribute(.indexed) var createdAt: Date
-    var title: String
-}
-```
-
-## 🧪 Testing with SwiftData
-
-```swift
-@Test
-func testNoteCreation() throws {
-    // Create in-memory container
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try ModelContainer(for: Note.self, configurations: config)
-    let context = ModelContext(container)
-    
-    // Create note
-    let note = Note(title: "Test")
-    context.insert(note)
-    
-    // Fetch
-    let descriptor = FetchDescriptor<Note>()
-    let notes = try context.fetch(descriptor)
-    
-    #expect(notes.count == 1)
-    #expect(notes[0].title == "Test")
-}
-```
-
-## 💡 Common Patterns
-
-### Undo/Redo
-
-```swift
-struct NoteDetailView: View {
-    @Environment(\.modelContext) private var context
-    @Bindable var note: Note
+struct CompletedTasksView: View {
+    @Query(filter: #Predicate<Task> { $0.isCompleted })
+    private var completedTasks: [Task]
     
     var body: some View {
-        Form {
-            TextField("Title", text: $note.title)
-        }
-        .toolbar {
-            Button("Undo") {
-                context.undoManager?.undo()
-            }
-            .disabled(!(context.undoManager?.canUndo ?? false))
+        List(completedTasks) { task in
+            Text(task.title)
         }
     }
 }
 ```
 
-### Batch Updates
-
+### Sorted Queries
 ```swift
-func markAllAsRead() {
-    let descriptor = FetchDescriptor<Note>(
-        predicate: #Predicate { !$0.isRead }
-    )
+struct TaskListView: View {
+    @Query(sort: \Task.createdAt, order: .reverse)
+    private var tasks: [Task]
     
-    let unreadNotes = try? context.fetch(descriptor)
-    unreadNotes?.forEach { $0.isRead = true }
+    var body: some View {
+        List(tasks) { task in
+            TaskRow(task: task)
+        }
+    }
 }
 ```
 
-### Export Data
-
+### Dynamic Queries
 ```swift
-func exportNotes() -> Data? {
-    let descriptor = FetchDescriptor<Note>()
-    guard let notes = try? context.fetch(descriptor) else {
-        return nil
+struct FilteredTasksView: View {
+    let searchText: String
+    
+    var body: some View {
+        FilteredTasksList(searchText: searchText)
+    }
+}
+
+struct FilteredTasksList: View {
+    @Query private var tasks: [Task]
+    
+    init(searchText: String) {
+        let predicate = #Predicate<Task> { task in
+            searchText.isEmpty || task.title.localizedStandardContains(searchText)
+        }
+        _tasks = Query(filter: predicate, sort: \Task.createdAt)
     }
     
-    let exportData = notes.map { note in
-        [
-            "title": note.title,
-            "content": note.content,
-            "createdAt": note.createdAt.ISO8601Format()
-        ]
+    var body: some View {
+        List(tasks) { task in
+            Text(task.title)
+        }
     }
-    
-    return try? JSONSerialization.data(withJSONObject: exportData)
 }
 ```
 
-## 🎯 Real App Example
+## ☁️ CloudKit Integration
 
+### Enable CloudKit Sync
 ```swift
-// Complete notes app with folders
 @main
-struct NotesApp: App {
+struct TaskApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [Note.self, Folder.self])
-    }
-}
-
-struct ContentView: View {
-    @Query private var folders: [Folder]
-    @Environment(\.modelContext) private var context
-    
-    var body: some View {
-        NavigationSplitView {
-            // Sidebar
-            List(folders) { folder in
-                NavigationLink(value: folder) {
-                    Label(folder.name, systemImage: "folder")
-                }
+        .modelContainer(for: Task.self) { result in
+            switch result {
+            case .success(let container):
+                // Enable CloudKit sync
+                container.mainContext.cloudKitContainer = CKContainer.default()
+            case .failure(let error):
+                print("Failed to create container: \(error)")
             }
-            .navigationTitle("Folders")
-        } detail: { folder in
-            // Notes list
-            NotesListView(folder: folder)
         }
     }
 }
 ```
 
-## 📚 Resources
+### CloudKit Configuration
+```swift
+// In your model
+@Model
+class Task {
+    @Attribute(.unique) var id: UUID
+    var title: String
+    var isCompleted: Bool
+    
+    init(title: String) {
+        self.id = UUID()
+        self.title = title
+        self.isCompleted = false
+    }
+}
+```
 
-- [SwiftData Documentation](https://developer.apple.com/documentation/swiftdata)
-- [WWDC23 - Meet SwiftData](https://developer.apple.com/videos/play/wwdc2023/10187/)
-- [WWDC23 - Build an app with SwiftData](https://developer.apple.com/videos/play/wwdc2023/10154/)
+## 🎯 Best Practices
 
-## 🔗 Next Steps
+### Model Design
+```swift
+@Model
+class Task {
+    // Use @Attribute for special configurations
+    @Attribute(.unique) var id: UUID
+    @Attribute(.spotlight) var title: String
+    
+    // Use relationships for complex data
+    @Relationship(deleteRule: .cascade) var subtasks: [Subtask] = []
+    
+    // Computed properties for derived data
+    var isOverdue: Bool {
+        guard let dueDate = dueDate else { return false }
+        return dueDate < Date() && !isCompleted
+    }
+    
+    init(title: String) {
+        self.id = UUID()
+        self.title = title
+    }
+}
+```
 
-- [SwiftCharts →](./swiftcharts.md) - Visualize your data
-- [CloudKit →](./cloudkit.md) - Sync across devices
+### Performance Optimization
+```swift
+// Use batch operations for large datasets
+extension ModelContext {
+    func batchDelete<T: PersistentModel>(_ type: T.Type, predicate: Predicate<T>) throws {
+        let descriptor = FetchDescriptor<T>(predicate: predicate)
+        let objects = try fetch(descriptor)
+        
+        for object in objects {
+            delete(object)
+        }
+        
+        try save()
+    }
+}
+```
+
+### Error Handling
+```swift
+class DataManager: ObservableObject {
+    let container: ModelContainer
+    
+    init() {
+        do {
+            container = try ModelContainer(for: Task.self)
+        } catch {
+            fatalError("Failed to create ModelContainer: \(error)")
+        }
+    }
+    
+    func saveContext() {
+        do {
+            try container.mainContext.save()
+        } catch {
+            print("Failed to save context: \(error)")
+        }
+    }
+}
+```
+
+## 📊 Migration from Core Data
+
+### Model Conversion
+```swift
+// Core Data (old)
+@NSManaged public var title: String?
+@NSManaged public var isCompleted: Bool
+
+// SwiftData (new)
+var title: String
+var isCompleted: Bool
+```
+
+### Context Usage
+```swift
+// Core Data (old)
+let context = persistentContainer.viewContext
+let task = Task(context: context)
+
+// SwiftData (new)
+@Environment(\.modelContext) private var context
+let task = Task(title: "New Task")
+context.insert(task)
+```
+
+## 🔧 Testing SwiftData
+
+### Unit Testing
+```swift
+import Testing
+import SwiftData
+
+@Test func testTaskCreation() throws {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try ModelContainer(for: Task.self, configurations: config)
+    let context = container.mainContext
+    
+    let task = Task(title: "Test Task")
+    context.insert(task)
+    
+    #expect(task.title == "Test Task")
+    #expect(task.isCompleted == false)
+}
+```
 
 ---
 
-**Bottom line**: SwiftData = Core Data without the pain. Use it for everything.
+*SwiftData provides a modern, Swift-native approach to data persistence with seamless SwiftUI integration.*

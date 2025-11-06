@@ -1,0 +1,615 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Apple Intelligence Overview - Swift &amp; Apple Platforms 2026: Complete Developer Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms with ML, open-source frameworks, and monetization strategies">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "navy";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Swift &amp; Apple Platforms 2026: Complete Developer Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/durellwilson/swift-2026-course" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/ai/apple-intelligence.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="apple-intelligence-integration"><a class="header" href="#apple-intelligence-integration">Apple Intelligence Integration</a></h1>
+<blockquote>
+<p>Integrate Apple's AI capabilities using real frameworks available in iOS 18+</p>
+</blockquote>
+<h2 id="-what-is-apple-intelligence"><a class="header" href="#-what-is-apple-intelligence">🧠 What is Apple Intelligence?</a></h2>
+<p>Apple Intelligence is Apple's personal intelligence system that:</p>
+<ul>
+<li>Uses on-device processing for privacy</li>
+<li>Integrates with Siri and system apps</li>
+<li>Provides writing tools and smart replies</li>
+<li>Works across iPhone, iPad, and Mac</li>
+</ul>
+<h2 id="-real-implementation-with-available-apis"><a class="header" href="#-real-implementation-with-available-apis">🔧 Real Implementation with Available APIs</a></h2>
+<h3 id="1-natural-language-processing"><a class="header" href="#1-natural-language-processing">1. Natural Language Processing</a></h3>
+<p>Use the actual NaturalLanguage framework:</p>
+<pre><code class="language-swift">import NaturalLanguage
+
+class TextAnalyzer {
+    func analyzeText(_ text: String) -&gt; TextAnalysis {
+        let tagger = NLTagger(tagSchemes: [.sentimentScore, .language, .nameType])
+        tagger.string = text
+        
+        // Get sentiment
+        let sentiment = tagger.tag(at: text.startIndex, unit: .paragraph, scheme: .sentimentScore)
+        
+        // Get language
+        let language = tagger.dominantLanguage
+        
+        // Extract named entities
+        let entities = extractEntities(from: text)
+        
+        return TextAnalysis(
+            sentiment: sentiment?.rawValue,
+            language: language?.rawValue,
+            entities: entities
+        )
+    }
+    
+    private func extractEntities(from text: String) -&gt; [String] {
+        let tagger = NLTagger(tagSchemes: [.nameType])
+        tagger.string = text
+        
+        var entities: [String] = []
+        tagger.enumerateTags(in: text.startIndex..&lt;text.endIndex, unit: .word, scheme: .nameType) { tag, tokenRange in
+            if let tag = tag {
+                let entity = String(text[tokenRange])
+                entities.append(entity)
+            }
+            return true
+        }
+        return entities
+    }
+}
+
+struct TextAnalysis {
+    let sentiment: String?
+    let language: String?
+    let entities: [String]
+}
+</code></pre>
+<h3 id="2-app-intents-integration"><a class="header" href="#2-app-intents-integration">2. App Intents Integration</a></h3>
+<p>Create Siri shortcuts that work with Apple Intelligence:</p>
+<pre><code class="language-swift">import AppIntents
+
+struct SummarizeTextIntent: AppIntent {
+    static var title: LocalizedStringResource = "Summarize Text"
+    static var description = IntentDescription("Summarize the provided text")
+    
+    @Parameter(title: "Text to Summarize")
+    var inputText: String
+    
+    func perform() async throws -&gt; some IntentResult &amp; ProvidesDialog {
+        // Use actual text processing
+        let summary = await createSummary(from: inputText)
+        
+        return .result(
+            value: summary,
+            dialog: "Here's your summary"
+        )
+    }
+    
+    private func createSummary(from text: String) async -&gt; String {
+        // Simple extractive summarization using NaturalLanguage
+        let sentences = text.components(separatedBy: ". ")
+        let keyPhrases = extractKeyPhrases(from: text)
+        
+        // Return sentences containing key phrases
+        let importantSentences = sentences.filter { sentence in
+            keyPhrases.contains { sentence.localizedCaseInsensitiveContains($0) }
+        }
+        
+        return importantSentences.prefix(3).joined(separator: ". ")
+    }
+    
+    private func extractKeyPhrases(from text: String) -&gt; [String] {
+        let tagger = NLTagger(tagSchemes: [.lemma])
+        tagger.string = text
+        
+        var phrases: [String] = []
+        tagger.enumerateTags(in: text.startIndex..&lt;text.endIndex, unit: .word, scheme: .lemma) { tag, tokenRange in
+            if let lemma = tag?.rawValue, lemma.count &gt; 4 {
+                phrases.append(lemma)
+            }
+            return true
+        }
+        return Array(Set(phrases)).prefix(5).map { String($0) }
+    }
+}
+</code></pre>
+<h3 id="3-core-ml-integration"><a class="header" href="#3-core-ml-integration">3. Core ML Integration</a></h3>
+<p>Use real Core ML for on-device intelligence:</p>
+<pre><code class="language-swift">import CoreML
+import Vision
+
+class ImageAnalyzer {
+    private var model: VNCoreMLModel?
+    
+    init() {
+        setupModel()
+    }
+    
+    private func setupModel() {
+        guard let modelURL = Bundle.main.url(forResource: "MobileNetV2", withExtension: "mlmodelc"),
+              let model = try? VNCoreMLModel(for: MLModel(contentsOf: modelURL)) else {
+            print("Failed to load Core ML model")
+            return
+        }
+        self.model = model
+    }
+    
+    func analyzeImage(_ image: UIImage) async throws -&gt; [ImageClassification] {
+        guard let model = model,
+              let cgImage = image.cgImage else {
+            throw AnalysisError.modelNotAvailable
+        }
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            let request = VNCoreMLRequest(model: model) { request, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                guard let results = request.results as? [VNClassificationObservation] else {
+                    continuation.resume(returning: [])
+                    return
+                }
+                
+                let classifications = results.prefix(5).map { observation in
+                    ImageClassification(
+                        label: observation.identifier,
+                        confidence: observation.confidence
+                    )
+                }
+                
+                continuation.resume(returning: classifications)
+            }
+            
+            let handler = VNImageRequestHandler(cgImage: cgImage)
+            try? handler.perform([request])
+        }
+    }
+}
+
+struct ImageClassification {
+    let label: String
+    let confidence: Float
+}
+
+enum AnalysisError: Error {
+    case modelNotAvailable
+}
+</code></pre>
+<h2 id="-swiftui-integration"><a class="header" href="#-swiftui-integration">📱 SwiftUI Integration</a></h2>
+<h3 id="smart-text-input-with-real-apis"><a class="header" href="#smart-text-input-with-real-apis">Smart Text Input with Real APIs</a></h3>
+<pre><code class="language-swift">import SwiftUI
+import NaturalLanguage
+
+struct SmartTextEditor: View {
+    @State private var text = ""
+    @State private var suggestions: [String] = []
+    @State private var language: String = "Unknown"
+    
+    var body: some View {
+        VStack {
+            TextEditor(text: $text)
+                .onChange(of: text) { newValue in
+                    analyzeText(newValue)
+                }
+                .frame(minHeight: 200)
+            
+            HStack {
+                Text("Language: \(language)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+            }
+            
+            if !suggestions.isEmpty {
+                VStack(alignment: .leading) {
+                    Text("Suggestions:")
+                        .font(.headline)
+                    
+                    ForEach(suggestions, id: \.self) { suggestion in
+                        Button(suggestion) {
+                            text += " " + suggestion
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+            }
+        }
+        .padding()
+    }
+    
+    private func analyzeText(_ text: String) {
+        guard !text.isEmpty else { return }
+        
+        // Detect language
+        let recognizer = NLLanguageRecognizer()
+        recognizer.processString(text)
+        if let detectedLanguage = recognizer.dominantLanguage {
+            language = Locale.current.localizedString(forLanguageCode: detectedLanguage.rawValue) ?? detectedLanguage.rawValue
+        }
+        
+        // Generate simple suggestions based on text analysis
+        generateSuggestions(for: text)
+    }
+    
+    private func generateSuggestions(for text: String) {
+        let tagger = NLTagger(tagSchemes: [.lexicalClass])
+        tagger.string = text
+        
+        var nouns: [String] = []
+        tagger.enumerateTags(in: text.startIndex..&lt;text.endIndex, unit: .word, scheme: .lexicalClass) { tag, tokenRange in
+            if tag == .noun {
+                let noun = String(text[tokenRange])
+                nouns.append(noun)
+            }
+            return true
+        }
+        
+        // Simple suggestion logic
+        suggestions = Array(Set(nouns)).prefix(3).map { "related to \($0)" }
+    }
+}
+</code></pre>
+<h2 id="-real-world-applications"><a class="header" href="#-real-world-applications">🎯 Real-World Applications</a></h2>
+<h3 id="1-smart-note-taking-app"><a class="header" href="#1-smart-note-taking-app">1. Smart Note Taking App</a></h3>
+<pre><code class="language-swift">import SwiftUI
+import NaturalLanguage
+
+struct SmartNotesApp: View {
+    @State private var notes: [Note] = []
+    @State private var searchText = ""
+    
+    var filteredNotes: [Note] {
+        if searchText.isEmpty {
+            return notes
+        }
+        return notes.filter { note in
+            note.content.localizedCaseInsensitiveContains(searchText) ||
+            note.tags.contains { $0.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(filteredNotes) { note in
+                    NoteRow(note: note)
+                }
+            }
+            .searchable(text: $searchText)
+            .navigationTitle("Smart Notes")
+            .toolbar {
+                Button("Add Note") {
+                    addNewNote()
+                }
+            }
+        }
+    }
+    
+    private func addNewNote() {
+        let newNote = Note(content: "New note", tags: [])
+        notes.append(newNote)
+    }
+}
+
+struct Note: Identifiable {
+    let id = UUID()
+    var content: String
+    var tags: [String]
+    let createdAt = Date()
+    
+    init(content: String, tags: [String] = []) {
+        self.content = content
+        self.tags = tags.isEmpty ? generateTags(from: content) : tags
+    }
+}
+
+func generateTags(from content: String) -&gt; [String] {
+    let tagger = NLTagger(tagSchemes: [.nameType, .lexicalClass])
+    tagger.string = content
+    
+    var tags: [String] = []
+    
+    // Extract named entities as tags
+    tagger.enumerateTags(in: content.startIndex..&lt;content.endIndex, unit: .word, scheme: .nameType) { tag, tokenRange in
+        if let tag = tag, tag != .other {
+            let entity = String(content[tokenRange])
+            tags.append(entity.lowercased())
+        }
+        return true
+    }
+    
+    return Array(Set(tags)).prefix(5).map { String($0) }
+}
+
+struct NoteRow: View {
+    let note: Note
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(note.content)
+                .lineLimit(2)
+            
+            HStack {
+                ForEach(note.tags.prefix(3), id: \.self) { tag in
+                    Text(tag)
+                        .font(.caption)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
+                        .background(Color.blue.opacity(0.2))
+                        .cornerRadius(4)
+                }
+                
+                Spacer()
+                
+                Text(note.createdAt, style: .date)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.vertical, 2)
+    }
+}
+</code></pre>
+<h2 id="-privacy-best-practices"><a class="header" href="#-privacy-best-practices">🔒 Privacy Best Practices</a></h2>
+<h3 id="on-device-processing"><a class="header" href="#on-device-processing">On-Device Processing</a></h3>
+<pre><code class="language-swift">class PrivacyFirstProcessor {
+    func processText(_ text: String) -&gt; ProcessedResult {
+        // All processing happens locally
+        let tagger = NLTagger(tagSchemes: [.sentimentScore])
+        tagger.string = text
+        
+        let sentiment = tagger.tag(at: text.startIndex, unit: .paragraph, scheme: .sentimentScore)
+        
+        return ProcessedResult(
+            sentiment: sentiment?.rawValue ?? "neutral",
+            processedLocally: true
+        )
+    }
+}
+
+struct ProcessedResult {
+    let sentiment: String
+    let processedLocally: Bool
+}
+</code></pre>
+<h2 id="-resources"><a class="header" href="#-resources">📚 Resources</a></h2>
+<ul>
+<li><strong><a href="https://developer.apple.com/documentation/naturallanguage">Natural Language Framework</a></strong></li>
+<li><strong><a href="https://developer.apple.com/documentation/coreml">Core ML Documentation</a></strong></li>
+<li><strong><a href="https://developer.apple.com/documentation/appintents">App Intents Framework</a></strong></li>
+<li><strong><a href="https://developer.apple.com/documentation/vision">Vision Framework</a></strong></li>
+</ul>
+<hr />
+<p><em>This implementation uses real Apple frameworks available today, not fictional APIs.</em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../performance/network-optimization.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../ai/coreml-8.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../performance/network-optimization.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../ai/coreml-8.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

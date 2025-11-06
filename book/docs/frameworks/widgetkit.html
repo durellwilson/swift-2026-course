@@ -1,0 +1,687 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>WidgetKit (Home Screen Widgets) - Swift &amp; Apple Platforms 2026: Complete Developer Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms with ML, open-source frameworks, and monetization strategies">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "navy";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Swift &amp; Apple Platforms 2026: Complete Developer Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/durellwilson/swift-2026-course" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/frameworks/widgetkit.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="widgetkit"><a class="header" href="#widgetkit">WidgetKit</a></h1>
+<blockquote>
+<p><strong>Build a weather widget in 20 minutes</strong></p>
+</blockquote>
+<h2 id="-what-youll-build"><a class="header" href="#-what-youll-build">🎯 What You'll Build</a></h2>
+<p>A home screen widget that:</p>
+<ul>
+<li>✅ Shows live data</li>
+<li>✅ Updates automatically</li>
+<li>✅ Multiple sizes</li>
+<li>✅ Interactive buttons</li>
+<li>✅ Deep links to app</li>
+</ul>
+<h2 id="-step-1-create-widget-extension"><a class="header" href="#-step-1-create-widget-extension">🚀 Step 1: Create Widget Extension</a></h2>
+<p>In Xcode: <strong>File → New → Target → Widget Extension</strong></p>
+<p>Name it: <code>WeatherWidget</code></p>
+<h2 id="-step-2-basic-widget"><a class="header" href="#-step-2-basic-widget">📱 Step 2: Basic Widget</a></h2>
+<pre><code class="language-swift">import WidgetKit
+import SwiftUI
+
+struct WeatherWidget: Widget {
+    let kind: String = "WeatherWidget"
+    
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+            WeatherWidgetView(entry: entry)
+        }
+        .configurationDisplayName("Weather")
+        .description("Current weather conditions")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+    }
+}
+
+struct WeatherEntry: TimelineEntry {
+    let date: Date
+    let temperature: Int
+    let condition: String
+    let icon: String
+}
+
+struct Provider: TimelineProvider {
+    func placeholder(in context: Context) -&gt; WeatherEntry {
+        WeatherEntry(date: Date(), temperature: 72, condition: "Sunny", icon: "sun.max.fill")
+    }
+    
+    func getSnapshot(in context: Context, completion: @escaping (WeatherEntry) -&gt; Void) {
+        let entry = WeatherEntry(date: Date(), temperature: 72, condition: "Sunny", icon: "sun.max.fill")
+        completion(entry)
+    }
+    
+    func getTimeline(in context: Context, completion: @escaping (Timeline&lt;WeatherEntry&gt;) -&gt; Void) {
+        Task {
+            let weather = try await fetchWeather()
+            let entry = WeatherEntry(
+                date: Date(),
+                temperature: weather.temperature,
+                condition: weather.condition,
+                icon: weather.icon
+            )
+            
+            // Update every 15 minutes
+            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
+            let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
+            completion(timeline)
+        }
+    }
+    
+    private func fetchWeather() async throws -&gt; Weather {
+        // Fetch from API
+        Weather(temperature: 72, condition: "Sunny", icon: "sun.max.fill")
+    }
+}
+
+struct WeatherWidgetView: View {
+    let entry: WeatherEntry
+    
+    var body: some View {
+        VStack {
+            Image(systemName: entry.icon)
+                .font(.largeTitle)
+            Text("\(entry.temperature)°")
+                .font(.title)
+            Text(entry.condition)
+                .font(.caption)
+        }
+        .containerBackground(.blue.gradient, for: .widget)
+    }
+}
+
+struct Weather {
+    let temperature: Int
+    let condition: String
+    let icon: String
+}
+</code></pre>
+<h2 id="-multiple-sizes"><a class="header" href="#-multiple-sizes">🎨 Multiple Sizes</a></h2>
+<pre><code class="language-swift">struct WeatherWidgetView: View {
+    let entry: WeatherEntry
+    @Environment(\.widgetFamily) var family
+    
+    var body: some View {
+        switch family {
+        case .systemSmall:
+            SmallWeatherView(entry: entry)
+        case .systemMedium:
+            MediumWeatherView(entry: entry)
+        case .systemLarge:
+            LargeWeatherView(entry: entry)
+        default:
+            SmallWeatherView(entry: entry)
+        }
+    }
+}
+
+struct SmallWeatherView: View {
+    let entry: WeatherEntry
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: entry.icon)
+                .font(.system(size: 40))
+            Text("\(entry.temperature)°")
+                .font(.system(size: 36, weight: .bold))
+        }
+        .containerBackground(.blue.gradient, for: .widget)
+    }
+}
+
+struct MediumWeatherView: View {
+    let entry: WeatherEntry
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("\(entry.temperature)°")
+                    .font(.system(size: 48, weight: .bold))
+                Text(entry.condition)
+                    .font(.title3)
+            }
+            
+            Spacer()
+            
+            Image(systemName: entry.icon)
+                .font(.system(size: 60))
+        }
+        .padding()
+        .containerBackground(.blue.gradient, for: .widget)
+    }
+}
+
+struct LargeWeatherView: View {
+    let entry: WeatherEntry
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            HStack {
+                Text("\(entry.temperature)°")
+                    .font(.system(size: 72, weight: .bold))
+                Image(systemName: entry.icon)
+                    .font(.system(size: 72))
+            }
+            
+            Text(entry.condition)
+                .font(.title)
+            
+            // Hourly forecast
+            HStack {
+                ForEach(0..&lt;5) { hour in
+                    VStack {
+                        Text("\(hour + 1)h")
+                            .font(.caption)
+                        Image(systemName: "cloud.fill")
+                        Text("70°")
+                            .font(.caption)
+                    }
+                }
+            }
+        }
+        .containerBackground(.blue.gradient, for: .widget)
+    }
+}
+</code></pre>
+<h2 id="-interactive-widgets"><a class="header" href="#-interactive-widgets">🔄 Interactive Widgets</a></h2>
+<pre><code class="language-swift">import AppIntents
+
+struct RefreshWeatherIntent: AppIntent {
+    static var title: LocalizedStringResource = "Refresh Weather"
+    
+    func perform() async throws -&gt; some IntentResult {
+        // Trigger widget refresh
+        WidgetCenter.shared.reloadAllTimelines()
+        return .result()
+    }
+}
+
+struct InteractiveWeatherView: View {
+    let entry: WeatherEntry
+    
+    var body: some View {
+        VStack {
+            Text("\(entry.temperature)°")
+                .font(.largeTitle)
+            
+            Button(intent: RefreshWeatherIntent()) {
+                Label("Refresh", systemImage: "arrow.clockwise")
+            }
+            .buttonStyle(.bordered)
+        }
+        .containerBackground(.blue.gradient, for: .widget)
+    }
+}
+</code></pre>
+<h2 id="-deep-links"><a class="header" href="#-deep-links">🎯 Deep Links</a></h2>
+<pre><code class="language-swift">struct WeatherWidgetView: View {
+    let entry: WeatherEntry
+    
+    var body: some View {
+        VStack {
+            Text("\(entry.temperature)°")
+                .font(.largeTitle)
+        }
+        .containerBackground(.blue.gradient, for: .widget)
+        .widgetURL(URL(string: "myapp://weather")!)
+    }
+}
+
+// In main app
+.onOpenURL { url in
+    if url.scheme == "myapp", url.host == "weather" {
+        // Navigate to weather screen
+    }
+}
+</code></pre>
+<h2 id="-app-intent-configuration"><a class="header" href="#-app-intent-configuration">📊 App Intent Configuration</a></h2>
+<pre><code class="language-swift">struct WeatherWidget: Widget {
+    var body: some WidgetConfiguration {
+        AppIntentConfiguration(
+            kind: "WeatherWidget",
+            intent: WeatherConfigIntent.self,
+            provider: Provider()
+        ) { entry in
+            WeatherWidgetView(entry: entry)
+        }
+    }
+}
+
+struct WeatherConfigIntent: WidgetConfigurationIntent {
+    static var title: LocalizedStringResource = "Weather Location"
+    
+    @Parameter(title: "City")
+    var city: String?
+}
+</code></pre>
+<h2 id="-lock-screen-widgets"><a class="header" href="#-lock-screen-widgets">🎨 Lock Screen Widgets</a></h2>
+<pre><code class="language-swift">struct LockScreenWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "LockScreen", provider: Provider()) { entry in
+            LockScreenView(entry: entry)
+        }
+        .supportedFamilies([
+            .accessoryCircular,
+            .accessoryRectangular,
+            .accessoryInline
+        ])
+    }
+}
+
+struct LockScreenView: View {
+    let entry: WeatherEntry
+    @Environment(\.widgetFamily) var family
+    
+    var body: some View {
+        switch family {
+        case .accessoryCircular:
+            Gauge(value: Double(entry.temperature), in: 0...100) {
+                Image(systemName: entry.icon)
+            }
+            
+        case .accessoryRectangular:
+            HStack {
+                Image(systemName: entry.icon)
+                VStack(alignment: .leading) {
+                    Text("\(entry.temperature)°")
+                        .font(.headline)
+                    Text(entry.condition)
+                        .font(.caption)
+                }
+            }
+            
+        case .accessoryInline:
+            Text("\(entry.temperature)° \(entry.condition)")
+            
+        default:
+            EmptyView()
+        }
+    }
+}
+</code></pre>
+<h2 id="-live-activities"><a class="header" href="#-live-activities">🔄 Live Activities</a></h2>
+<pre><code class="language-swift">import ActivityKit
+
+struct WeatherActivityAttributes: ActivityAttributes {
+    public struct ContentState: Codable, Hashable {
+        var temperature: Int
+        var condition: String
+    }
+    
+    var city: String
+}
+
+// Start activity
+func startWeatherActivity() throws {
+    let attributes = WeatherActivityAttributes(city: "Detroit")
+    let state = WeatherActivityAttributes.ContentState(
+        temperature: 72,
+        condition: "Sunny"
+    )
+    
+    let activity = try Activity.request(
+        attributes: attributes,
+        content: .init(state: state, staleDate: nil)
+    )
+}
+
+// Widget for Live Activity
+struct WeatherActivityWidget: Widget {
+    var body: some WidgetConfiguration {
+        ActivityConfiguration(for: WeatherActivityAttributes.self) { context in
+            // Lock screen UI
+            HStack {
+                Image(systemName: "sun.max.fill")
+                VStack(alignment: .leading) {
+                    Text("\(context.state.temperature)°")
+                    Text(context.state.condition)
+                }
+            }
+        } dynamicIsland: { context in
+            DynamicIsland {
+                DynamicIslandExpandedRegion(.leading) {
+                    Image(systemName: "sun.max.fill")
+                }
+                DynamicIslandExpandedRegion(.trailing) {
+                    Text("\(context.state.temperature)°")
+                }
+                DynamicIslandExpandedRegion(.bottom) {
+                    Text(context.state.condition)
+                }
+            } compactLeading: {
+                Image(systemName: "sun.max.fill")
+            } compactTrailing: {
+                Text("\(context.state.temperature)°")
+            } minimal: {
+                Image(systemName: "sun.max.fill")
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="-shared-data"><a class="header" href="#-shared-data">🎯 Shared Data</a></h2>
+<pre><code class="language-swift">// In app and widget
+let sharedDefaults = UserDefaults(suiteName: "group.com.yourapp.weather")!
+
+// Save in app
+sharedDefaults.set(72, forKey: "temperature")
+
+// Read in widget
+let temperature = sharedDefaults.integer(forKey: "temperature")
+</code></pre>
+<h2 id="-timeline-strategies"><a class="header" href="#-timeline-strategies">📊 Timeline Strategies</a></h2>
+<pre><code class="language-swift">// Update every hour
+let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(3600)))
+
+// Update at specific time
+let midnight = Calendar.current.startOfDay(for: Date().addingTimeInterval(86400))
+let timeline = Timeline(entries: [entry], policy: .after(midnight))
+
+// Never update (static)
+let timeline = Timeline(entries: [entry], policy: .never)
+
+// Update ASAP
+let timeline = Timeline(entries: [entry], policy: .atEnd)
+</code></pre>
+<h2 id="-best-practices"><a class="header" href="#-best-practices">🎨 Best Practices</a></h2>
+<h3 id="1-keep-it-simple"><a class="header" href="#1-keep-it-simple">1. Keep It Simple</a></h3>
+<pre><code class="language-swift">// ✅ Good: Clear at a glance
+Text("\(temperature)°")
+    .font(.largeTitle)
+
+// ❌ Bad: Too much info
+VStack {
+    Text("Temperature: \(temperature)°F")
+    Text("Feels like: \(feelsLike)°F")
+    Text("Humidity: \(humidity)%")
+    Text("Wind: \(wind) mph")
+}
+</code></pre>
+<h3 id="2-use-placeholders"><a class="header" href="#2-use-placeholders">2. Use Placeholders</a></h3>
+<pre><code class="language-swift">func placeholder(in context: Context) -&gt; WeatherEntry {
+    WeatherEntry(
+        date: Date(),
+        temperature: 72,
+        condition: "Sunny",
+        icon: "sun.max.fill"
+    )
+}
+</code></pre>
+<h3 id="3-handle-errors-gracefully"><a class="header" href="#3-handle-errors-gracefully">3. Handle Errors Gracefully</a></h3>
+<pre><code class="language-swift">func getTimeline(in context: Context, completion: @escaping (Timeline&lt;Entry&gt;) -&gt; Void) {
+    Task {
+        do {
+            let weather = try await fetchWeather()
+            let entry = WeatherEntry(from: weather)
+            completion(Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(900))))
+        } catch {
+            // Show cached data or placeholder
+            let fallback = WeatherEntry(date: Date(), temperature: 72, condition: "Unavailable", icon: "exclamationmark.triangle")
+            completion(Timeline(entries: [fallback], policy: .after(Date().addingTimeInterval(300))))
+        }
+    }
+}
+</code></pre>
+<h2 id="-testing"><a class="header" href="#-testing">🚀 Testing</a></h2>
+<pre><code class="language-swift">// Preview
+#Preview(as: .systemSmall) {
+    WeatherWidget()
+} timeline: {
+    WeatherEntry(date: Date(), temperature: 72, condition: "Sunny", icon: "sun.max.fill")
+    WeatherEntry(date: Date(), temperature: 68, condition: "Cloudy", icon: "cloud.fill")
+}
+</code></pre>
+<h2 id="-performance-tips"><a class="header" href="#-performance-tips">💡 Performance Tips</a></h2>
+<ol>
+<li><strong>Limit network calls</strong> - Cache data</li>
+<li><strong>Use App Groups</strong> - Share data efficiently</li>
+<li><strong>Optimize images</strong> - Use SF Symbols when possible</li>
+<li><strong>Keep timelines short</strong> - 5-10 entries max</li>
+<li><strong>Test on device</strong> - Simulator doesn't show true performance</li>
+</ol>
+<h2 id="-resources"><a class="header" href="#-resources">📚 Resources</a></h2>
+<ul>
+<li><a href="https://developer.apple.com/documentation/widgetkit">WidgetKit Documentation</a></li>
+<li><a href="https://developer.apple.com/videos/play/wwdc2023/10028/">WWDC23 - Bring widgets to life</a></li>
+<li><a href="https://developer.apple.com/design/human-interface-guidelines/widgets">Human Interface Guidelines</a></li>
+</ul>
+<h2 id="-next-steps"><a class="header" href="#-next-steps">🔗 Next Steps</a></h2>
+<ul>
+<li><a href="./appintents.html">AppIntents →</a></li>
+<li><a href="./swiftdata.html">SwiftData →</a></li>
+</ul>
+<hr />
+<p><strong>Try it</strong>: Add a widget to your app. Users love home screen widgets!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../frameworks/coreml.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../frameworks/appintents.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../frameworks/coreml.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../frameworks/appintents.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

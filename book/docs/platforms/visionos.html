@@ -1,0 +1,628 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>visionOS 2 - Swift &amp; Apple Platforms 2026: Complete Developer Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms with ML, open-source frameworks, and monetization strategies">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "navy";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Swift &amp; Apple Platforms 2026: Complete Developer Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/durellwilson/swift-2026-course" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/platforms/visionos.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="visionos-26"><a class="header" href="#visionos-26">visionOS 26</a></h1>
+<blockquote>
+<p><strong>Build spatial computing apps for Apple Vision Pro</strong></p>
+</blockquote>
+<h2 id="-what-makes-visionos-different"><a class="header" href="#-what-makes-visionos-different">🎯 What Makes visionOS Different</a></h2>
+<ul>
+<li><strong>3D Space</strong>: Apps exist in physical space</li>
+<li><strong>Spatial Input</strong>: Eyes, hands, voice</li>
+<li><strong>Immersion</strong>: From windows to full immersion</li>
+<li><strong>Depth</strong>: Real depth perception</li>
+</ul>
+<h2 id="-your-first-visionos-app-10-min"><a class="header" href="#-your-first-visionos-app-10-min">🚀 Your First visionOS App (10 min)</a></h2>
+<pre><code class="language-swift">import SwiftUI
+import RealityKit
+
+@main
+struct HelloVisionApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        VStack(spacing: 30) {
+            Text("Hello, Vision Pro!")
+                .font(.extraLargeTitle)
+            
+            Model3D(named: "Scene") { model in
+                model
+                    .resizable()
+                    .scaledToFit()
+            } placeholder: {
+                ProgressView()
+            }
+            .frame(depth: 300)
+        }
+        .padding()
+    }
+}
+</code></pre>
+<p><strong>New</strong>: <code>.frame(depth:)</code> adds 3D depth!</p>
+<h2 id="-windows-volumes-and-spaces"><a class="header" href="#-windows-volumes-and-spaces">🎨 Windows, Volumes, and Spaces</a></h2>
+<h3 id="1-window-2d-content"><a class="header" href="#1-window-2d-content">1. Window (2D Content)</a></h3>
+<pre><code class="language-swift">WindowGroup {
+    ContentView()
+}
+</code></pre>
+<p><strong>Use for</strong>: Settings, lists, forms</p>
+<h3 id="2-volume-3d-content"><a class="header" href="#2-volume-3d-content">2. Volume (3D Content)</a></h3>
+<pre><code class="language-swift">WindowGroup(id: "model") {
+    Model3DView()
+}
+.windowStyle(.volumetric)
+.defaultSize(width: 0.5, height: 0.5, depth: 0.5, in: .meters)
+</code></pre>
+<p><strong>Use for</strong>: 3D models, games, visualizations</p>
+<h3 id="3-immersive-space-full-immersion"><a class="header" href="#3-immersive-space-full-immersion">3. Immersive Space (Full Immersion)</a></h3>
+<pre><code class="language-swift">ImmersiveSpace(id: "immersive") {
+    ImmersiveView()
+}
+.immersionStyle(selection: .constant(.full), in: .full)
+</code></pre>
+<p><strong>Use for</strong>: Games, experiences, meditation apps</p>
+<h2 id="-complete-example-3d-gallery"><a class="header" href="#-complete-example-3d-gallery">🎯 Complete Example: 3D Gallery</a></h2>
+<pre><code class="language-swift">import SwiftUI
+import RealityKit
+
+@main
+struct GalleryApp: App {
+    var body: some Scene {
+        WindowGroup {
+            GalleryView()
+        }
+        
+        ImmersiveSpace(id: "gallery") {
+            ImmersiveGalleryView()
+        }
+    }
+}
+
+struct GalleryView: View {
+    @Environment(\.openImmersiveSpace) var openImmersiveSpace
+    @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
+    @State private var isImmersive = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("3D Art Gallery")
+                .font(.extraLargeTitle)
+            
+            Button(isImmersive ? "Exit Gallery" : "Enter Gallery") {
+                Task {
+                    if isImmersive {
+                        await dismissImmersiveSpace()
+                    } else {
+                        await openImmersiveSpace(id: "gallery")
+                    }
+                    isImmersive.toggle()
+                }
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding()
+    }
+}
+
+struct ImmersiveGalleryView: View {
+    var body: some View {
+        RealityView { content in
+            // Create 3D scene
+            let artwork1 = createArtwork(at: SIMD3(x: -1, y: 1.5, z: -2))
+            let artwork2 = createArtwork(at: SIMD3(x: 0, y: 1.5, z: -2))
+            let artwork3 = createArtwork(at: SIMD3(x: 1, y: 1.5, z: -2))
+            
+            content.add(artwork1)
+            content.add(artwork2)
+            content.add(artwork3)
+        }
+    }
+    
+    private func createArtwork(at position: SIMD3&lt;Float&gt;) -&gt; Entity {
+        let mesh = MeshResource.generateBox(width: 0.5, height: 0.7, depth: 0.05)
+        let material = SimpleMaterial(color: .blue, isMetallic: false)
+        let entity = ModelEntity(mesh: mesh, materials: [material])
+        entity.position = position
+        return entity
+    }
+}
+</code></pre>
+<h2 id="-spatial-input"><a class="header" href="#-spatial-input">👁️ Spatial Input</a></h2>
+<h3 id="eye-tracking"><a class="header" href="#eye-tracking">Eye Tracking</a></h3>
+<pre><code class="language-swift">struct InteractiveView: View {
+    @State private var isLookedAt = false
+    
+    var body: some View {
+        RealityView { content in
+            let entity = ModelEntity(mesh: .generateSphere(radius: 0.1))
+            entity.components.set(InputTargetComponent())
+            entity.components.set(HoverEffectComponent())
+            content.add(entity)
+        }
+        .onContinuousHover { phase in
+            switch phase {
+            case .active:
+                isLookedAt = true
+            case .ended:
+                isLookedAt = false
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="hand-gestures"><a class="header" href="#hand-gestures">Hand Gestures</a></h3>
+<pre><code class="language-swift">struct GestureView: View {
+    @State private var scale: Float = 1.0
+    
+    var body: some View {
+        RealityView { content in
+            let entity = ModelEntity(mesh: .generateBox(size: 0.2))
+            entity.components.set(InputTargetComponent())
+            content.add(entity)
+        }
+        .gesture(
+            MagnifyGesture()
+                .onChanged { value in
+                    scale = Float(value.magnification)
+                }
+        )
+    }
+}
+</code></pre>
+<h2 id="-realitykit-basics"><a class="header" href="#-realitykit-basics">🎮 RealityKit Basics</a></h2>
+<h3 id="create-3d-objects"><a class="header" href="#create-3d-objects">Create 3D Objects</a></h3>
+<pre><code class="language-swift">// Sphere
+let sphere = ModelEntity(
+    mesh: .generateSphere(radius: 0.1),
+    materials: [SimpleMaterial(color: .red, isMetallic: true)]
+)
+
+// Box
+let box = ModelEntity(
+    mesh: .generateBox(size: 0.2),
+    materials: [SimpleMaterial(color: .blue, isMetallic: false)]
+)
+
+// Custom mesh
+let mesh = MeshResource.generateBox(width: 0.3, height: 0.2, depth: 0.1)
+let entity = ModelEntity(mesh: mesh)
+</code></pre>
+<h3 id="positioning"><a class="header" href="#positioning">Positioning</a></h3>
+<pre><code class="language-swift">entity.position = SIMD3(x: 0, y: 1.5, z: -2)
+entity.orientation = simd_quatf(angle: .pi / 4, axis: [0, 1, 0])
+entity.scale = SIMD3(repeating: 1.5)
+</code></pre>
+<h3 id="animation"><a class="header" href="#animation">Animation</a></h3>
+<pre><code class="language-swift">var transform = entity.transform
+transform.translation.y += 0.5
+
+entity.move(
+    to: transform,
+    relativeTo: nil,
+    duration: 1.0,
+    timingFunction: .easeInOut
+)
+</code></pre>
+<h2 id="-spatial-anchors"><a class="header" href="#-spatial-anchors">🌍 Spatial Anchors</a></h2>
+<h3 id="place-objects-in-real-world"><a class="header" href="#place-objects-in-real-world">Place Objects in Real World</a></h3>
+<pre><code class="language-swift">import ARKit
+
+struct AnchoredView: View {
+    var body: some View {
+        RealityView { content in
+            // Create anchor
+            let anchor = AnchorEntity(.plane(.horizontal, classification: .floor, minimumBounds: [0.5, 0.5]))
+            
+            // Add object to anchor
+            let entity = ModelEntity(mesh: .generateBox(size: 0.2))
+            anchor.addChild(entity)
+            
+            content.add(anchor)
+        }
+    }
+}
+</code></pre>
+<h2 id="-practical-example-solar-system"><a class="header" href="#-practical-example-solar-system">🎯 Practical Example: Solar System</a></h2>
+<pre><code class="language-swift">struct SolarSystemView: View {
+    var body: some View {
+        RealityView { content in
+            // Sun
+            let sun = createPlanet(radius: 0.3, color: .yellow)
+            sun.position = [0, 1.5, -2]
+            content.add(sun)
+            
+            // Earth
+            let earth = createPlanet(radius: 0.1, color: .blue)
+            earth.position = [0.8, 1.5, -2]
+            content.add(earth)
+            
+            // Orbit animation
+            animateOrbit(earth, around: sun)
+        }
+    }
+    
+    private func createPlanet(radius: Float, color: UIColor) -&gt; ModelEntity {
+        let mesh = MeshResource.generateSphere(radius: radius)
+        let material = SimpleMaterial(color: color, isMetallic: false)
+        return ModelEntity(mesh: mesh, materials: [material])
+    }
+    
+    private func animateOrbit(_ planet: ModelEntity, around center: ModelEntity) {
+        // Circular orbit animation
+        let duration: TimeInterval = 10.0
+        
+        Timer.scheduledTimer(withTimeInterval: 0.016, repeats: true) { _ in
+            let angle = Float(Date().timeIntervalSince1970.truncatingRemainder(dividingBy: duration) / duration * 2 * .pi)
+            planet.position.x = center.position.x + 0.8 * cos(angle)
+            planet.position.z = center.position.z + 0.8 * sin(angle)
+        }
+    }
+}
+</code></pre>
+<h2 id="-materials-and-lighting"><a class="header" href="#-materials-and-lighting">🎨 Materials and Lighting</a></h2>
+<h3 id="physical-materials"><a class="header" href="#physical-materials">Physical Materials</a></h3>
+<pre><code class="language-swift">var material = PhysicallyBasedMaterial()
+material.baseColor = .init(tint: .blue)
+material.roughness = 0.3
+material.metallic = 0.8
+
+let entity = ModelEntity(mesh: mesh, materials: [material])
+</code></pre>
+<h3 id="image-based-lighting"><a class="header" href="#image-based-lighting">Image-Based Lighting</a></h3>
+<pre><code class="language-swift">// Add environment lighting
+let environment = try await EnvironmentResource(named: "studio")
+entity.components.set(ImageBasedLightComponent(source: .single(environment)))
+</code></pre>
+<h2 id="-passthrough-and-immersion"><a class="header" href="#-passthrough-and-immersion">🎯 Passthrough and Immersion</a></h2>
+<pre><code class="language-swift">@main
+struct ImmersiveApp: App {
+    @State private var immersionLevel: ImmersionStyle = .mixed
+    
+    var body: some Scene {
+        ImmersiveSpace(id: "space") {
+            ContentView()
+        }
+        .immersionStyle(selection: $immersionLevel, in: .mixed, .progressive, .full)
+    }
+}
+</code></pre>
+<p><strong>Levels</strong>:</p>
+<ul>
+<li><code>.mixed</code>: See real world + virtual objects</li>
+<li><code>.progressive</code>: Gradually fade real world</li>
+<li><code>.full</code>: Complete virtual environment</li>
+</ul>
+<h2 id="-game-example-catch-the-balls"><a class="header" href="#-game-example-catch-the-balls">🎮 Game Example: Catch the Balls</a></h2>
+<pre><code class="language-swift">struct CatchGameView: View {
+    @State private var score = 0
+    
+    var body: some View {
+        RealityView { content in
+            // Spawn balls
+            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
+                let ball = createBall()
+                content.add(ball)
+                animateFall(ball)
+            }
+        } update: { content in
+            // Update score display
+        }
+        .overlay(alignment: .top) {
+            Text("Score: \(score)")
+                .font(.extraLargeTitle)
+                .padding()
+        }
+    }
+    
+    private func createBall() -&gt; ModelEntity {
+        let ball = ModelEntity(
+            mesh: .generateSphere(radius: 0.1),
+            materials: [SimpleMaterial(color: .red, isMetallic: false)]
+        )
+        ball.position = SIMD3(
+            x: Float.random(in: -1...1),
+            y: 2,
+            z: -2
+        )
+        ball.components.set(InputTargetComponent())
+        return ball
+    }
+    
+    private func animateFall(_ ball: ModelEntity) {
+        var transform = ball.transform
+        transform.translation.y = 0
+        
+        ball.move(to: transform, relativeTo: nil, duration: 3.0)
+    }
+}
+</code></pre>
+<h2 id="-best-practices"><a class="header" href="#-best-practices">💡 Best Practices</a></h2>
+<h3 id="1-comfortable-viewing-distance"><a class="header" href="#1-comfortable-viewing-distance">1. Comfortable Viewing Distance</a></h3>
+<pre><code class="language-swift">// Place content 1-3 meters away
+entity.position.z = -2.0  // 2 meters
+</code></pre>
+<h3 id="2-appropriate-scale"><a class="header" href="#2-appropriate-scale">2. Appropriate Scale</a></h3>
+<pre><code class="language-swift">// Real-world scale
+let chair = ModelEntity(mesh: chairMesh)
+chair.scale = SIMD3(repeating: 1.0)  // 1:1 scale
+</code></pre>
+<h3 id="3-performance"><a class="header" href="#3-performance">3. Performance</a></h3>
+<pre><code class="language-swift">// Use LOD (Level of Detail)
+entity.components.set(ModelComponent(
+    mesh: mesh,
+    materials: materials
+))
+
+// Limit polygon count
+// Target: &lt; 100K polygons per scene
+</code></pre>
+<h3 id="4-accessibility"><a class="header" href="#4-accessibility">4. Accessibility</a></h3>
+<pre><code class="language-swift">// Add accessibility labels
+entity.accessibilityLabel = "Red sphere"
+entity.accessibilityHint = "Tap to interact"
+</code></pre>
+<h2 id="-testing"><a class="header" href="#-testing">🎯 Testing</a></h2>
+<h3 id="simulator"><a class="header" href="#simulator">Simulator</a></h3>
+<pre><code class="language-bash"># Run in visionOS Simulator
+xcodebuild -scheme YourApp \
+  -destination 'platform=visionOS Simulator,name=Apple Vision Pro'
+</code></pre>
+<h3 id="device"><a class="header" href="#device">Device</a></h3>
+<ul>
+<li>Requires Apple Vision Pro</li>
+<li>Use Xcode wireless debugging</li>
+<li>Test with real spatial input</li>
+</ul>
+<h2 id="-resources"><a class="header" href="#-resources">📚 Resources</a></h2>
+<ul>
+<li><a href="https://developer.apple.com/documentation/visionos">visionOS Documentation</a></li>
+<li><a href="https://developer.apple.com/documentation/realitykit">RealityKit</a></li>
+<li><a href="https://developer.apple.com/videos/play/wwdc2023/10066/">WWDC23 - Meet visionOS</a></li>
+<li><a href="https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos">Human Interface Guidelines</a></li>
+</ul>
+<h2 id="-next-steps"><a class="header" href="#-next-steps">🔗 Next Steps</a></h2>
+<ul>
+<li><a href="./ios.html">iOS 26 →</a></li>
+<li><a href="../swiftui/essentials.html">SwiftUI Essentials →</a></li>
+</ul>
+<hr />
+<p><strong>Remember</strong>: Think in 3D space. Design for comfort. Test on device.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../platforms/watchos.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../app-store/aso-optimization.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../platforms/watchos.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../app-store/aso-optimization.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
