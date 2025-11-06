@@ -1,0 +1,637 @@
+<!DOCTYPE HTML>
+<html lang="en" class="navy sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Swift Testing Framework - Swift &amp; Apple Platforms 2026: Complete Developer Guide</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms with ML, open-source frameworks, and monetization strategies">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "navy";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('navy')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Swift &amp; Apple Platforms 2026: Complete Developer Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/durellwilson/swift-2026-course" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/swift6/testing.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="swift-testing-framework"><a class="header" href="#swift-testing-framework">Swift Testing Framework</a></h1>
+<blockquote>
+<p>Modern testing with Swift's new testing framework introduced in Xcode 16</p>
+</blockquote>
+<h2 id="-introduction"><a class="header" href="#-introduction">🧪 Introduction</a></h2>
+<p>Swift Testing is Apple's modern testing framework that provides:</p>
+<ul>
+<li>Cleaner syntax with <code>@Test</code> macro</li>
+<li>Better error messages and diagnostics</li>
+<li>Parallel test execution</li>
+<li>Improved Xcode integration</li>
+</ul>
+<h2 id="-basic-testing"><a class="header" href="#-basic-testing">🚀 Basic Testing</a></h2>
+<h3 id="simple-tests"><a class="header" href="#simple-tests">Simple Tests</a></h3>
+<pre><code class="language-swift">import Testing
+
+@Test func basicMath() {
+    #expect(2 + 2 == 4)
+    #expect(10 - 5 == 5)
+}
+
+@Test func stringOperations() {
+    let text = "Hello, Swift!"
+    #expect(text.contains("Swift"))
+    #expect(text.count == 13)
+}
+</code></pre>
+<h3 id="parameterized-tests"><a class="header" href="#parameterized-tests">Parameterized Tests</a></h3>
+<pre><code class="language-swift">@Test(arguments: [
+    (input: 0, expected: 1),
+    (input: 1, expected: 1), 
+    (input: 5, expected: 120)
+])
+func factorial(input: Int, expected: Int) {
+    #expect(factorial(input) == expected)
+}
+
+func factorial(_ n: Int) -&gt; Int {
+    guard n &gt; 1 else { return 1 }
+    return n * factorial(n - 1)
+}
+</code></pre>
+<h2 id="-advanced-features"><a class="header" href="#-advanced-features">🔧 Advanced Features</a></h2>
+<h3 id="async-testing"><a class="header" href="#async-testing">Async Testing</a></h3>
+<pre><code class="language-swift">@Test func networkRequest() async throws {
+    let url = URL(string: "https://httpbin.org/json")!
+    let (data, response) = try await URLSession.shared.data(from: url)
+    
+    #expect(data.count &gt; 0)
+    
+    let httpResponse = try #require(response as? HTTPURLResponse)
+    #expect(httpResponse.statusCode == 200)
+}
+</code></pre>
+<h3 id="error-testing"><a class="header" href="#error-testing">Error Testing</a></h3>
+<pre><code class="language-swift">enum ValidationError: Error {
+    case invalidEmail
+    case tooShort
+}
+
+func validateEmail(_ email: String) throws {
+    guard email.contains("@") else {
+        throw ValidationError.invalidEmail
+    }
+}
+
+@Test func errorHandling() {
+    #expect(throws: ValidationError.invalidEmail) {
+        try validateEmail("invalid-email")
+    }
+    
+    #expect(throws: Never.self) {
+        try validateEmail("valid@example.com")
+    }
+}
+</code></pre>
+<h3 id="conditional-tests"><a class="header" href="#conditional-tests">Conditional Tests</a></h3>
+<pre><code class="language-swift">@Test(.enabled(if: ProcessInfo.processInfo.environment["CI"] == nil))
+func localOnlyTest() {
+    // This test only runs locally, not in CI
+    #expect(true)
+}
+</code></pre>
+<h2 id="-swiftui-testing"><a class="header" href="#-swiftui-testing">📱 SwiftUI Testing</a></h2>
+<h3 id="view-testing"><a class="header" href="#view-testing">View Testing</a></h3>
+<pre><code class="language-swift">import Testing
+import SwiftUI
+
+struct ContentView: View {
+    @State private var count = 0
+    
+    var body: some View {
+        VStack {
+            Text("Count: \(count)")
+            Button("Increment") {
+                count += 1
+            }
+        }
+    }
+}
+
+@Test @MainActor 
+func contentViewTest() {
+    let view = ContentView()
+    // Basic view creation test
+    #expect(view.body != nil)
+}
+</code></pre>
+<h3 id="model-testing"><a class="header" href="#model-testing">Model Testing</a></h3>
+<pre><code class="language-swift">@Observable
+class Counter {
+    var value = 0
+    
+    func increment() {
+        value += 1
+    }
+    
+    func decrement() {
+        value -= 1
+    }
+}
+
+@Test func counterModel() {
+    let counter = Counter()
+    
+    #expect(counter.value == 0)
+    
+    counter.increment()
+    #expect(counter.value == 1)
+    
+    counter.decrement()
+    #expect(counter.value == 0)
+}
+</code></pre>
+<h2 id="-real-world-testing-patterns"><a class="header" href="#-real-world-testing-patterns">🎯 Real-World Testing Patterns</a></h2>
+<h3 id="service-testing-with-mocks"><a class="header" href="#service-testing-with-mocks">Service Testing with Mocks</a></h3>
+<pre><code class="language-swift">protocol NetworkService {
+    func fetchUser(id: Int) async throws -&gt; User
+}
+
+struct User: Codable, Equatable {
+    let id: Int
+    let name: String
+}
+
+class MockNetworkService: NetworkService {
+    var shouldFail = false
+    
+    func fetchUser(id: Int) async throws -&gt; User {
+        if shouldFail {
+            throw URLError(.notConnectedToInternet)
+        }
+        return User(id: id, name: "Test User")
+    }
+}
+
+class UserRepository {
+    private let networkService: NetworkService
+    
+    init(networkService: NetworkService) {
+        self.networkService = networkService
+    }
+    
+    func getUser(id: Int) async throws -&gt; User {
+        return try await networkService.fetchUser(id: id)
+    }
+}
+
+@Test func userRepositorySuccess() async throws {
+    let mockService = MockNetworkService()
+    let repository = UserRepository(networkService: mockService)
+    
+    let user = try await repository.getUser(id: 1)
+    
+    #expect(user.id == 1)
+    #expect(user.name == "Test User")
+}
+
+@Test func userRepositoryFailure() async {
+    let mockService = MockNetworkService()
+    mockService.shouldFail = true
+    let repository = UserRepository(networkService: mockService)
+    
+    await #expect(throws: URLError.self) {
+        try await repository.getUser(id: 1)
+    }
+}
+</code></pre>
+<h3 id="core-data-testing"><a class="header" href="#core-data-testing">Core Data Testing</a></h3>
+<pre><code class="language-swift">import CoreData
+
+@Test func coreDataOperations() throws {
+    // Create in-memory store for testing
+    let container = NSPersistentContainer(name: "DataModel")
+    let description = NSPersistentStoreDescription()
+    description.type = NSInMemoryStoreType
+    container.persistentStoreDescriptions = [description]
+    
+    container.loadPersistentStores { _, error in
+        #expect(error == nil)
+    }
+    
+    let context = container.viewContext
+    
+    // Create test entity (assuming you have a Person entity)
+    let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into: context)
+    person.setValue("John Doe", forKey: "name")
+    person.setValue(30, forKey: "age")
+    
+    try context.save()
+    
+    // Fetch and verify
+    let request = NSFetchRequest&lt;NSManagedObject&gt;(entityName: "Person")
+    let results = try context.fetch(request)
+    
+    #expect(results.count == 1)
+    #expect(results.first?.value(forKey: "name") as? String == "John Doe")
+}
+</code></pre>
+<h2 id="-test-organization"><a class="header" href="#-test-organization">🔍 Test Organization</a></h2>
+<h3 id="test-suites"><a class="header" href="#test-suites">Test Suites</a></h3>
+<pre><code class="language-swift">@Suite("Authentication Tests")
+struct AuthenticationTests {
+    
+    @Test func validLogin() async throws {
+        let auth = AuthService()
+        let result = try await auth.login(email: "test@example.com", password: "password123")
+        #expect(result.isSuccess)
+    }
+    
+    @Test func invalidCredentials() async {
+        let auth = AuthService()
+        await #expect(throws: AuthError.invalidCredentials) {
+            try await auth.login(email: "test@example.com", password: "wrong")
+        }
+    }
+}
+
+class AuthService {
+    func login(email: String, password: String) async throws -&gt; LoginResult {
+        // Simulate authentication
+        if email == "test@example.com" &amp;&amp; password == "password123" {
+            return LoginResult(isSuccess: true, token: "abc123")
+        } else {
+            throw AuthError.invalidCredentials
+        }
+    }
+}
+
+struct LoginResult {
+    let isSuccess: Bool
+    let token: String?
+}
+
+enum AuthError: Error {
+    case invalidCredentials
+}
+</code></pre>
+<h3 id="setup-and-teardown"><a class="header" href="#setup-and-teardown">Setup and Teardown</a></h3>
+<pre><code class="language-swift">@Suite("Database Tests") 
+struct DatabaseTests {
+    let database: TestDatabase
+    
+    init() throws {
+        database = try TestDatabase()
+    }
+    
+    @Test func insertRecord() throws {
+        let record = TestRecord(id: 1, name: "Test")
+        try database.insert(record)
+        
+        let retrieved = try database.fetch(id: 1)
+        #expect(retrieved?.name == "Test")
+    }
+    
+    @Test func deleteRecord() throws {
+        let record = TestRecord(id: 2, name: "Delete Me")
+        try database.insert(record)
+        try database.delete(id: 2)
+        
+        let retrieved = try database.fetch(id: 2)
+        #expect(retrieved == nil)
+    }
+}
+
+class TestDatabase {
+    private var records: [Int: TestRecord] = [:]
+    
+    func insert(_ record: TestRecord) throws {
+        records[record.id] = record
+    }
+    
+    func fetch(id: Int) throws -&gt; TestRecord? {
+        return records[id]
+    }
+    
+    func delete(id: Int) throws {
+        records.removeValue(forKey: id)
+    }
+}
+
+struct TestRecord: Equatable {
+    let id: Int
+    let name: String
+}
+</code></pre>
+<h2 id="-performance-testing"><a class="header" href="#-performance-testing">📊 Performance Testing</a></h2>
+<h3 id="timing-tests"><a class="header" href="#timing-tests">Timing Tests</a></h3>
+<pre><code class="language-swift">@Test func performanceTest() {
+    let startTime = CFAbsoluteTimeGetCurrent()
+    
+    // Perform operation
+    let result = expensiveOperation()
+    
+    let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+    
+    #expect(timeElapsed &lt; 1.0) // Should complete within 1 second
+    #expect(result.count &gt; 0)
+}
+
+func expensiveOperation() -&gt; [Int] {
+    return (0..&lt;100_000).map { $0 * 2 }
+}
+</code></pre>
+<h2 id="-migration-from-xctest"><a class="header" href="#-migration-from-xctest">🛠 Migration from XCTest</a></h2>
+<h3 id="assertion-mapping"><a class="header" href="#assertion-mapping">Assertion Mapping</a></h3>
+<pre><code class="language-swift">// XCTest -&gt; Swift Testing
+XCTAssertEqual(a, b)           // #expect(a == b)
+XCTAssertTrue(condition)       // #expect(condition)
+XCTAssertFalse(condition)      // #expect(!condition)
+XCTAssertNil(value)           // #expect(value == nil)
+XCTAssertNotNil(value)        // #expect(value != nil)
+XCTAssertThrowsError(try f()) // #expect(throws: Error.self) { try f() }
+</code></pre>
+<h3 id="class-based-to-function-based"><a class="header" href="#class-based-to-function-based">Class-based to Function-based</a></h3>
+<pre><code class="language-swift">// XCTest (old)
+class MyTests: XCTestCase {
+    func testExample() {
+        XCTAssertEqual(2 + 2, 4)
+    }
+}
+
+// Swift Testing (new)
+@Test func example() {
+    #expect(2 + 2 == 4)
+}
+</code></pre>
+<h2 id="-best-practices"><a class="header" href="#-best-practices">🎓 Best Practices</a></h2>
+<h3 id="1-descriptive-test-names"><a class="header" href="#1-descriptive-test-names">1. Descriptive Test Names</a></h3>
+<pre><code class="language-swift">@Test("User can create account with valid email and password")
+func userAccountCreation() {
+    // Test implementation
+}
+</code></pre>
+<h3 id="2-arrange-act-assert-pattern"><a class="header" href="#2-arrange-act-assert-pattern">2. Arrange-Act-Assert Pattern</a></h3>
+<pre><code class="language-swift">@Test func shoppingCartTotal() {
+    // Arrange
+    let cart = ShoppingCart()
+    cart.add(Item(price: 10.00))
+    cart.add(Item(price: 15.50))
+    
+    // Act
+    let total = cart.calculateTotal()
+    
+    // Assert
+    #expect(total == 25.50)
+}
+</code></pre>
+<h3 id="3-test-data-builders"><a class="header" href="#3-test-data-builders">3. Test Data Builders</a></h3>
+<pre><code class="language-swift">struct UserBuilder {
+    private var name = "Default Name"
+    private var email = "default@example.com"
+    
+    func withName(_ name: String) -&gt; UserBuilder {
+        var builder = self
+        builder.name = name
+        return builder
+    }
+    
+    func withEmail(_ email: String) -&gt; UserBuilder {
+        var builder = self
+        builder.email = email
+        return builder
+    }
+    
+    func build() -&gt; User {
+        return User(name: name, email: email)
+    }
+}
+
+@Test func userValidation() {
+    let user = UserBuilder()
+        .withName("John Doe")
+        .withEmail("john@example.com")
+        .build()
+    
+    #expect(user.isValid)
+}
+</code></pre>
+<hr />
+<p><em>Swift Testing provides a modern, clean way to test your Swift code with better tooling and syntax.</em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../frameworks/swiftcharts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../swift6/concurrency.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../frameworks/swiftcharts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../swift6/concurrency.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

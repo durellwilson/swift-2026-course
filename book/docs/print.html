@@ -464,6 +464,286 @@
 <p>Continue to <a href="apple-framework/./playgrounds.html">Swift Playgrounds Integration</a> to set up your interactive learning environment.</p>
 <hr />
 <p><em>This course content is designed to complement Apple's official educational materials and follows their recommended learning progression.</em></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="apple-developer-resources-2025"><a class="header" href="#apple-developer-resources-2025">Apple Developer Resources 2025</a></h1>
+<blockquote>
+<p>Stay current with Apple's latest development tools and frameworks</p>
+</blockquote>
+<h2 id="-whats-new-in-2025"><a class="header" href="#-whats-new-in-2025">🆕 What's New in 2025</a></h2>
+<h3 id="swift-60-stable-release"><a class="header" href="#swift-60-stable-release">Swift 6.0 Stable Release</a></h3>
+<ul>
+<li><strong>Complete concurrency model</strong> with data race safety by default</li>
+<li><strong>Typed throws</strong> for more precise error handling</li>
+<li><strong>Noncopyable types</strong> for zero-copy performance</li>
+<li><strong>Parameter packs</strong> for advanced generic programming</li>
+</ul>
+<h3 id="ios-18-features"><a class="header" href="#ios-18-features">iOS 18+ Features</a></h3>
+<ul>
+<li><strong>App Intents</strong> enhanced integration with Siri and Shortcuts</li>
+<li><strong>WidgetKit</strong> interactive widgets and Live Activities</li>
+<li><strong>SwiftData</strong> improvements and CloudKit sync</li>
+<li><strong>Control Center</strong> customizable controls API</li>
+</ul>
+<h3 id="xcode-16-improvements"><a class="header" href="#xcode-16-improvements">Xcode 16+ Improvements</a></h3>
+<ul>
+<li><strong>Swift Testing</strong> framework built into Xcode</li>
+<li><strong>Enhanced debugging</strong> for concurrency and memory issues</li>
+<li><strong>Improved SwiftUI previews</strong> with better performance</li>
+<li><strong>Xcode Cloud</strong> expanded CI/CD capabilities</li>
+</ul>
+<h2 id="-key-learning-resources"><a class="header" href="#-key-learning-resources">📺 Key Learning Resources</a></h2>
+<h3 id="official-apple-documentation"><a class="header" href="#official-apple-documentation">Official Apple Documentation</a></h3>
+<ul>
+<li><strong><a href="https://swift.org">Swift.org</a></strong> - Language updates and evolution</li>
+<li><strong><a href="https://developer.apple.com/documentation/">Developer Documentation</a></strong> - Framework references</li>
+<li><strong><a href="https://developer.apple.com/videos/">WWDC Videos</a></strong> - Session recordings</li>
+<li><strong><a href="https://developer.apple.com/sample-code/">Sample Code</a></strong> - Working examples</li>
+</ul>
+<h3 id="community-resources"><a class="header" href="#community-resources">Community Resources</a></h3>
+<ul>
+<li><strong><a href="https://forums.swift.org">Swift Forums</a></strong> - Language discussions</li>
+<li><strong><a href="https://developer.apple.com/forums/">Apple Developer Forums</a></strong> - Platform support</li>
+<li><strong><a href="https://github.com/apple/swift">GitHub Swift</a></strong> - Open source development</li>
+</ul>
+<h2 id="-modern-development-patterns"><a class="header" href="#-modern-development-patterns">🔧 Modern Development Patterns</a></h2>
+<h3 id="concurrency-with-swift-6"><a class="header" href="#concurrency-with-swift-6">Concurrency with Swift 6</a></h3>
+<pre><code class="language-swift">// Data race safety by default
+actor DataStore {
+    private var items: [String] = []
+    
+    func add(_ item: String) {
+        items.append(item)
+    }
+    
+    func getItems() -&gt; [String] {
+        return items
+    }
+}
+
+// Usage
+let store = DataStore()
+await store.add("New Item")
+let items = await store.getItems()
+</code></pre>
+<h3 id="swiftui-with-observation"><a class="header" href="#swiftui-with-observation">SwiftUI with Observation</a></h3>
+<pre><code class="language-swift">import SwiftUI
+import Observation
+
+@Observable
+class AppModel {
+    var items: [Item] = []
+    var isLoading = false
+    
+    func loadItems() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        // Simulate network call
+        try? await Task.sleep(for: .seconds(1))
+        items = [Item(name: "Sample Item")]
+    }
+}
+
+struct ContentView: View {
+    @State private var model = AppModel()
+    
+    var body: some View {
+        NavigationView {
+            List(model.items) { item in
+                Text(item.name)
+            }
+            .navigationTitle("Items")
+            .task {
+                await model.loadItems()
+            }
+            .overlay {
+                if model.isLoading {
+                    ProgressView()
+                }
+            }
+        }
+    }
+}
+
+struct Item: Identifiable {
+    let id = UUID()
+    let name: String
+}
+</code></pre>
+<h3 id="app-intents-integration"><a class="header" href="#app-intents-integration">App Intents Integration</a></h3>
+<pre><code class="language-swift">import AppIntents
+
+struct AddItemIntent: AppIntent {
+    static var title: LocalizedStringResource = "Add Item"
+    static var description = IntentDescription("Add a new item to your list")
+    
+    @Parameter(title: "Item Name")
+    var itemName: String
+    
+    func perform() async throws -&gt; some IntentResult &amp; ProvidesDialog {
+        // Add item to your app's data store
+        await DataManager.shared.addItem(named: itemName)
+        
+        return .result(
+            dialog: "Added \(itemName) to your list"
+        )
+    }
+}
+
+// Register in your App struct
+@main
+struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+    
+    init() {
+        // Register app intents
+        AppDependencyManager.shared.add(dependency: DataManager.shared)
+    }
+}
+</code></pre>
+<h2 id="-best-practices-for-2025"><a class="header" href="#-best-practices-for-2025">🎯 Best Practices for 2025</a></h2>
+<h3 id="1-embrace-concurrency"><a class="header" href="#1-embrace-concurrency">1. Embrace Concurrency</a></h3>
+<pre><code class="language-swift">// Use structured concurrency
+func loadUserData() async throws -&gt; UserData {
+    async let profile = loadProfile()
+    async let preferences = loadPreferences()
+    async let history = loadHistory()
+    
+    return try await UserData(
+        profile: profile,
+        preferences: preferences,
+        history: history
+    )
+}
+</code></pre>
+<h3 id="2-leverage-swiftdata"><a class="header" href="#2-leverage-swiftdata">2. Leverage SwiftData</a></h3>
+<pre><code class="language-swift">import SwiftData
+
+@Model
+class Task {
+    var title: String
+    var isCompleted: Bool
+    var createdAt: Date
+    
+    init(title: String) {
+        self.title = title
+        self.isCompleted = false
+        self.createdAt = Date()
+    }
+}
+
+// In your App
+@main
+struct TaskApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+        .modelContainer(for: Task.self)
+    }
+}
+</code></pre>
+<h3 id="3-optimize-performance"><a class="header" href="#3-optimize-performance">3. Optimize Performance</a></h3>
+<pre><code class="language-swift">// Use lazy loading for large datasets
+struct LazyItemList: View {
+    @State private var items: [Item] = []
+    
+    var body: some View {
+        LazyVStack {
+            ForEach(items) { item in
+                ItemRow(item: item)
+                    .onAppear {
+                        if item == items.last {
+                            loadMoreItems()
+                        }
+                    }
+            }
+        }
+    }
+    
+    private func loadMoreItems() {
+        // Load more items asynchronously
+        Task {
+            let newItems = await ItemService.loadMore()
+            items.append(contentsOf: newItems)
+        }
+    }
+}
+</code></pre>
+<h2 id="-platform-specific-updates"><a class="header" href="#-platform-specific-updates">📱 Platform-Specific Updates</a></h2>
+<h3 id="ios-18"><a class="header" href="#ios-18">iOS 18+</a></h3>
+<ul>
+<li>Enhanced privacy controls</li>
+<li>Improved accessibility features</li>
+<li>Better battery optimization</li>
+<li>Advanced camera capabilities</li>
+</ul>
+<h3 id="macos-sequoia"><a class="header" href="#macos-sequoia">macOS Sequoia</a></h3>
+<ul>
+<li>Desktop widgets support</li>
+<li>Enhanced window management</li>
+<li>Improved Metal performance</li>
+<li>Better cross-platform compatibility</li>
+</ul>
+<h3 id="watchos-11"><a class="header" href="#watchos-11">watchOS 11</a></h3>
+<ul>
+<li>New health sensors support</li>
+<li>Improved workout tracking</li>
+<li>Enhanced complications</li>
+<li>Better battery life</li>
+</ul>
+<h3 id="visionos-2"><a class="header" href="#visionos-2">visionOS 2</a></h3>
+<ul>
+<li>Improved hand tracking</li>
+<li>Enhanced spatial audio</li>
+<li>Better passthrough quality</li>
+<li>New gesture patterns</li>
+</ul>
+<h2 id="-development-tools-1"><a class="header" href="#-development-tools-1">🛠 Development Tools</a></h2>
+<h3 id="xcode-16-features"><a class="header" href="#xcode-16-features">Xcode 16 Features</a></h3>
+<ul>
+<li>Swift Testing integration</li>
+<li>Enhanced code completion</li>
+<li>Improved debugging tools</li>
+<li>Better performance profiling</li>
+</ul>
+<h3 id="swift-package-manager-1"><a class="header" href="#swift-package-manager-1">Swift Package Manager</a></h3>
+<ul>
+<li>Improved dependency resolution</li>
+<li>Better build performance</li>
+<li>Enhanced security features</li>
+<li>Cross-platform support</li>
+</ul>
+<h2 id="-recommended-learning-path"><a class="header" href="#-recommended-learning-path">📚 Recommended Learning Path</a></h2>
+<h3 id="1-foundation-week-1-2"><a class="header" href="#1-foundation-week-1-2">1. Foundation (Week 1-2)</a></h3>
+<ul>
+<li>Swift 6.0 concurrency model</li>
+<li>SwiftUI with Observation framework</li>
+<li>Basic App Intents integration</li>
+</ul>
+<h3 id="2-intermediate-week-3-4"><a class="header" href="#2-intermediate-week-3-4">2. Intermediate (Week 3-4)</a></h3>
+<ul>
+<li>SwiftData for persistence</li>
+<li>Advanced SwiftUI patterns</li>
+<li>Testing with Swift Testing</li>
+</ul>
+<h3 id="3-advanced-week-5-6"><a class="header" href="#3-advanced-week-5-6">3. Advanced (Week 5-6)</a></h3>
+<ul>
+<li>Performance optimization</li>
+<li>Cross-platform development</li>
+<li>App Store optimization</li>
+</ul>
+<h3 id="4-production-week-7-8"><a class="header" href="#4-production-week-7-8">4. Production (Week 7-8)</a></h3>
+<ul>
+<li>CI/CD with Xcode Cloud</li>
+<li>Security best practices</li>
+<li>Monitoring and analytics</li>
+</ul>
+<hr />
+<p><em>Stay updated with Apple's official documentation and WWDC sessions for the latest developments.</em></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="swift-playgrounds-integration"><a class="header" href="#swift-playgrounds-integration">Swift Playgrounds Integration</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="apples-learning-path"><a class="header" href="#apples-learning-path">Apple's Learning Path</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="swift-language-basics"><a class="header" href="#swift-language-basics">Swift Language Basics</a></h1>
@@ -878,6 +1158,388 @@ struct Weather: Codable {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="navigation--user-input"><a class="header" href="#navigation--user-input">Navigation &amp; User Input</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="working-with-data"><a class="header" href="#working-with-data">Working with Data</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="networking--apis"><a class="header" href="#networking--apis">Networking &amp; APIs</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="apple-intelligence-integration"><a class="header" href="#apple-intelligence-integration">Apple Intelligence Integration</a></h1>
+<blockquote>
+<p>Integrate Apple's AI capabilities using real frameworks available in iOS 18+</p>
+</blockquote>
+<h2 id="-what-is-apple-intelligence"><a class="header" href="#-what-is-apple-intelligence">🧠 What is Apple Intelligence?</a></h2>
+<p>Apple Intelligence is Apple's personal intelligence system that:</p>
+<ul>
+<li>Uses on-device processing for privacy</li>
+<li>Integrates with Siri and system apps</li>
+<li>Provides writing tools and smart replies</li>
+<li>Works across iPhone, iPad, and Mac</li>
+</ul>
+<h2 id="-real-implementation-with-available-apis"><a class="header" href="#-real-implementation-with-available-apis">🔧 Real Implementation with Available APIs</a></h2>
+<h3 id="1-natural-language-processing"><a class="header" href="#1-natural-language-processing">1. Natural Language Processing</a></h3>
+<p>Use the actual NaturalLanguage framework:</p>
+<pre><code class="language-swift">import NaturalLanguage
+
+class TextAnalyzer {
+    func analyzeText(_ text: String) -&gt; TextAnalysis {
+        let tagger = NLTagger(tagSchemes: [.sentimentScore, .language, .nameType])
+        tagger.string = text
+        
+        // Get sentiment
+        let sentiment = tagger.tag(at: text.startIndex, unit: .paragraph, scheme: .sentimentScore)
+        
+        // Get language
+        let language = tagger.dominantLanguage
+        
+        // Extract named entities
+        let entities = extractEntities(from: text)
+        
+        return TextAnalysis(
+            sentiment: sentiment?.rawValue,
+            language: language?.rawValue,
+            entities: entities
+        )
+    }
+    
+    private func extractEntities(from text: String) -&gt; [String] {
+        let tagger = NLTagger(tagSchemes: [.nameType])
+        tagger.string = text
+        
+        var entities: [String] = []
+        tagger.enumerateTags(in: text.startIndex..&lt;text.endIndex, unit: .word, scheme: .nameType) { tag, tokenRange in
+            if let tag = tag {
+                let entity = String(text[tokenRange])
+                entities.append(entity)
+            }
+            return true
+        }
+        return entities
+    }
+}
+
+struct TextAnalysis {
+    let sentiment: String?
+    let language: String?
+    let entities: [String]
+}
+</code></pre>
+<h3 id="2-app-intents-integration"><a class="header" href="#2-app-intents-integration">2. App Intents Integration</a></h3>
+<p>Create Siri shortcuts that work with Apple Intelligence:</p>
+<pre><code class="language-swift">import AppIntents
+
+struct SummarizeTextIntent: AppIntent {
+    static var title: LocalizedStringResource = "Summarize Text"
+    static var description = IntentDescription("Summarize the provided text")
+    
+    @Parameter(title: "Text to Summarize")
+    var inputText: String
+    
+    func perform() async throws -&gt; some IntentResult &amp; ProvidesDialog {
+        // Use actual text processing
+        let summary = await createSummary(from: inputText)
+        
+        return .result(
+            value: summary,
+            dialog: "Here's your summary"
+        )
+    }
+    
+    private func createSummary(from text: String) async -&gt; String {
+        // Simple extractive summarization using NaturalLanguage
+        let sentences = text.components(separatedBy: ". ")
+        let keyPhrases = extractKeyPhrases(from: text)
+        
+        // Return sentences containing key phrases
+        let importantSentences = sentences.filter { sentence in
+            keyPhrases.contains { sentence.localizedCaseInsensitiveContains($0) }
+        }
+        
+        return importantSentences.prefix(3).joined(separator: ". ")
+    }
+    
+    private func extractKeyPhrases(from text: String) -&gt; [String] {
+        let tagger = NLTagger(tagSchemes: [.lemma])
+        tagger.string = text
+        
+        var phrases: [String] = []
+        tagger.enumerateTags(in: text.startIndex..&lt;text.endIndex, unit: .word, scheme: .lemma) { tag, tokenRange in
+            if let lemma = tag?.rawValue, lemma.count &gt; 4 {
+                phrases.append(lemma)
+            }
+            return true
+        }
+        return Array(Set(phrases)).prefix(5).map { String($0) }
+    }
+}
+</code></pre>
+<h3 id="3-core-ml-integration"><a class="header" href="#3-core-ml-integration">3. Core ML Integration</a></h3>
+<p>Use real Core ML for on-device intelligence:</p>
+<pre><code class="language-swift">import CoreML
+import Vision
+
+class ImageAnalyzer {
+    private var model: VNCoreMLModel?
+    
+    init() {
+        setupModel()
+    }
+    
+    private func setupModel() {
+        guard let modelURL = Bundle.main.url(forResource: "MobileNetV2", withExtension: "mlmodelc"),
+              let model = try? VNCoreMLModel(for: MLModel(contentsOf: modelURL)) else {
+            print("Failed to load Core ML model")
+            return
+        }
+        self.model = model
+    }
+    
+    func analyzeImage(_ image: UIImage) async throws -&gt; [ImageClassification] {
+        guard let model = model,
+              let cgImage = image.cgImage else {
+            throw AnalysisError.modelNotAvailable
+        }
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            let request = VNCoreMLRequest(model: model) { request, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                guard let results = request.results as? [VNClassificationObservation] else {
+                    continuation.resume(returning: [])
+                    return
+                }
+                
+                let classifications = results.prefix(5).map { observation in
+                    ImageClassification(
+                        label: observation.identifier,
+                        confidence: observation.confidence
+                    )
+                }
+                
+                continuation.resume(returning: classifications)
+            }
+            
+            let handler = VNImageRequestHandler(cgImage: cgImage)
+            try? handler.perform([request])
+        }
+    }
+}
+
+struct ImageClassification {
+    let label: String
+    let confidence: Float
+}
+
+enum AnalysisError: Error {
+    case modelNotAvailable
+}
+</code></pre>
+<h2 id="-swiftui-integration"><a class="header" href="#-swiftui-integration">📱 SwiftUI Integration</a></h2>
+<h3 id="smart-text-input-with-real-apis"><a class="header" href="#smart-text-input-with-real-apis">Smart Text Input with Real APIs</a></h3>
+<pre><code class="language-swift">import SwiftUI
+import NaturalLanguage
+
+struct SmartTextEditor: View {
+    @State private var text = ""
+    @State private var suggestions: [String] = []
+    @State private var language: String = "Unknown"
+    
+    var body: some View {
+        VStack {
+            TextEditor(text: $text)
+                .onChange(of: text) { newValue in
+                    analyzeText(newValue)
+                }
+                .frame(minHeight: 200)
+            
+            HStack {
+                Text("Language: \(language)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+            }
+            
+            if !suggestions.isEmpty {
+                VStack(alignment: .leading) {
+                    Text("Suggestions:")
+                        .font(.headline)
+                    
+                    ForEach(suggestions, id: \.self) { suggestion in
+                        Button(suggestion) {
+                            text += " " + suggestion
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+            }
+        }
+        .padding()
+    }
+    
+    private func analyzeText(_ text: String) {
+        guard !text.isEmpty else { return }
+        
+        // Detect language
+        let recognizer = NLLanguageRecognizer()
+        recognizer.processString(text)
+        if let detectedLanguage = recognizer.dominantLanguage {
+            language = Locale.current.localizedString(forLanguageCode: detectedLanguage.rawValue) ?? detectedLanguage.rawValue
+        }
+        
+        // Generate simple suggestions based on text analysis
+        generateSuggestions(for: text)
+    }
+    
+    private func generateSuggestions(for text: String) {
+        let tagger = NLTagger(tagSchemes: [.lexicalClass])
+        tagger.string = text
+        
+        var nouns: [String] = []
+        tagger.enumerateTags(in: text.startIndex..&lt;text.endIndex, unit: .word, scheme: .lexicalClass) { tag, tokenRange in
+            if tag == .noun {
+                let noun = String(text[tokenRange])
+                nouns.append(noun)
+            }
+            return true
+        }
+        
+        // Simple suggestion logic
+        suggestions = Array(Set(nouns)).prefix(3).map { "related to \($0)" }
+    }
+}
+</code></pre>
+<h2 id="-real-world-applications"><a class="header" href="#-real-world-applications">🎯 Real-World Applications</a></h2>
+<h3 id="1-smart-note-taking-app"><a class="header" href="#1-smart-note-taking-app">1. Smart Note Taking App</a></h3>
+<pre><code class="language-swift">import SwiftUI
+import NaturalLanguage
+
+struct SmartNotesApp: View {
+    @State private var notes: [Note] = []
+    @State private var searchText = ""
+    
+    var filteredNotes: [Note] {
+        if searchText.isEmpty {
+            return notes
+        }
+        return notes.filter { note in
+            note.content.localizedCaseInsensitiveContains(searchText) ||
+            note.tags.contains { $0.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(filteredNotes) { note in
+                    NoteRow(note: note)
+                }
+            }
+            .searchable(text: $searchText)
+            .navigationTitle("Smart Notes")
+            .toolbar {
+                Button("Add Note") {
+                    addNewNote()
+                }
+            }
+        }
+    }
+    
+    private func addNewNote() {
+        let newNote = Note(content: "New note", tags: [])
+        notes.append(newNote)
+    }
+}
+
+struct Note: Identifiable {
+    let id = UUID()
+    var content: String
+    var tags: [String]
+    let createdAt = Date()
+    
+    init(content: String, tags: [String] = []) {
+        self.content = content
+        self.tags = tags.isEmpty ? generateTags(from: content) : tags
+    }
+}
+
+func generateTags(from content: String) -&gt; [String] {
+    let tagger = NLTagger(tagSchemes: [.nameType, .lexicalClass])
+    tagger.string = content
+    
+    var tags: [String] = []
+    
+    // Extract named entities as tags
+    tagger.enumerateTags(in: content.startIndex..&lt;content.endIndex, unit: .word, scheme: .nameType) { tag, tokenRange in
+        if let tag = tag, tag != .other {
+            let entity = String(content[tokenRange])
+            tags.append(entity.lowercased())
+        }
+        return true
+    }
+    
+    return Array(Set(tags)).prefix(5).map { String($0) }
+}
+
+struct NoteRow: View {
+    let note: Note
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(note.content)
+                .lineLimit(2)
+            
+            HStack {
+                ForEach(note.tags.prefix(3), id: \.self) { tag in
+                    Text(tag)
+                        .font(.caption)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
+                        .background(Color.blue.opacity(0.2))
+                        .cornerRadius(4)
+                }
+                
+                Spacer()
+                
+                Text(note.createdAt, style: .date)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.vertical, 2)
+    }
+}
+</code></pre>
+<h2 id="-privacy-best-practices"><a class="header" href="#-privacy-best-practices">🔒 Privacy Best Practices</a></h2>
+<h3 id="on-device-processing"><a class="header" href="#on-device-processing">On-Device Processing</a></h3>
+<pre><code class="language-swift">class PrivacyFirstProcessor {
+    func processText(_ text: String) -&gt; ProcessedResult {
+        // All processing happens locally
+        let tagger = NLTagger(tagSchemes: [.sentimentScore])
+        tagger.string = text
+        
+        let sentiment = tagger.tag(at: text.startIndex, unit: .paragraph, scheme: .sentimentScore)
+        
+        return ProcessedResult(
+            sentiment: sentiment?.rawValue ?? "neutral",
+            processedLocally: true
+        )
+    }
+}
+
+struct ProcessedResult {
+    let sentiment: String
+    let processedLocally: Bool
+}
+</code></pre>
+<h2 id="-resources"><a class="header" href="#-resources">📚 Resources</a></h2>
+<ul>
+<li><strong><a href="https://developer.apple.com/documentation/naturallanguage">Natural Language Framework</a></strong></li>
+<li><strong><a href="https://developer.apple.com/documentation/coreml">Core ML Documentation</a></strong></li>
+<li><strong><a href="https://developer.apple.com/documentation/appintents">App Intents Framework</a></strong></li>
+<li><strong><a href="https://developer.apple.com/documentation/vision">Vision Framework</a></strong></li>
+</ul>
+<hr />
+<p><em>This implementation uses real Apple frameworks available today, not fictional APIs.</em></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="core-ml-8-features"><a class="header" href="#core-ml-8-features">Core ML 8 Features</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="on-device-processing-1"><a class="header" href="#on-device-processing-1">On-Device Processing</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="siri-app-intents"><a class="header" href="#siri-app-intents">Siri App Intents</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="swiftdata"><a class="header" href="#swiftdata">SwiftData</a></h1>
 <blockquote>
 <p><strong>Build a notes app with persistence in 10 minutes</strong></p>
@@ -1381,7 +2043,7 @@ struct ContentView: View {
     }
 }
 </code></pre>
-<h2 id="-resources"><a class="header" href="#-resources">📚 Resources</a></h2>
+<h2 id="-resources-1"><a class="header" href="#-resources-1">📚 Resources</a></h2>
 <ul>
 <li><a href="https://developer.apple.com/documentation/swiftdata">SwiftData Documentation</a></li>
 <li><a href="https://developer.apple.com/videos/play/wwdc2023/10187/">WWDC23 - Meet SwiftData</a></li>
@@ -1837,7 +2499,7 @@ VStack {
 <li><strong>Keep timelines short</strong> - 5-10 entries max</li>
 <li><strong>Test on device</strong> - Simulator doesn't show true performance</li>
 </ol>
-<h2 id="-resources-1"><a class="header" href="#-resources-1">📚 Resources</a></h2>
+<h2 id="-resources-2"><a class="header" href="#-resources-2">📚 Resources</a></h2>
 <ul>
 <li><a href="https://developer.apple.com/documentation/widgetkit">WidgetKit Documentation</a></li>
 <li><a href="https://developer.apple.com/videos/play/wwdc2023/10028/">WWDC23 - Bring widgets to life</a></li>
@@ -2231,7 +2893,7 @@ intent.priority = .high
 let result = try await intent.perform()
 print(result)
 </code></pre>
-<h2 id="-resources-2"><a class="header" href="#-resources-2">📚 Resources</a></h2>
+<h2 id="-resources-3"><a class="header" href="#-resources-3">📚 Resources</a></h2>
 <ul>
 <li><a href="https://developer.apple.com/documentation/appintents">App Intents Documentation</a></li>
 <li><a href="https://developer.apple.com/videos/play/wwdc2023/10032/">WWDC23 - Dive into App Intents</a></li>
@@ -2248,6 +2910,410 @@ print(result)
 <blockquote>
 <p>Coming soon - comprehensive guide with code examples and best practices</p>
 </blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="swift-testing-framework"><a class="header" href="#swift-testing-framework">Swift Testing Framework</a></h1>
+<blockquote>
+<p>Modern testing with Swift's new testing framework introduced in Xcode 16</p>
+</blockquote>
+<h2 id="-introduction"><a class="header" href="#-introduction">🧪 Introduction</a></h2>
+<p>Swift Testing is Apple's modern testing framework that provides:</p>
+<ul>
+<li>Cleaner syntax with <code>@Test</code> macro</li>
+<li>Better error messages and diagnostics</li>
+<li>Parallel test execution</li>
+<li>Improved Xcode integration</li>
+</ul>
+<h2 id="-basic-testing"><a class="header" href="#-basic-testing">🚀 Basic Testing</a></h2>
+<h3 id="simple-tests"><a class="header" href="#simple-tests">Simple Tests</a></h3>
+<pre><code class="language-swift">import Testing
+
+@Test func basicMath() {
+    #expect(2 + 2 == 4)
+    #expect(10 - 5 == 5)
+}
+
+@Test func stringOperations() {
+    let text = "Hello, Swift!"
+    #expect(text.contains("Swift"))
+    #expect(text.count == 13)
+}
+</code></pre>
+<h3 id="parameterized-tests"><a class="header" href="#parameterized-tests">Parameterized Tests</a></h3>
+<pre><code class="language-swift">@Test(arguments: [
+    (input: 0, expected: 1),
+    (input: 1, expected: 1), 
+    (input: 5, expected: 120)
+])
+func factorial(input: Int, expected: Int) {
+    #expect(factorial(input) == expected)
+}
+
+func factorial(_ n: Int) -&gt; Int {
+    guard n &gt; 1 else { return 1 }
+    return n * factorial(n - 1)
+}
+</code></pre>
+<h2 id="-advanced-features-1"><a class="header" href="#-advanced-features-1">🔧 Advanced Features</a></h2>
+<h3 id="async-testing"><a class="header" href="#async-testing">Async Testing</a></h3>
+<pre><code class="language-swift">@Test func networkRequest() async throws {
+    let url = URL(string: "https://httpbin.org/json")!
+    let (data, response) = try await URLSession.shared.data(from: url)
+    
+    #expect(data.count &gt; 0)
+    
+    let httpResponse = try #require(response as? HTTPURLResponse)
+    #expect(httpResponse.statusCode == 200)
+}
+</code></pre>
+<h3 id="error-testing"><a class="header" href="#error-testing">Error Testing</a></h3>
+<pre><code class="language-swift">enum ValidationError: Error {
+    case invalidEmail
+    case tooShort
+}
+
+func validateEmail(_ email: String) throws {
+    guard email.contains("@") else {
+        throw ValidationError.invalidEmail
+    }
+}
+
+@Test func errorHandling() {
+    #expect(throws: ValidationError.invalidEmail) {
+        try validateEmail("invalid-email")
+    }
+    
+    #expect(throws: Never.self) {
+        try validateEmail("valid@example.com")
+    }
+}
+</code></pre>
+<h3 id="conditional-tests"><a class="header" href="#conditional-tests">Conditional Tests</a></h3>
+<pre><code class="language-swift">@Test(.enabled(if: ProcessInfo.processInfo.environment["CI"] == nil))
+func localOnlyTest() {
+    // This test only runs locally, not in CI
+    #expect(true)
+}
+</code></pre>
+<h2 id="-swiftui-testing"><a class="header" href="#-swiftui-testing">📱 SwiftUI Testing</a></h2>
+<h3 id="view-testing"><a class="header" href="#view-testing">View Testing</a></h3>
+<pre><code class="language-swift">import Testing
+import SwiftUI
+
+struct ContentView: View {
+    @State private var count = 0
+    
+    var body: some View {
+        VStack {
+            Text("Count: \(count)")
+            Button("Increment") {
+                count += 1
+            }
+        }
+    }
+}
+
+@Test @MainActor 
+func contentViewTest() {
+    let view = ContentView()
+    // Basic view creation test
+    #expect(view.body != nil)
+}
+</code></pre>
+<h3 id="model-testing"><a class="header" href="#model-testing">Model Testing</a></h3>
+<pre><code class="language-swift">@Observable
+class Counter {
+    var value = 0
+    
+    func increment() {
+        value += 1
+    }
+    
+    func decrement() {
+        value -= 1
+    }
+}
+
+@Test func counterModel() {
+    let counter = Counter()
+    
+    #expect(counter.value == 0)
+    
+    counter.increment()
+    #expect(counter.value == 1)
+    
+    counter.decrement()
+    #expect(counter.value == 0)
+}
+</code></pre>
+<h2 id="-real-world-testing-patterns"><a class="header" href="#-real-world-testing-patterns">🎯 Real-World Testing Patterns</a></h2>
+<h3 id="service-testing-with-mocks"><a class="header" href="#service-testing-with-mocks">Service Testing with Mocks</a></h3>
+<pre><code class="language-swift">protocol NetworkService {
+    func fetchUser(id: Int) async throws -&gt; User
+}
+
+struct User: Codable, Equatable {
+    let id: Int
+    let name: String
+}
+
+class MockNetworkService: NetworkService {
+    var shouldFail = false
+    
+    func fetchUser(id: Int) async throws -&gt; User {
+        if shouldFail {
+            throw URLError(.notConnectedToInternet)
+        }
+        return User(id: id, name: "Test User")
+    }
+}
+
+class UserRepository {
+    private let networkService: NetworkService
+    
+    init(networkService: NetworkService) {
+        self.networkService = networkService
+    }
+    
+    func getUser(id: Int) async throws -&gt; User {
+        return try await networkService.fetchUser(id: id)
+    }
+}
+
+@Test func userRepositorySuccess() async throws {
+    let mockService = MockNetworkService()
+    let repository = UserRepository(networkService: mockService)
+    
+    let user = try await repository.getUser(id: 1)
+    
+    #expect(user.id == 1)
+    #expect(user.name == "Test User")
+}
+
+@Test func userRepositoryFailure() async {
+    let mockService = MockNetworkService()
+    mockService.shouldFail = true
+    let repository = UserRepository(networkService: mockService)
+    
+    await #expect(throws: URLError.self) {
+        try await repository.getUser(id: 1)
+    }
+}
+</code></pre>
+<h3 id="core-data-testing"><a class="header" href="#core-data-testing">Core Data Testing</a></h3>
+<pre><code class="language-swift">import CoreData
+
+@Test func coreDataOperations() throws {
+    // Create in-memory store for testing
+    let container = NSPersistentContainer(name: "DataModel")
+    let description = NSPersistentStoreDescription()
+    description.type = NSInMemoryStoreType
+    container.persistentStoreDescriptions = [description]
+    
+    container.loadPersistentStores { _, error in
+        #expect(error == nil)
+    }
+    
+    let context = container.viewContext
+    
+    // Create test entity (assuming you have a Person entity)
+    let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into: context)
+    person.setValue("John Doe", forKey: "name")
+    person.setValue(30, forKey: "age")
+    
+    try context.save()
+    
+    // Fetch and verify
+    let request = NSFetchRequest&lt;NSManagedObject&gt;(entityName: "Person")
+    let results = try context.fetch(request)
+    
+    #expect(results.count == 1)
+    #expect(results.first?.value(forKey: "name") as? String == "John Doe")
+}
+</code></pre>
+<h2 id="-test-organization"><a class="header" href="#-test-organization">🔍 Test Organization</a></h2>
+<h3 id="test-suites"><a class="header" href="#test-suites">Test Suites</a></h3>
+<pre><code class="language-swift">@Suite("Authentication Tests")
+struct AuthenticationTests {
+    
+    @Test func validLogin() async throws {
+        let auth = AuthService()
+        let result = try await auth.login(email: "test@example.com", password: "password123")
+        #expect(result.isSuccess)
+    }
+    
+    @Test func invalidCredentials() async {
+        let auth = AuthService()
+        await #expect(throws: AuthError.invalidCredentials) {
+            try await auth.login(email: "test@example.com", password: "wrong")
+        }
+    }
+}
+
+class AuthService {
+    func login(email: String, password: String) async throws -&gt; LoginResult {
+        // Simulate authentication
+        if email == "test@example.com" &amp;&amp; password == "password123" {
+            return LoginResult(isSuccess: true, token: "abc123")
+        } else {
+            throw AuthError.invalidCredentials
+        }
+    }
+}
+
+struct LoginResult {
+    let isSuccess: Bool
+    let token: String?
+}
+
+enum AuthError: Error {
+    case invalidCredentials
+}
+</code></pre>
+<h3 id="setup-and-teardown"><a class="header" href="#setup-and-teardown">Setup and Teardown</a></h3>
+<pre><code class="language-swift">@Suite("Database Tests") 
+struct DatabaseTests {
+    let database: TestDatabase
+    
+    init() throws {
+        database = try TestDatabase()
+    }
+    
+    @Test func insertRecord() throws {
+        let record = TestRecord(id: 1, name: "Test")
+        try database.insert(record)
+        
+        let retrieved = try database.fetch(id: 1)
+        #expect(retrieved?.name == "Test")
+    }
+    
+    @Test func deleteRecord() throws {
+        let record = TestRecord(id: 2, name: "Delete Me")
+        try database.insert(record)
+        try database.delete(id: 2)
+        
+        let retrieved = try database.fetch(id: 2)
+        #expect(retrieved == nil)
+    }
+}
+
+class TestDatabase {
+    private var records: [Int: TestRecord] = [:]
+    
+    func insert(_ record: TestRecord) throws {
+        records[record.id] = record
+    }
+    
+    func fetch(id: Int) throws -&gt; TestRecord? {
+        return records[id]
+    }
+    
+    func delete(id: Int) throws {
+        records.removeValue(forKey: id)
+    }
+}
+
+struct TestRecord: Equatable {
+    let id: Int
+    let name: String
+}
+</code></pre>
+<h2 id="-performance-testing"><a class="header" href="#-performance-testing">📊 Performance Testing</a></h2>
+<h3 id="timing-tests"><a class="header" href="#timing-tests">Timing Tests</a></h3>
+<pre><code class="language-swift">@Test func performanceTest() {
+    let startTime = CFAbsoluteTimeGetCurrent()
+    
+    // Perform operation
+    let result = expensiveOperation()
+    
+    let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+    
+    #expect(timeElapsed &lt; 1.0) // Should complete within 1 second
+    #expect(result.count &gt; 0)
+}
+
+func expensiveOperation() -&gt; [Int] {
+    return (0..&lt;100_000).map { $0 * 2 }
+}
+</code></pre>
+<h2 id="-migration-from-xctest"><a class="header" href="#-migration-from-xctest">🛠 Migration from XCTest</a></h2>
+<h3 id="assertion-mapping"><a class="header" href="#assertion-mapping">Assertion Mapping</a></h3>
+<pre><code class="language-swift">// XCTest -&gt; Swift Testing
+XCTAssertEqual(a, b)           // #expect(a == b)
+XCTAssertTrue(condition)       // #expect(condition)
+XCTAssertFalse(condition)      // #expect(!condition)
+XCTAssertNil(value)           // #expect(value == nil)
+XCTAssertNotNil(value)        // #expect(value != nil)
+XCTAssertThrowsError(try f()) // #expect(throws: Error.self) { try f() }
+</code></pre>
+<h3 id="class-based-to-function-based"><a class="header" href="#class-based-to-function-based">Class-based to Function-based</a></h3>
+<pre><code class="language-swift">// XCTest (old)
+class MyTests: XCTestCase {
+    func testExample() {
+        XCTAssertEqual(2 + 2, 4)
+    }
+}
+
+// Swift Testing (new)
+@Test func example() {
+    #expect(2 + 2 == 4)
+}
+</code></pre>
+<h2 id="-best-practices-2"><a class="header" href="#-best-practices-2">🎓 Best Practices</a></h2>
+<h3 id="1-descriptive-test-names"><a class="header" href="#1-descriptive-test-names">1. Descriptive Test Names</a></h3>
+<pre><code class="language-swift">@Test("User can create account with valid email and password")
+func userAccountCreation() {
+    // Test implementation
+}
+</code></pre>
+<h3 id="2-arrange-act-assert-pattern"><a class="header" href="#2-arrange-act-assert-pattern">2. Arrange-Act-Assert Pattern</a></h3>
+<pre><code class="language-swift">@Test func shoppingCartTotal() {
+    // Arrange
+    let cart = ShoppingCart()
+    cart.add(Item(price: 10.00))
+    cart.add(Item(price: 15.50))
+    
+    // Act
+    let total = cart.calculateTotal()
+    
+    // Assert
+    #expect(total == 25.50)
+}
+</code></pre>
+<h3 id="3-test-data-builders"><a class="header" href="#3-test-data-builders">3. Test Data Builders</a></h3>
+<pre><code class="language-swift">struct UserBuilder {
+    private var name = "Default Name"
+    private var email = "default@example.com"
+    
+    func withName(_ name: String) -&gt; UserBuilder {
+        var builder = self
+        builder.name = name
+        return builder
+    }
+    
+    func withEmail(_ email: String) -&gt; UserBuilder {
+        var builder = self
+        builder.email = email
+        return builder
+    }
+    
+    func build() -&gt; User {
+        return User(name: name, email: email)
+    }
+}
+
+@Test func userValidation() {
+    let user = UserBuilder()
+        .withName("John Doe")
+        .withEmail("john@example.com")
+        .build()
+    
+    #expect(user.isValid)
+}
+</code></pre>
+<hr />
+<p><em>Swift Testing provides a modern, clean way to test your Swift code with better tooling and syntax.</em></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="concurrency--data-race-safety"><a class="header" href="#concurrency--data-race-safety">Concurrency &amp; Data Race Safety</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="typed-throws"><a class="header" href="#typed-throws">Typed Throws</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="noncopyable-types"><a class="header" href="#noncopyable-types">Noncopyable Types</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="apples-accessibility-guidelines"><a class="header" href="#apples-accessibility-guidelines">Apple's Accessibility Guidelines</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="voiceover-integration"><a class="header" href="#voiceover-integration">VoiceOver Integration</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-type-support"><a class="header" href="#dynamic-type-support">Dynamic Type Support</a></h1>
@@ -2644,7 +3710,7 @@ enum NetworkError: Error {
     case uploadFailed
 }
 </code></pre>
-<h2 id="-best-practices-2"><a class="header" href="#-best-practices-2">🎯 Best Practices</a></h2>
+<h2 id="-best-practices-3"><a class="header" href="#-best-practices-3">🎯 Best Practices</a></h2>
 <h3 id="1-adopt-latest-apis"><a class="header" href="#1-adopt-latest-apis">1. Adopt Latest APIs</a></h3>
 <pre><code class="language-swift">// ✅ Use modern async/await
 func loadData() async throws -&gt; [Item] {
@@ -3094,7 +4160,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
 // iOS-specific code
 #endif
 </code></pre>
-<h2 id="-best-practices-3"><a class="header" href="#-best-practices-3">💡 Best Practices</a></h2>
+<h2 id="-best-practices-4"><a class="header" href="#-best-practices-4">💡 Best Practices</a></h2>
 <h3 id="1-native-macos-patterns"><a class="header" href="#1-native-macos-patterns">1. Native macOS Patterns</a></h3>
 <pre><code class="language-swift">// ✅ Use NavigationSplitView (not TabView)
 NavigationSplitView {
@@ -3127,7 +4193,7 @@ NavigationSplitView {
     }
 }
 </code></pre>
-<h2 id="-resources-3"><a class="header" href="#-resources-3">📚 Resources</a></h2>
+<h2 id="-resources-4"><a class="header" href="#-resources-4">📚 Resources</a></h2>
 <ul>
 <li><a href="https://developer.apple.com/documentation/macos-release-notes">macOS Documentation</a></li>
 <li><a href="https://developer.apple.com/design/human-interface-guidelines/macos">Human Interface Guidelines</a></li>
@@ -3485,7 +4551,7 @@ struct ImmersiveApp: App {
     }
 }
 </code></pre>
-<h2 id="-best-practices-4"><a class="header" href="#-best-practices-4">💡 Best Practices</a></h2>
+<h2 id="-best-practices-5"><a class="header" href="#-best-practices-5">💡 Best Practices</a></h2>
 <h3 id="1-comfortable-viewing-distance"><a class="header" href="#1-comfortable-viewing-distance">1. Comfortable Viewing Distance</a></h3>
 <pre><code class="language-swift">// Place content 1-3 meters away
 entity.position.z = -2.0  // 2 meters
@@ -3522,7 +4588,7 @@ xcodebuild -scheme YourApp \
 <li>Use Xcode wireless debugging</li>
 <li>Test with real spatial input</li>
 </ul>
-<h2 id="-resources-4"><a class="header" href="#-resources-4">📚 Resources</a></h2>
+<h2 id="-resources-5"><a class="header" href="#-resources-5">📚 Resources</a></h2>
 <ul>
 <li><a href="https://developer.apple.com/documentation/visionos">visionOS Documentation</a></li>
 <li><a href="https://developer.apple.com/documentation/realitykit">RealityKit</a></li>
@@ -3537,7 +4603,7 @@ xcodebuild -scheme YourApp \
 <hr />
 <p><strong>Remember</strong>: Think in 3D space. Design for comfort. Test on device.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="xcode-best-practices"><a class="header" href="#xcode-best-practices">Xcode Best Practices</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="testing-with-xctest"><a class="header" href="#testing-with-xctest">Testing with XCTest</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="swift-testing"><a class="header" href="#swift-testing">Swift Testing</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="debugging-techniques"><a class="header" href="#debugging-techniques">Debugging Techniques</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="performance-optimization"><a class="header" href="#performance-optimization">Performance Optimization</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="xcode-cloud-cicd"><a class="header" href="#xcode-cloud-cicd">Xcode Cloud CI/CD</a></h1>
@@ -3545,7 +4611,7 @@ xcodebuild -scheme YourApp \
 <div style="break-before: page; page-break-before: always;"></div><h1 id="app-review-process"><a class="header" href="#app-review-process">App Review Process</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="storekit--monetization"><a class="header" href="#storekit--monetization">StoreKit &amp; Monetization</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="testflight-beta-testing"><a class="header" href="#testflight-beta-testing">TestFlight Beta Testing</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="swift-package-manager-1"><a class="header" href="#swift-package-manager-1">Swift Package Manager</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="swift-package-manager-2"><a class="header" href="#swift-package-manager-2">Swift Package Manager</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-frameworks"><a class="header" href="#custom-frameworks">Custom Frameworks</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="performance-profiling"><a class="header" href="#performance-profiling">Performance Profiling</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="security-best-practices"><a class="header" href="#security-best-practices">Security Best Practices</a></h1>
@@ -3553,6 +4619,10 @@ xcodebuild -scheme YourApp \
 <div style="break-before: page; page-break-before: always;"></div><h1 id="landmarks-swiftui-tutorial"><a class="header" href="#landmarks-swiftui-tutorial">Landmarks (SwiftUI Tutorial)</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="earthquake-data-visualization"><a class="header" href="#earthquake-data-visualization">Earthquake (Data Visualization)</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ml-classifier-core-ml"><a class="header" href="#ml-classifier-core-ml">ML Classifier (Core ML)</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="apple-intelligence-deep-dive"><a class="header" href="#apple-intelligence-deep-dive">Apple Intelligence Deep Dive</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="swiftui-performance-tips"><a class="header" href="#swiftui-performance-tips">SwiftUI Performance Tips</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="concurrency-best-practices"><a class="header" href="#concurrency-best-practices">Concurrency Best Practices</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cross-platform-development"><a class="header" href="#cross-platform-development">Cross-Platform Development</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="apple-developer-resources"><a class="header" href="#apple-developer-resources">Apple Developer Resources</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="wwdc-session-references"><a class="header" href="#wwdc-session-references">WWDC Session References</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="community"><a class="header" href="#community">Community</a></h1>

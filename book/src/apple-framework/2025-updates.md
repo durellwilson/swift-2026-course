@@ -1,234 +1,285 @@
-# Apple Developer Updates 2025
+# Apple Developer Resources 2025
 
-> Latest features, frameworks, and best practices from Apple's 2025 developer resources
+> Stay current with Apple's latest development tools and frameworks
 
 ## 🆕 What's New in 2025
 
-### Swift 6.0 Production Ready
-- **Complete concurrency model** with data race safety
-- **Typed throws** for better error handling
-- **Noncopyable types** for performance optimization
-- **Parameter packs** for advanced generics
+### Swift 6.0 Stable Release
+- **Complete concurrency model** with data race safety by default
+- **Typed throws** for more precise error handling
+- **Noncopyable types** for zero-copy performance
+- **Parameter packs** for advanced generic programming
 
-### iOS 18.2+ Features
-- **Apple Intelligence integration** - On-device AI capabilities
-- **Enhanced Siri** with app-specific actions
-- **Control Center customization** APIs
-- **Interactive widgets** with App Intents
+### iOS 18+ Features
+- **App Intents** enhanced integration with Siri and Shortcuts
+- **WidgetKit** interactive widgets and Live Activities
+- **SwiftData** improvements and CloudKit sync
+- **Control Center** customizable controls API
 
-### Xcode 16.2+ Enhancements
-- **Swift Testing framework** replacing XCTest
-- **Predictive code completion** with ML
-- **Enhanced debugging** for concurrency issues
-- **Improved SwiftUI previews** performance
+### Xcode 16+ Improvements
+- **Swift Testing** framework built into Xcode
+- **Enhanced debugging** for concurrency and memory issues
+- **Improved SwiftUI previews** with better performance
+- **Xcode Cloud** expanded CI/CD capabilities
 
-## 📺 Key Video Resources (2025)
+## 📺 Key Learning Resources
 
-### Apple Intelligence & AI Integration
-*Reference: Apple Developer Videos 2025*
+### Official Apple Documentation
+- **[Swift.org](https://swift.org)** - Language updates and evolution
+- **[Developer Documentation](https://developer.apple.com/documentation/)** - Framework references
+- **[WWDC Videos](https://developer.apple.com/videos/)** - Session recordings
+- **[Sample Code](https://developer.apple.com/sample-code/)** - Working examples
 
+### Community Resources
+- **[Swift Forums](https://forums.swift.org)** - Language discussions
+- **[Apple Developer Forums](https://developer.apple.com/forums/)** - Platform support
+- **[GitHub Swift](https://github.com/apple/swift)** - Open source development
+
+## 🔧 Modern Development Patterns
+
+### Concurrency with Swift 6
+```swift
+// Data race safety by default
+actor DataStore {
+    private var items: [String] = []
+    
+    func add(_ item: String) {
+        items.append(item)
+    }
+    
+    func getItems() -> [String] {
+        return items
+    }
+}
+
+// Usage
+let store = DataStore()
+await store.add("New Item")
+let items = await store.getItems()
+```
+
+### SwiftUI with Observation
+```swift
+import SwiftUI
+import Observation
+
+@Observable
+class AppModel {
+    var items: [Item] = []
+    var isLoading = false
+    
+    func loadItems() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        // Simulate network call
+        try? await Task.sleep(for: .seconds(1))
+        items = [Item(name: "Sample Item")]
+    }
+}
+
+struct ContentView: View {
+    @State private var model = AppModel()
+    
+    var body: some View {
+        NavigationView {
+            List(model.items) { item in
+                Text(item.name)
+            }
+            .navigationTitle("Items")
+            .task {
+                await model.loadItems()
+            }
+            .overlay {
+                if model.isLoading {
+                    ProgressView()
+                }
+            }
+        }
+    }
+}
+
+struct Item: Identifiable {
+    let id = UUID()
+    let name: String
+}
+```
+
+### App Intents Integration
 ```swift
 import AppIntents
 
-struct AnalyzeImageIntent: AppIntent {
-    static var title: LocalizedStringResource = "Analyze Image"
+struct AddItemIntent: AppIntent {
+    static var title: LocalizedStringResource = "Add Item"
+    static var description = IntentDescription("Add a new item to your list")
     
-    @Parameter(title: "Image")
-    var image: IntentFile
+    @Parameter(title: "Item Name")
+    var itemName: String
     
-    func perform() async throws -> some IntentResult {
-        // Apple Intelligence integration
-        let analysis = try await VisionIntelligence.analyze(image)
-        return .result(value: analysis.description)
+    func perform() async throws -> some IntentResult & ProvidesDialog {
+        // Add item to your app's data store
+        await DataManager.shared.addItem(named: itemName)
+        
+        return .result(
+            dialog: "Added \(itemName) to your list"
+        )
+    }
+}
+
+// Register in your App struct
+@main
+struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+    
+    init() {
+        // Register app intents
+        AppDependencyManager.shared.add(dependency: DataManager.shared)
     }
 }
 ```
 
-### Enhanced SwiftUI Performance
-*Latest optimization techniques from WWDC 2025*
+## 🎯 Best Practices for 2025
 
+### 1. Embrace Concurrency
 ```swift
-struct OptimizedListView: View {
+// Use structured concurrency
+func loadUserData() async throws -> UserData {
+    async let profile = loadProfile()
+    async let preferences = loadPreferences()
+    async let history = loadHistory()
+    
+    return try await UserData(
+        profile: profile,
+        preferences: preferences,
+        history: history
+    )
+}
+```
+
+### 2. Leverage SwiftData
+```swift
+import SwiftData
+
+@Model
+class Task {
+    var title: String
+    var isCompleted: Bool
+    var createdAt: Date
+    
+    init(title: String) {
+        self.title = title
+        self.isCompleted = false
+        self.createdAt = Date()
+    }
+}
+
+// In your App
+@main
+struct TaskApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+        .modelContainer(for: Task.self)
+    }
+}
+```
+
+### 3. Optimize Performance
+```swift
+// Use lazy loading for large datasets
+struct LazyItemList: View {
     @State private var items: [Item] = []
     
     var body: some View {
-        List(items) { item in
-            ItemRow(item: item)
-                .containerRelativeFrame(.horizontal)
+        LazyVStack {
+            ForEach(items) { item in
+                ItemRow(item: item)
+                    .onAppear {
+                        if item == items.last {
+                            loadMoreItems()
+                        }
+                    }
+            }
         }
-        .scrollContentBackground(.hidden)
-        .background(.regularMaterial)
+    }
+    
+    private func loadMoreItems() {
+        // Load more items asynchronously
+        Task {
+            let newItems = await ItemService.loadMore()
+            items.append(contentsOf: newItems)
+        }
     }
 }
 ```
-
-## 🔧 New Development Patterns
-
-### Swift Testing (Replacing XCTest)
-```swift
-import Testing
-
-@Test("User authentication flow")
-func testUserLogin() async throws {
-    let user = try await AuthService.login(
-        email: "test@example.com",
-        password: "password"
-    )
-    
-    #expect(user.isAuthenticated == true)
-    #expect(user.email == "test@example.com")
-}
-```
-
-### App Intents 2.0
-```swift
-struct CreateNoteIntent: AppIntent {
-    static var title: LocalizedStringResource = "Create Note"
-    static var description = IntentDescription("Creates a new note")
-    
-    @Parameter(title: "Note Content")
-    var content: String
-    
-    @Parameter(title: "Category", default: .personal)
-    var category: NoteCategory
-    
-    func perform() async throws -> some IntentResult & ProvidesDialog {
-        let note = Note(content: content, category: category)
-        try await NoteStore.shared.save(note)
-        
-        return .result(
-            dialog: "Created note in \(category.displayName)"
-        )
-    }
-}
-```
-
-## 🎯 2025 Best Practices
-
-### Concurrency-First Design
-- Use `async/await` for all asynchronous operations
-- Implement `Sendable` protocols for thread safety
-- Leverage `@MainActor` for UI updates
-- Use structured concurrency with `TaskGroup`
-
-### Apple Intelligence Integration
-- Implement on-device ML with Core ML 8
-- Use Natural Language framework for text processing
-- Integrate with Siri through App Intents
-- Respect user privacy with differential privacy
-
-### Performance Optimization
-- Use `@Observable` macro for SwiftUI state
-- Implement lazy loading with `AsyncImage`
-- Optimize with Instruments and new profiling tools
-- Use Metal Performance Shaders for compute tasks
 
 ## 📱 Platform-Specific Updates
 
-### iOS 18.2+
-- **Interactive widgets** with real-time updates
-- **Control Center extensions** for quick actions
-- **Enhanced camera APIs** with computational photography
-- **Improved accessibility** with voice control
+### iOS 18+
+- Enhanced privacy controls
+- Improved accessibility features
+- Better battery optimization
+- Advanced camera capabilities
 
-### macOS Sequoia 15.2+
-- **Desktop widgets** integration
-- **Enhanced window management** APIs
-- **Improved Metal performance** for graphics
-- **Better cross-platform compatibility**
+### macOS Sequoia
+- Desktop widgets support
+- Enhanced window management
+- Improved Metal performance
+- Better cross-platform compatibility
 
-### watchOS 11.2+
-- **Enhanced health APIs** with new sensors
-- **Improved battery optimization** techniques
-- **Better workout tracking** capabilities
-- **Enhanced complications** with live data
+### watchOS 11
+- New health sensors support
+- Improved workout tracking
+- Enhanced complications
+- Better battery life
 
-### visionOS 2.2+
-- **Improved hand tracking** accuracy
-- **Enhanced spatial audio** APIs
-- **Better passthrough quality** optimization
-- **New gesture recognition** patterns
+### visionOS 2
+- Improved hand tracking
+- Enhanced spatial audio
+- Better passthrough quality
+- New gesture patterns
 
-## 🛠 Development Workflow 2025
+## 🛠 Development Tools
 
-### Xcode Cloud Enhancements
-```yaml
-# xcode-cloud.yml
-version: 1
-workflows:
-  build_and_test:
-    name: Build and Test
-    trigger:
-      - push
-    steps:
-      - name: Build
-        action: build
-        scheme: MyApp
-      - name: Test
-        action: test
-        scheme: MyApp
-        destination: platform=iOS Simulator,name=iPhone 15 Pro
-      - name: Archive
-        action: archive
-        scheme: MyApp
-```
+### Xcode 16 Features
+- Swift Testing integration
+- Enhanced code completion
+- Improved debugging tools
+- Better performance profiling
 
-### Swift Package Manager 6.0
-```swift
-// Package.swift
-// swift-tools-version: 6.0
-import PackageDescription
+### Swift Package Manager
+- Improved dependency resolution
+- Better build performance
+- Enhanced security features
+- Cross-platform support
 
-let package = Package(
-    name: "MyLibrary",
-    platforms: [
-        .iOS(.v18),
-        .macOS(.v15),
-        .watchOS(.v11),
-        .visionOS(.v2)
-    ],
-    products: [
-        .library(name: "MyLibrary", targets: ["MyLibrary"])
-    ],
-    dependencies: [
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0")
-    ],
-    targets: [
-        .target(
-            name: "MyLibrary",
-            dependencies: [
-                .product(name: "Algorithms", package: "swift-algorithms")
-            ],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
-        )
-    ]
-)
-```
+## 📚 Recommended Learning Path
 
-## 🎓 Learning Resources 2025
+### 1. Foundation (Week 1-2)
+- Swift 6.0 concurrency model
+- SwiftUI with Observation framework
+- Basic App Intents integration
 
-### Official Apple Resources
-- **[Apple Developer Documentation 2025](https://developer.apple.com/documentation/)**
-- **[WWDC 2025 Sessions](https://developer.apple.com/videos/)**
-- **[Swift Evolution Proposals](https://github.com/apple/swift-evolution)**
-- **[Sample Code Gallery](https://developer.apple.com/sample-code/)**
+### 2. Intermediate (Week 3-4)
+- SwiftData for persistence
+- Advanced SwiftUI patterns
+- Testing with Swift Testing
 
-### Video References
-- **Apple Intelligence Integration** - Latest AI capabilities
-- **SwiftUI Performance Optimization** - 2025 best practices
-- **Concurrency Patterns** - Swift 6.0 data race safety
-- **Cross-Platform Development** - Unified codebase strategies
+### 3. Advanced (Week 5-6)
+- Performance optimization
+- Cross-platform development
+- App Store optimization
 
-## 🔮 Future Roadmap
-
-### Coming in 2025
-- **Swift 6.1** with enhanced macros
-- **Xcode 17** with AI-powered development
-- **iOS 19** developer preview
-- **New Apple platforms** and frameworks
+### 4. Production (Week 7-8)
+- CI/CD with Xcode Cloud
+- Security best practices
+- Monitoring and analytics
 
 ---
 
-*Stay updated with the latest Apple developer resources and community discussions for cutting-edge iOS development.*
+*Stay updated with Apple's official documentation and WWDC sessions for the latest developments.*

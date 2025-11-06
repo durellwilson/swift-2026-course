@@ -1,46 +1,47 @@
 # Swift Testing Framework
 
-> Apple's modern testing framework replacing XCTest with better syntax and performance
+> Modern testing with Swift's new testing framework introduced in Xcode 16
 
-## 🧪 Introduction to Swift Testing
+## 🧪 Introduction
 
-Swift Testing is Apple's next-generation testing framework that provides:
-- **Cleaner syntax** with `@Test` attributes
-- **Better error reporting** with detailed diagnostics
-- **Improved performance** with parallel execution
-- **Enhanced debugging** capabilities
+Swift Testing is Apple's modern testing framework that provides:
+- Cleaner syntax with `@Test` macro
+- Better error messages and diagnostics  
+- Parallel test execution
+- Improved Xcode integration
 
-## 🚀 Getting Started
+## 🚀 Basic Testing
 
-### Basic Test Structure
+### Simple Tests
 ```swift
 import Testing
 
-@Test("Basic arithmetic operations")
-func testArithmetic() {
-    let result = 2 + 2
-    #expect(result == 4)
+@Test func basicMath() {
+    #expect(2 + 2 == 4)
+    #expect(10 - 5 == 5)
 }
 
-@Test("String manipulation")
-func testStringOperations() {
-    let text = "Hello, World!"
-    #expect(text.contains("World"))
+@Test func stringOperations() {
+    let text = "Hello, Swift!"
+    #expect(text.contains("Swift"))
     #expect(text.count == 13)
 }
 ```
 
 ### Parameterized Tests
 ```swift
-@Test("Factorial calculation", arguments: [
-    (0, 1),
-    (1, 1),
-    (5, 120),
-    (10, 3628800)
+@Test(arguments: [
+    (input: 0, expected: 1),
+    (input: 1, expected: 1), 
+    (input: 5, expected: 120)
 ])
-func testFactorial(input: Int, expected: Int) {
-    let result = factorial(input)
-    #expect(result == expected)
+func factorial(input: Int, expected: Int) {
+    #expect(factorial(input) == expected)
+}
+
+func factorial(_ n: Int) -> Int {
+    guard n > 1 else { return 1 }
+    return n * factorial(n - 1)
 }
 ```
 
@@ -48,21 +49,32 @@ func testFactorial(input: Int, expected: Int) {
 
 ### Async Testing
 ```swift
-@Test("Async network request")
-func testNetworkRequest() async throws {
-    let url = URL(string: "https://api.example.com/data")!
+@Test func networkRequest() async throws {
+    let url = URL(string: "https://httpbin.org/json")!
     let (data, response) = try await URLSession.shared.data(from: url)
     
     #expect(data.count > 0)
-    #expect((response as? HTTPURLResponse)?.statusCode == 200)
+    
+    let httpResponse = try #require(response as? HTTPURLResponse)
+    #expect(httpResponse.statusCode == 200)
 }
 ```
 
 ### Error Testing
 ```swift
-@Test("Error handling")
-func testErrorHandling() {
-    #expect(throws: ValidationError.self) {
+enum ValidationError: Error {
+    case invalidEmail
+    case tooShort
+}
+
+func validateEmail(_ email: String) throws {
+    guard email.contains("@") else {
+        throw ValidationError.invalidEmail
+    }
+}
+
+@Test func errorHandling() {
+    #expect(throws: ValidationError.invalidEmail) {
         try validateEmail("invalid-email")
     }
     
@@ -74,11 +86,10 @@ func testErrorHandling() {
 
 ### Conditional Tests
 ```swift
-@Test("iOS specific feature", .enabled(if: ProcessInfo.processInfo.isiOSAppOnMac == false))
-func testIOSFeature() {
-    // Test only runs on actual iOS devices
-    let feature = IOSSpecificFeature()
-    #expect(feature.isAvailable == true)
+@Test(.enabled(if: ProcessInfo.processInfo.environment["CI"] == nil))
+func localOnlyTest() {
+    // This test only runs locally, not in CI
+    #expect(true)
 }
 ```
 
@@ -89,87 +100,142 @@ func testIOSFeature() {
 import Testing
 import SwiftUI
 
-@Test("ContentView displays correctly")
-@MainActor
-func testContentView() {
+struct ContentView: View {
+    @State private var count = 0
+    
+    var body: some View {
+        VStack {
+            Text("Count: \(count)")
+            Button("Increment") {
+                count += 1
+            }
+        }
+    }
+}
+
+@Test @MainActor 
+func contentViewTest() {
     let view = ContentView()
-    let hosting = UIHostingController(rootView: view)
-    
-    #expect(hosting.view != nil)
-    // Additional view testing logic
+    // Basic view creation test
+    #expect(view.body != nil)
 }
 ```
 
-### State Testing
+### Model Testing
 ```swift
-@Test("State management")
-@MainActor
-func testStateChanges() {
-    @State var counter = 0
+@Observable
+class Counter {
+    var value = 0
     
-    let view = CounterView(counter: $counter)
+    func increment() {
+        value += 1
+    }
     
-    // Simulate user interaction
-    counter += 1
+    func decrement() {
+        value -= 1
+    }
+}
+
+@Test func counterModel() {
+    let counter = Counter()
     
-    #expect(counter == 1)
+    #expect(counter.value == 0)
+    
+    counter.increment()
+    #expect(counter.value == 1)
+    
+    counter.decrement()
+    #expect(counter.value == 0)
 }
 ```
 
-## 🎯 Testing Patterns
+## 🎯 Real-World Testing Patterns
 
-### Dependency Injection Testing
+### Service Testing with Mocks
 ```swift
 protocol NetworkService {
-    func fetchData() async throws -> Data
+    func fetchUser(id: Int) async throws -> User
+}
+
+struct User: Codable, Equatable {
+    let id: Int
+    let name: String
 }
 
 class MockNetworkService: NetworkService {
     var shouldFail = false
     
-    func fetchData() async throws -> Data {
+    func fetchUser(id: Int) async throws -> User {
         if shouldFail {
-            throw NetworkError.connectionFailed
+            throw URLError(.notConnectedToInternet)
         }
-        return Data("mock data".utf8)
+        return User(id: id, name: "Test User")
     }
 }
 
-@Test("Service with dependency injection")
-func testServiceWithMocking() async throws {
+class UserRepository {
+    private let networkService: NetworkService
+    
+    init(networkService: NetworkService) {
+        self.networkService = networkService
+    }
+    
+    func getUser(id: Int) async throws -> User {
+        return try await networkService.fetchUser(id: id)
+    }
+}
+
+@Test func userRepositorySuccess() async throws {
     let mockService = MockNetworkService()
-    let dataManager = DataManager(networkService: mockService)
+    let repository = UserRepository(networkService: mockService)
     
-    let data = try await dataManager.loadData()
-    #expect(data.count > 0)
+    let user = try await repository.getUser(id: 1)
     
-    // Test error case
+    #expect(user.id == 1)
+    #expect(user.name == "Test User")
+}
+
+@Test func userRepositoryFailure() async {
+    let mockService = MockNetworkService()
     mockService.shouldFail = true
-    #expect(throws: NetworkError.self) {
-        try await dataManager.loadData()
+    let repository = UserRepository(networkService: mockService)
+    
+    await #expect(throws: URLError.self) {
+        try await repository.getUser(id: 1)
     }
 }
 ```
 
 ### Core Data Testing
 ```swift
-@Test("Core Data operations")
-func testCoreDataOperations() throws {
-    let container = NSPersistentContainer.inMemory()
+import CoreData
+
+@Test func coreDataOperations() throws {
+    // Create in-memory store for testing
+    let container = NSPersistentContainer(name: "DataModel")
+    let description = NSPersistentStoreDescription()
+    description.type = NSInMemoryStoreType
+    container.persistentStoreDescriptions = [description]
+    
+    container.loadPersistentStores { _, error in
+        #expect(error == nil)
+    }
+    
     let context = container.viewContext
     
-    // Create test entity
-    let entity = TestEntity(context: context)
-    entity.name = "Test"
+    // Create test entity (assuming you have a Person entity)
+    let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into: context)
+    person.setValue("John Doe", forKey: "name")
+    person.setValue(30, forKey: "age")
     
     try context.save()
     
-    // Verify entity was saved
-    let request: NSFetchRequest<TestEntity> = TestEntity.fetchRequest()
+    // Fetch and verify
+    let request = NSFetchRequest<NSManagedObject>(entityName: "Person")
     let results = try context.fetch(request)
     
     #expect(results.count == 1)
-    #expect(results.first?.name == "Test")
+    #expect(results.first?.value(forKey: "name") as? String == "John Doe")
 }
 ```
 
@@ -177,46 +243,91 @@ func testCoreDataOperations() throws {
 
 ### Test Suites
 ```swift
-@Suite("User Authentication Tests")
+@Suite("Authentication Tests")
 struct AuthenticationTests {
     
-    @Test("Valid login")
-    func testValidLogin() async throws {
-        let auth = AuthenticationService()
-        let result = try await auth.login(email: "test@example.com", password: "password")
-        #expect(result.isSuccess == true)
+    @Test func validLogin() async throws {
+        let auth = AuthService()
+        let result = try await auth.login(email: "test@example.com", password: "password123")
+        #expect(result.isSuccess)
     }
     
-    @Test("Invalid credentials")
-    func testInvalidLogin() async throws {
-        let auth = AuthenticationService()
-        #expect(throws: AuthError.invalidCredentials) {
+    @Test func invalidCredentials() async {
+        let auth = AuthService()
+        await #expect(throws: AuthError.invalidCredentials) {
             try await auth.login(email: "test@example.com", password: "wrong")
         }
     }
+}
+
+class AuthService {
+    func login(email: String, password: String) async throws -> LoginResult {
+        // Simulate authentication
+        if email == "test@example.com" && password == "password123" {
+            return LoginResult(isSuccess: true, token: "abc123")
+        } else {
+            throw AuthError.invalidCredentials
+        }
+    }
+}
+
+struct LoginResult {
+    let isSuccess: Bool
+    let token: String?
+}
+
+enum AuthError: Error {
+    case invalidCredentials
 }
 ```
 
 ### Setup and Teardown
 ```swift
-@Suite("Database Tests")
+@Suite("Database Tests") 
 struct DatabaseTests {
     let database: TestDatabase
     
     init() throws {
-        database = try TestDatabase.createInMemory()
+        database = try TestDatabase()
     }
     
-    deinit {
-        database.cleanup()
+    @Test func insertRecord() throws {
+        let record = TestRecord(id: 1, name: "Test")
+        try database.insert(record)
+        
+        let retrieved = try database.fetch(id: 1)
+        #expect(retrieved?.name == "Test")
     }
     
-    @Test("Insert operation")
-    func testInsert() throws {
-        try database.insert(TestRecord(id: 1, name: "Test"))
-        let record = try database.fetch(id: 1)
-        #expect(record?.name == "Test")
+    @Test func deleteRecord() throws {
+        let record = TestRecord(id: 2, name: "Delete Me")
+        try database.insert(record)
+        try database.delete(id: 2)
+        
+        let retrieved = try database.fetch(id: 2)
+        #expect(retrieved == nil)
     }
+}
+
+class TestDatabase {
+    private var records: [Int: TestRecord] = [:]
+    
+    func insert(_ record: TestRecord) throws {
+        records[record.id] = record
+    }
+    
+    func fetch(id: Int) throws -> TestRecord? {
+        return records[id]
+    }
+    
+    func delete(id: Int) throws {
+        records.removeValue(forKey: id)
+    }
+}
+
+struct TestRecord: Equatable {
+    let id: Int
+    let name: String
 }
 ```
 
@@ -224,105 +335,70 @@ struct DatabaseTests {
 
 ### Timing Tests
 ```swift
-@Test("Performance benchmark")
-func testPerformance() {
+@Test func performanceTest() {
     let startTime = CFAbsoluteTimeGetCurrent()
     
     // Perform operation
-    let result = heavyComputation()
+    let result = expensiveOperation()
     
     let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
     
     #expect(timeElapsed < 1.0) // Should complete within 1 second
-    #expect(result.isValid == true)
+    #expect(result.count > 0)
+}
+
+func expensiveOperation() -> [Int] {
+    return (0..<100_000).map { $0 * 2 }
 }
 ```
 
-### Memory Testing
+## 🛠 Migration from XCTest
+
+### Assertion Mapping
 ```swift
-@Test("Memory usage")
-func testMemoryUsage() {
-    let initialMemory = getMemoryUsage()
-    
-    // Perform memory-intensive operation
-    let largeArray = Array(0..<1_000_000)
-    
-    let peakMemory = getMemoryUsage()
-    
-    // Clean up
-    _ = largeArray // Keep reference until measurement
-    
-    #expect(peakMemory - initialMemory < 50_000_000) // Less than 50MB increase
-}
+// XCTest -> Swift Testing
+XCTAssertEqual(a, b)           // #expect(a == b)
+XCTAssertTrue(condition)       // #expect(condition)
+XCTAssertFalse(condition)      // #expect(!condition)
+XCTAssertNil(value)           // #expect(value == nil)
+XCTAssertNotNil(value)        // #expect(value != nil)
+XCTAssertThrowsError(try f()) // #expect(throws: Error.self) { try f() }
 ```
 
-## 🛠 Integration with Xcode
-
-### Test Plans
-```json
-{
-  "configurations": [
-    {
-      "name": "Unit Tests",
-      "testTargets": [
-        {
-          "target": {
-            "containerPath": "MyApp.xcodeproj",
-            "identifier": "MyAppTests",
-            "name": "MyAppTests"
-          }
-        }
-      ]
+### Class-based to Function-based
+```swift
+// XCTest (old)
+class MyTests: XCTestCase {
+    func testExample() {
+        XCTAssertEqual(2 + 2, 4)
     }
-  ],
-  "defaultOptions": {
-    "testTimeoutsEnabled": true,
-    "maximumTestExecutionTimeAllowance": 60
-  }
 }
-```
 
-### Continuous Integration
-```yaml
-# GitHub Actions example
-name: Swift Testing
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Run Swift Tests
-      run: |
-        xcodebuild test \
-          -scheme MyApp \
-          -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
-          -testPlan UnitTests
+// Swift Testing (new)
+@Test func example() {
+    #expect(2 + 2 == 4)
+}
 ```
 
 ## 🎓 Best Practices
 
 ### 1. Descriptive Test Names
 ```swift
-@Test("User can successfully create account with valid email and strong password")
-func testUserAccountCreationWithValidCredentials() {
+@Test("User can create account with valid email and password")
+func userAccountCreation() {
     // Test implementation
 }
 ```
 
 ### 2. Arrange-Act-Assert Pattern
 ```swift
-@Test("Shopping cart calculates total correctly")
-func testShoppingCartTotal() {
+@Test func shoppingCartTotal() {
     // Arrange
     let cart = ShoppingCart()
-    let item1 = Product(name: "Item 1", price: 10.00)
-    let item2 = Product(name: "Item 2", price: 15.50)
+    cart.add(Item(price: 10.00))
+    cart.add(Item(price: 15.50))
     
     // Act
-    cart.add(item1)
-    cart.add(item2)
     let total = cart.calculateTotal()
     
     // Assert
@@ -333,63 +409,36 @@ func testShoppingCartTotal() {
 ### 3. Test Data Builders
 ```swift
 struct UserBuilder {
-    private var user = User()
+    private var name = "Default Name"
+    private var email = "default@example.com"
     
     func withName(_ name: String) -> UserBuilder {
         var builder = self
-        builder.user.name = name
+        builder.name = name
         return builder
     }
     
     func withEmail(_ email: String) -> UserBuilder {
         var builder = self
-        builder.user.email = email
+        builder.email = email
         return builder
     }
     
     func build() -> User {
-        return user
+        return User(name: name, email: email)
     }
 }
 
-@Test("User validation")
-func testUserValidation() {
+@Test func userValidation() {
     let user = UserBuilder()
         .withName("John Doe")
         .withEmail("john@example.com")
         .build()
     
-    #expect(user.isValid == true)
+    #expect(user.isValid)
 }
-```
-
-## 📚 Migration from XCTest
-
-### XCTest vs Swift Testing
-```swift
-// XCTest (old)
-class MyTests: XCTestCase {
-    func testExample() {
-        XCTAssertEqual(2 + 2, 4)
-    }
-}
-
-// Swift Testing (new)
-@Test("Example test")
-func testExample() {
-    #expect(2 + 2 == 4)
-}
-```
-
-### Assertion Migration
-```swift
-// XCTest assertions -> Swift Testing expectations
-XCTAssertEqual(a, b)           -> #expect(a == b)
-XCTAssertTrue(condition)       -> #expect(condition)
-XCTAssertNil(value)           -> #expect(value == nil)
-XCTAssertThrowsError(try f()) -> #expect(throws: Error.self) { try f() }
 ```
 
 ---
 
-*Swift Testing provides a modern, efficient way to test your Swift applications with improved syntax and better tooling integration.*
+*Swift Testing provides a modern, clean way to test your Swift code with better tooling and syntax.*
