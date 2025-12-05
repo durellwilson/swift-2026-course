@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="navy sidebar-visible" dir="ltr">
+<html lang="en" class="navy" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
 
         <!-- Custom HTML head -->
-
+        
         <meta name="description" content="Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms with ML, open-source frameworks, and monetization strategies">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -24,41 +24,26 @@
         <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
-
-        <!-- Provide site root and default themes to javascript -->
-        <script>
-            const path_to_root = "../";
-            const default_light_theme = "navy";
-            const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
-        </script>
-        <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
     </head>
-    <body>
-    <div id="mdbook-help-container">
-        <div id="mdbook-help-popup">
-            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
-            <div>
-                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
-                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
-                <p>Press <kbd>?</kbd> to show this help</p>
-                <p>Press <kbd>Esc</kbd> to hide this help</p>
-            </div>
-        </div>
-    </div>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                let theme = localStorage.getItem('mdbook-theme');
-                let sidebar = localStorage.getItem('mdbook-sidebar');
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -72,51 +57,70 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
-            let theme;
+            var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            const html = document.documentElement;
+            var html = document.querySelector('html');
             html.classList.remove('navy')
             html.classList.add(theme);
-            html.classList.add("js");
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
-                sidebar_toggle.checked = false;
             }
-            if (sidebar === 'visible') {
-                sidebar_toggle.checked = true;
-            } else {
-                html.classList.remove('sidebar-visible');
-            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <!-- populated by js -->
-            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
-            <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
-            </noscript>
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple's Develop in Swift Framework</li><li class="chapter-item expanded "><a href="../apple-framework/getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started with Swift</a></li><li class="chapter-item expanded "><a href="../apple-framework/2025-updates.html"><strong aria-hidden="true">2.</strong> 2025 Developer Updates</a></li><li class="chapter-item expanded "><a href="../apple-framework/playgrounds.html"><strong aria-hidden="true">3.</strong> Swift Playgrounds Integration</a></li><li class="chapter-item expanded "><a href="../apple-framework/learning-path.html"><strong aria-hidden="true">4.</strong> Apple's Learning Path</a></li><li class="chapter-item expanded affix "><li class="part-title">Swift Fundamentals (Apple Curriculum)</li><li class="chapter-item expanded "><a href="../swift/basics.html"><strong aria-hidden="true">5.</strong> Swift Language Basics</a></li><li class="chapter-item expanded "><a href="../swift/collections.html" class="active"><strong aria-hidden="true">6.</strong> Collections & Control Flow</a></li><li class="chapter-item expanded "><a href="../swift/functions.html"><strong aria-hidden="true">7.</strong> Functions & Closures</a></li><li class="chapter-item expanded "><a href="../swift/structures.html"><strong aria-hidden="true">8.</strong> Structures & Classes</a></li><li class="chapter-item expanded "><a href="../swift/protocols.html"><strong aria-hidden="true">9.</strong> Protocols & Generics</a></li><li class="chapter-item expanded "><a href="../swift/concurrency.html"><strong aria-hidden="true">10.</strong> Concurrency & Actors</a></li><li class="chapter-item expanded affix "><li class="part-title">Performance Mastery</li><li class="chapter-item expanded "><a href="../performance/launch-optimization.html"><strong aria-hidden="true">11.</strong> Launch Time Optimization</a></li><li class="chapter-item expanded "><a href="../performance/memory-optimization.html"><strong aria-hidden="true">12.</strong> Memory Management</a></li><li class="chapter-item expanded "><a href="../performance/battery-optimization.html"><strong aria-hidden="true">13.</strong> Battery Efficiency</a></li><li class="chapter-item expanded "><a href="../performance/network-optimization.html"><strong aria-hidden="true">14.</strong> Network Performance</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Intelligence & AI Integration</li><li class="chapter-item expanded "><a href="../ai/apple-intelligence.html"><strong aria-hidden="true">15.</strong> Apple Intelligence Overview</a></li><li class="chapter-item expanded "><a href="../ai/coreml-8.html"><strong aria-hidden="true">16.</strong> Core ML 8 Features</a></li><li class="chapter-item expanded "><a href="../ai/on-device.html"><strong aria-hidden="true">17.</strong> On-Device Processing</a></li><li class="chapter-item expanded "><a href="../ai/siri-intents.html"><strong aria-hidden="true">18.</strong> Siri App Intents</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Frameworks Integration</li><li class="chapter-item expanded "><a href="../frameworks/swiftdata.html"><strong aria-hidden="true">19.</strong> SwiftData (Data Persistence)</a></li><li class="chapter-item expanded "><a href="../frameworks/cloudkit.html"><strong aria-hidden="true">20.</strong> CloudKit (Cloud Services)</a></li><li class="chapter-item expanded "><a href="../frameworks/coreml.html"><strong aria-hidden="true">21.</strong> Core ML (Machine Learning)</a></li><li class="chapter-item expanded "><a href="../frameworks/widgetkit.html"><strong aria-hidden="true">22.</strong> WidgetKit (Home Screen Widgets)</a></li><li class="chapter-item expanded "><a href="../frameworks/appintents.html"><strong aria-hidden="true">23.</strong> AppIntents (Siri & Shortcuts)</a></li><li class="chapter-item expanded "><a href="../frameworks/swiftcharts.html"><strong aria-hidden="true">24.</strong> SwiftCharts (Data Visualization)</a></li><li class="chapter-item expanded affix "><li class="part-title">Monetization Engineering</li><li class="chapter-item expanded "><a href="../monetization/paywall-psychology.html"><strong aria-hidden="true">25.</strong> Paywall Psychology</a></li><li class="chapter-item expanded "><a href="../monetization/subscription-retention.html"><strong aria-hidden="true">26.</strong> Subscription Retention</a></li><li class="chapter-item expanded "><a href="../monetization/ab-testing.html"><strong aria-hidden="true">27.</strong> A/B Testing Framework</a></li><li class="chapter-item expanded "><a href="../monetization/revenue-analytics.html"><strong aria-hidden="true">28.</strong> Revenue Analytics</a></li><li class="chapter-item expanded affix "><li class="part-title">Scale Architecture</li><li class="chapter-item expanded "><a href="../scale/data-architecture.html"><strong aria-hidden="true">29.</strong> Data Architecture</a></li><li class="chapter-item expanded "><a href="../scale/caching-strategies.html"><strong aria-hidden="true">30.</strong> Caching Strategies</a></li><li class="chapter-item expanded "><a href="../scale/background-processing.html"><strong aria-hidden="true">31.</strong> Background Processing</a></li><li class="chapter-item expanded "><a href="../scale/api-design.html"><strong aria-hidden="true">32.</strong> API Design</a></li><li class="chapter-item expanded affix "><li class="part-title">Swift 6.0 & Modern Development</li><li class="chapter-item expanded "><a href="../swift6/testing.html"><strong aria-hidden="true">33.</strong> Swift Testing Framework</a></li><li class="chapter-item expanded "><a href="../swift6/concurrency.html"><strong aria-hidden="true">34.</strong> Concurrency & Data Race Safety</a></li><li class="chapter-item expanded "><a href="../swift6/typed-throws.html"><strong aria-hidden="true">35.</strong> Typed Throws</a></li><li class="chapter-item expanded "><a href="../swift6/noncopyable.html"><strong aria-hidden="true">36.</strong> Noncopyable Types</a></li><li class="chapter-item expanded affix "><li class="part-title">Production Swift</li><li class="chapter-item expanded "><a href="../swift/concurrency-patterns.html"><strong aria-hidden="true">37.</strong> Swift 6 Concurrency</a></li><li class="chapter-item expanded "><a href="../swift/swiftui-performance.html"><strong aria-hidden="true">38.</strong> SwiftUI Performance</a></li><li class="chapter-item expanded "><a href="../swift/error-handling.html"><strong aria-hidden="true">39.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="../swift/testing-strategies.html"><strong aria-hidden="true">40.</strong> Testing Strategies</a></li><li class="chapter-item expanded affix "><li class="part-title">iOS App Development (Apple Tutorials)</li><li class="chapter-item expanded "><a href="../ios-dev/first-app.html"><strong aria-hidden="true">41.</strong> Your First iOS App</a></li><li class="chapter-item expanded "><a href="../ios-dev/swiftui-essentials.html"><strong aria-hidden="true">42.</strong> SwiftUI Essentials</a></li><li class="chapter-item expanded "><a href="../ios-dev/navigation.html"><strong aria-hidden="true">43.</strong> Navigation & User Input</a></li><li class="chapter-item expanded "><a href="../ios-dev/data.html"><strong aria-hidden="true">44.</strong> Working with Data</a></li><li class="chapter-item expanded "><a href="../ios-dev/networking.html"><strong aria-hidden="true">45.</strong> Networking & APIs</a></li><li class="chapter-item expanded affix "><li class="part-title">Platform-Specific Development</li><li class="chapter-item expanded "><a href="../platforms/ios.html"><strong aria-hidden="true">46.</strong> iOS 18+ Features</a></li><li class="chapter-item expanded "><a href="../platforms/macos.html"><strong aria-hidden="true">47.</strong> macOS Sequoia</a></li><li class="chapter-item expanded "><a href="../platforms/watchos.html"><strong aria-hidden="true">48.</strong> watchOS 11</a></li><li class="chapter-item expanded "><a href="../platforms/visionos.html"><strong aria-hidden="true">49.</strong> visionOS 2</a></li><li class="chapter-item expanded affix "><li class="part-title">App Store Mastery</li><li class="chapter-item expanded "><a href="../app-store/aso-optimization.html"><strong aria-hidden="true">50.</strong> ASO Optimization</a></li><li class="chapter-item expanded "><a href="../app-store/feature-strategy.html"><strong aria-hidden="true">51.</strong> Feature Strategy</a></li><li class="chapter-item expanded "><a href="../app-store/review-management.html"><strong aria-hidden="true">52.</strong> Review Management</a></li><li class="chapter-item expanded "><a href="../app-store/launch-strategy.html"><strong aria-hidden="true">53.</strong> Launch Strategy</a></li><li class="chapter-item expanded "><a href="../app-store/guidelines.html"><strong aria-hidden="true">54.</strong> App Store Guidelines</a></li><li class="chapter-item expanded "><a href="../app-store/review.html"><strong aria-hidden="true">55.</strong> App Review Process</a></li><li class="chapter-item expanded "><a href="../app-store/storekit.html"><strong aria-hidden="true">56.</strong> StoreKit & Monetization</a></li><li class="chapter-item expanded "><a href="../app-store/testflight.html"><strong aria-hidden="true">57.</strong> TestFlight Beta Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Development Workflow</li><li class="chapter-item expanded "><a href="../workflow/xcode.html"><strong aria-hidden="true">58.</strong> Xcode 16+ Best Practices</a></li><li class="chapter-item expanded "><a href="../workflow/swift-testing.html"><strong aria-hidden="true">59.</strong> Swift Testing</a></li><li class="chapter-item expanded "><a href="../workflow/debugging.html"><strong aria-hidden="true">60.</strong> Debugging Techniques</a></li><li class="chapter-item expanded "><a href="../workflow/performance.html"><strong aria-hidden="true">61.</strong> Performance Optimization</a></li><li class="chapter-item expanded "><a href="../workflow/xcode-cloud.html"><strong aria-hidden="true">62.</strong> Xcode Cloud CI/CD</a></li><li class="chapter-item expanded affix "><li class="part-title">Accessibility & Inclusive Design</li><li class="chapter-item expanded "><a href="../accessibility/guidelines.html"><strong aria-hidden="true">63.</strong> Apple's Accessibility Guidelines</a></li><li class="chapter-item expanded "><a href="../accessibility/voiceover.html"><strong aria-hidden="true">64.</strong> VoiceOver Integration</a></li><li class="chapter-item expanded "><a href="../accessibility/dynamic-type.html"><strong aria-hidden="true">65.</strong> Dynamic Type Support</a></li><li class="chapter-item expanded "><a href="../accessibility/color-contrast.html"><strong aria-hidden="true">66.</strong> Color & Contrast</a></li><li class="chapter-item expanded affix "><li class="part-title">Real-World Projects</li><li class="chapter-item expanded "><a href="../projects/photo-editor.html"><strong aria-hidden="true">67.</strong> Photo Editor App</a></li><li class="chapter-item expanded "><a href="../projects/news-app.html"><strong aria-hidden="true">68.</strong> Subscription News App</a></li><li class="chapter-item expanded "><a href="../projects/social-app.html"><strong aria-hidden="true">69.</strong> Social Media App</a></li><li class="chapter-item expanded "><a href="../projects/productivity-app.html"><strong aria-hidden="true">70.</strong> Productivity App</a></li><li class="chapter-item expanded "><a href="../projects/scrumdinger.html"><strong aria-hidden="true">71.</strong> Scrumdinger (Meeting App)</a></li><li class="chapter-item expanded "><a href="../projects/landmarks.html"><strong aria-hidden="true">72.</strong> Landmarks (SwiftUI Tutorial)</a></li><li class="chapter-item expanded "><a href="../projects/earthquake.html"><strong aria-hidden="true">73.</strong> Earthquake (Data Visualization)</a></li><li class="chapter-item expanded "><a href="../projects/ml-classifier.html"><strong aria-hidden="true">74.</strong> ML Classifier (Core ML)</a></li><li class="chapter-item expanded affix "><li class="part-title">Advanced Topics</li><li class="chapter-item expanded "><a href="../advanced/security.html"><strong aria-hidden="true">75.</strong> Security Implementation</a></li><li class="chapter-item expanded "><a href="../advanced/accessibility.html"><strong aria-hidden="true">76.</strong> Accessibility Excellence</a></li><li class="chapter-item expanded "><a href="../advanced/internationalization.html"><strong aria-hidden="true">77.</strong> Internationalization</a></li><li class="chapter-item expanded "><a href="../advanced/analytics.html"><strong aria-hidden="true">78.</strong> Analytics & Monitoring</a></li><li class="chapter-item expanded "><a href="../advanced/spm.html"><strong aria-hidden="true">79.</strong> Swift Package Manager 6.0</a></li><li class="chapter-item expanded "><a href="../advanced/frameworks.html"><strong aria-hidden="true">80.</strong> Custom Frameworks</a></li><li class="chapter-item expanded "><a href="../advanced/profiling.html"><strong aria-hidden="true">81.</strong> Performance Profiling</a></li><li class="chapter-item expanded affix "><li class="part-title">2025-2026 Research & Updates</li><li class="chapter-item expanded "><a href="../research-2025-2026.html"><strong aria-hidden="true">82.</strong> Latest Research & Findings</a></li><li class="chapter-item expanded affix "><li class="part-title">2025 Video Resources</li><li class="chapter-item expanded "><a href="../videos/apple-intelligence.html"><strong aria-hidden="true">83.</strong> Apple Intelligence Deep Dive</a></li><li class="chapter-item expanded "><a href="../videos/swiftui-performance.html"><strong aria-hidden="true">84.</strong> SwiftUI Performance Tips</a></li><li class="chapter-item expanded "><a href="../videos/concurrency.html"><strong aria-hidden="true">85.</strong> Concurrency Best Practices</a></li><li class="chapter-item expanded "><a href="../videos/cross-platform.html"><strong aria-hidden="true">86.</strong> Cross-Platform Development</a></li><li class="chapter-item expanded affix "><li class="part-title">Resources & Community</li><li class="chapter-item expanded "><a href="../resources/apple-resources.html"><strong aria-hidden="true">87.</strong> Apple Developer Resources</a></li><li class="chapter-item expanded "><a href="../resources/wwdc.html"><strong aria-hidden="true">88.</strong> WWDC Session References</a></li><li class="chapter-item expanded "><a href="../resources/community.html"><strong aria-hidden="true">89.</strong> Swift Community</a></li><li class="chapter-item expanded "><a href="../resources/certification.html"><strong aria-hidden="true">90.</strong> Certification Preparation</a></li><li class="chapter-item expanded affix "><li class="part-title">Autonomous Content System</li><li class="chapter-item expanded "><a href="../auto-generated/index.html"><strong aria-hidden="true">91.</strong> Agent Overview</a></li><li class="chapter-item expanded "><a href="../swift/advanced-patterns.html"><strong aria-hidden="true">92.</strong> Advanced Swift Patterns</a></li></ol>
+            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -126,14 +130,13 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -147,7 +150,7 @@
                         <a href="https://github.com/durellwilson/swift-2026-course" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/swift/collections.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/swift/collections.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -156,12 +159,7 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
-                            <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
-                            </div>
-                        </div>
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -229,7 +227,6 @@
         <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-
 
 
     </div>

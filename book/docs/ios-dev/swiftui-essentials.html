@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="navy sidebar-visible" dir="ltr">
+<html lang="en" class="navy" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
 
         <!-- Custom HTML head -->
-
+        
         <meta name="description" content="Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms with ML, open-source frameworks, and monetization strategies">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -24,41 +24,26 @@
         <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
-
-        <!-- Provide site root and default themes to javascript -->
-        <script>
-            const path_to_root = "../";
-            const default_light_theme = "navy";
-            const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
-        </script>
-        <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
     </head>
-    <body>
-    <div id="mdbook-help-container">
-        <div id="mdbook-help-popup">
-            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
-            <div>
-                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
-                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
-                <p>Press <kbd>?</kbd> to show this help</p>
-                <p>Press <kbd>Esc</kbd> to hide this help</p>
-            </div>
-        </div>
-    </div>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                let theme = localStorage.getItem('mdbook-theme');
-                let sidebar = localStorage.getItem('mdbook-sidebar');
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -72,51 +57,70 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
-            let theme;
+            var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            const html = document.documentElement;
+            var html = document.querySelector('html');
             html.classList.remove('navy')
             html.classList.add(theme);
-            html.classList.add("js");
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
-                sidebar_toggle.checked = false;
             }
-            if (sidebar === 'visible') {
-                sidebar_toggle.checked = true;
-            } else {
-                html.classList.remove('sidebar-visible');
-            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <!-- populated by js -->
-            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
-            <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
-            </noscript>
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple's Develop in Swift Framework</li><li class="chapter-item expanded "><a href="../apple-framework/getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started with Swift</a></li><li class="chapter-item expanded "><a href="../apple-framework/2025-updates.html"><strong aria-hidden="true">2.</strong> 2025 Developer Updates</a></li><li class="chapter-item expanded "><a href="../apple-framework/playgrounds.html"><strong aria-hidden="true">3.</strong> Swift Playgrounds Integration</a></li><li class="chapter-item expanded "><a href="../apple-framework/learning-path.html"><strong aria-hidden="true">4.</strong> Apple's Learning Path</a></li><li class="chapter-item expanded affix "><li class="part-title">Swift Fundamentals (Apple Curriculum)</li><li class="chapter-item expanded "><a href="../swift/basics.html"><strong aria-hidden="true">5.</strong> Swift Language Basics</a></li><li class="chapter-item expanded "><a href="../swift/collections.html"><strong aria-hidden="true">6.</strong> Collections & Control Flow</a></li><li class="chapter-item expanded "><a href="../swift/functions.html"><strong aria-hidden="true">7.</strong> Functions & Closures</a></li><li class="chapter-item expanded "><a href="../swift/structures.html"><strong aria-hidden="true">8.</strong> Structures & Classes</a></li><li class="chapter-item expanded "><a href="../swift/protocols.html"><strong aria-hidden="true">9.</strong> Protocols & Generics</a></li><li class="chapter-item expanded "><a href="../swift/concurrency.html"><strong aria-hidden="true">10.</strong> Concurrency & Actors</a></li><li class="chapter-item expanded affix "><li class="part-title">Performance Mastery</li><li class="chapter-item expanded "><a href="../performance/launch-optimization.html"><strong aria-hidden="true">11.</strong> Launch Time Optimization</a></li><li class="chapter-item expanded "><a href="../performance/memory-optimization.html"><strong aria-hidden="true">12.</strong> Memory Management</a></li><li class="chapter-item expanded "><a href="../performance/battery-optimization.html"><strong aria-hidden="true">13.</strong> Battery Efficiency</a></li><li class="chapter-item expanded "><a href="../performance/network-optimization.html"><strong aria-hidden="true">14.</strong> Network Performance</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Intelligence & AI Integration</li><li class="chapter-item expanded "><a href="../ai/apple-intelligence.html"><strong aria-hidden="true">15.</strong> Apple Intelligence Overview</a></li><li class="chapter-item expanded "><a href="../ai/coreml-8.html"><strong aria-hidden="true">16.</strong> Core ML 8 Features</a></li><li class="chapter-item expanded "><a href="../ai/on-device.html"><strong aria-hidden="true">17.</strong> On-Device Processing</a></li><li class="chapter-item expanded "><a href="../ai/siri-intents.html"><strong aria-hidden="true">18.</strong> Siri App Intents</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Frameworks Integration</li><li class="chapter-item expanded "><a href="../frameworks/swiftdata.html"><strong aria-hidden="true">19.</strong> SwiftData (Data Persistence)</a></li><li class="chapter-item expanded "><a href="../frameworks/cloudkit.html"><strong aria-hidden="true">20.</strong> CloudKit (Cloud Services)</a></li><li class="chapter-item expanded "><a href="../frameworks/coreml.html"><strong aria-hidden="true">21.</strong> Core ML (Machine Learning)</a></li><li class="chapter-item expanded "><a href="../frameworks/widgetkit.html"><strong aria-hidden="true">22.</strong> WidgetKit (Home Screen Widgets)</a></li><li class="chapter-item expanded "><a href="../frameworks/appintents.html"><strong aria-hidden="true">23.</strong> AppIntents (Siri & Shortcuts)</a></li><li class="chapter-item expanded "><a href="../frameworks/swiftcharts.html"><strong aria-hidden="true">24.</strong> SwiftCharts (Data Visualization)</a></li><li class="chapter-item expanded affix "><li class="part-title">Monetization Engineering</li><li class="chapter-item expanded "><a href="../monetization/paywall-psychology.html"><strong aria-hidden="true">25.</strong> Paywall Psychology</a></li><li class="chapter-item expanded "><a href="../monetization/subscription-retention.html"><strong aria-hidden="true">26.</strong> Subscription Retention</a></li><li class="chapter-item expanded "><a href="../monetization/ab-testing.html"><strong aria-hidden="true">27.</strong> A/B Testing Framework</a></li><li class="chapter-item expanded "><a href="../monetization/revenue-analytics.html"><strong aria-hidden="true">28.</strong> Revenue Analytics</a></li><li class="chapter-item expanded affix "><li class="part-title">Scale Architecture</li><li class="chapter-item expanded "><a href="../scale/data-architecture.html"><strong aria-hidden="true">29.</strong> Data Architecture</a></li><li class="chapter-item expanded "><a href="../scale/caching-strategies.html"><strong aria-hidden="true">30.</strong> Caching Strategies</a></li><li class="chapter-item expanded "><a href="../scale/background-processing.html"><strong aria-hidden="true">31.</strong> Background Processing</a></li><li class="chapter-item expanded "><a href="../scale/api-design.html"><strong aria-hidden="true">32.</strong> API Design</a></li><li class="chapter-item expanded affix "><li class="part-title">Swift 6.0 & Modern Development</li><li class="chapter-item expanded "><a href="../swift6/testing.html"><strong aria-hidden="true">33.</strong> Swift Testing Framework</a></li><li class="chapter-item expanded "><a href="../swift6/concurrency.html"><strong aria-hidden="true">34.</strong> Concurrency & Data Race Safety</a></li><li class="chapter-item expanded "><a href="../swift6/typed-throws.html"><strong aria-hidden="true">35.</strong> Typed Throws</a></li><li class="chapter-item expanded "><a href="../swift6/noncopyable.html"><strong aria-hidden="true">36.</strong> Noncopyable Types</a></li><li class="chapter-item expanded affix "><li class="part-title">Production Swift</li><li class="chapter-item expanded "><a href="../swift/concurrency-patterns.html"><strong aria-hidden="true">37.</strong> Swift 6 Concurrency</a></li><li class="chapter-item expanded "><a href="../swift/swiftui-performance.html"><strong aria-hidden="true">38.</strong> SwiftUI Performance</a></li><li class="chapter-item expanded "><a href="../swift/error-handling.html"><strong aria-hidden="true">39.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="../swift/testing-strategies.html"><strong aria-hidden="true">40.</strong> Testing Strategies</a></li><li class="chapter-item expanded affix "><li class="part-title">iOS App Development (Apple Tutorials)</li><li class="chapter-item expanded "><a href="../ios-dev/first-app.html"><strong aria-hidden="true">41.</strong> Your First iOS App</a></li><li class="chapter-item expanded "><a href="../ios-dev/swiftui-essentials.html" class="active"><strong aria-hidden="true">42.</strong> SwiftUI Essentials</a></li><li class="chapter-item expanded "><a href="../ios-dev/navigation.html"><strong aria-hidden="true">43.</strong> Navigation & User Input</a></li><li class="chapter-item expanded "><a href="../ios-dev/data.html"><strong aria-hidden="true">44.</strong> Working with Data</a></li><li class="chapter-item expanded "><a href="../ios-dev/networking.html"><strong aria-hidden="true">45.</strong> Networking & APIs</a></li><li class="chapter-item expanded affix "><li class="part-title">Platform-Specific Development</li><li class="chapter-item expanded "><a href="../platforms/ios.html"><strong aria-hidden="true">46.</strong> iOS 18+ Features</a></li><li class="chapter-item expanded "><a href="../platforms/macos.html"><strong aria-hidden="true">47.</strong> macOS Sequoia</a></li><li class="chapter-item expanded "><a href="../platforms/watchos.html"><strong aria-hidden="true">48.</strong> watchOS 11</a></li><li class="chapter-item expanded "><a href="../platforms/visionos.html"><strong aria-hidden="true">49.</strong> visionOS 2</a></li><li class="chapter-item expanded affix "><li class="part-title">App Store Mastery</li><li class="chapter-item expanded "><a href="../app-store/aso-optimization.html"><strong aria-hidden="true">50.</strong> ASO Optimization</a></li><li class="chapter-item expanded "><a href="../app-store/feature-strategy.html"><strong aria-hidden="true">51.</strong> Feature Strategy</a></li><li class="chapter-item expanded "><a href="../app-store/review-management.html"><strong aria-hidden="true">52.</strong> Review Management</a></li><li class="chapter-item expanded "><a href="../app-store/launch-strategy.html"><strong aria-hidden="true">53.</strong> Launch Strategy</a></li><li class="chapter-item expanded "><a href="../app-store/guidelines.html"><strong aria-hidden="true">54.</strong> App Store Guidelines</a></li><li class="chapter-item expanded "><a href="../app-store/review.html"><strong aria-hidden="true">55.</strong> App Review Process</a></li><li class="chapter-item expanded "><a href="../app-store/storekit.html"><strong aria-hidden="true">56.</strong> StoreKit & Monetization</a></li><li class="chapter-item expanded "><a href="../app-store/testflight.html"><strong aria-hidden="true">57.</strong> TestFlight Beta Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Development Workflow</li><li class="chapter-item expanded "><a href="../workflow/xcode.html"><strong aria-hidden="true">58.</strong> Xcode 16+ Best Practices</a></li><li class="chapter-item expanded "><a href="../workflow/swift-testing.html"><strong aria-hidden="true">59.</strong> Swift Testing</a></li><li class="chapter-item expanded "><a href="../workflow/debugging.html"><strong aria-hidden="true">60.</strong> Debugging Techniques</a></li><li class="chapter-item expanded "><a href="../workflow/performance.html"><strong aria-hidden="true">61.</strong> Performance Optimization</a></li><li class="chapter-item expanded "><a href="../workflow/xcode-cloud.html"><strong aria-hidden="true">62.</strong> Xcode Cloud CI/CD</a></li><li class="chapter-item expanded affix "><li class="part-title">Accessibility & Inclusive Design</li><li class="chapter-item expanded "><a href="../accessibility/guidelines.html"><strong aria-hidden="true">63.</strong> Apple's Accessibility Guidelines</a></li><li class="chapter-item expanded "><a href="../accessibility/voiceover.html"><strong aria-hidden="true">64.</strong> VoiceOver Integration</a></li><li class="chapter-item expanded "><a href="../accessibility/dynamic-type.html"><strong aria-hidden="true">65.</strong> Dynamic Type Support</a></li><li class="chapter-item expanded "><a href="../accessibility/color-contrast.html"><strong aria-hidden="true">66.</strong> Color & Contrast</a></li><li class="chapter-item expanded affix "><li class="part-title">Real-World Projects</li><li class="chapter-item expanded "><a href="../projects/photo-editor.html"><strong aria-hidden="true">67.</strong> Photo Editor App</a></li><li class="chapter-item expanded "><a href="../projects/news-app.html"><strong aria-hidden="true">68.</strong> Subscription News App</a></li><li class="chapter-item expanded "><a href="../projects/social-app.html"><strong aria-hidden="true">69.</strong> Social Media App</a></li><li class="chapter-item expanded "><a href="../projects/productivity-app.html"><strong aria-hidden="true">70.</strong> Productivity App</a></li><li class="chapter-item expanded "><a href="../projects/scrumdinger.html"><strong aria-hidden="true">71.</strong> Scrumdinger (Meeting App)</a></li><li class="chapter-item expanded "><a href="../projects/landmarks.html"><strong aria-hidden="true">72.</strong> Landmarks (SwiftUI Tutorial)</a></li><li class="chapter-item expanded "><a href="../projects/earthquake.html"><strong aria-hidden="true">73.</strong> Earthquake (Data Visualization)</a></li><li class="chapter-item expanded "><a href="../projects/ml-classifier.html"><strong aria-hidden="true">74.</strong> ML Classifier (Core ML)</a></li><li class="chapter-item expanded affix "><li class="part-title">Advanced Topics</li><li class="chapter-item expanded "><a href="../advanced/security.html"><strong aria-hidden="true">75.</strong> Security Implementation</a></li><li class="chapter-item expanded "><a href="../advanced/accessibility.html"><strong aria-hidden="true">76.</strong> Accessibility Excellence</a></li><li class="chapter-item expanded "><a href="../advanced/internationalization.html"><strong aria-hidden="true">77.</strong> Internationalization</a></li><li class="chapter-item expanded "><a href="../advanced/analytics.html"><strong aria-hidden="true">78.</strong> Analytics & Monitoring</a></li><li class="chapter-item expanded "><a href="../advanced/spm.html"><strong aria-hidden="true">79.</strong> Swift Package Manager 6.0</a></li><li class="chapter-item expanded "><a href="../advanced/frameworks.html"><strong aria-hidden="true">80.</strong> Custom Frameworks</a></li><li class="chapter-item expanded "><a href="../advanced/profiling.html"><strong aria-hidden="true">81.</strong> Performance Profiling</a></li><li class="chapter-item expanded affix "><li class="part-title">2025-2026 Research & Updates</li><li class="chapter-item expanded "><a href="../research-2025-2026.html"><strong aria-hidden="true">82.</strong> Latest Research & Findings</a></li><li class="chapter-item expanded affix "><li class="part-title">2025 Video Resources</li><li class="chapter-item expanded "><a href="../videos/apple-intelligence.html"><strong aria-hidden="true">83.</strong> Apple Intelligence Deep Dive</a></li><li class="chapter-item expanded "><a href="../videos/swiftui-performance.html"><strong aria-hidden="true">84.</strong> SwiftUI Performance Tips</a></li><li class="chapter-item expanded "><a href="../videos/concurrency.html"><strong aria-hidden="true">85.</strong> Concurrency Best Practices</a></li><li class="chapter-item expanded "><a href="../videos/cross-platform.html"><strong aria-hidden="true">86.</strong> Cross-Platform Development</a></li><li class="chapter-item expanded affix "><li class="part-title">Resources & Community</li><li class="chapter-item expanded "><a href="../resources/apple-resources.html"><strong aria-hidden="true">87.</strong> Apple Developer Resources</a></li><li class="chapter-item expanded "><a href="../resources/wwdc.html"><strong aria-hidden="true">88.</strong> WWDC Session References</a></li><li class="chapter-item expanded "><a href="../resources/community.html"><strong aria-hidden="true">89.</strong> Swift Community</a></li><li class="chapter-item expanded "><a href="../resources/certification.html"><strong aria-hidden="true">90.</strong> Certification Preparation</a></li><li class="chapter-item expanded affix "><li class="part-title">Autonomous Content System</li><li class="chapter-item expanded "><a href="../auto-generated/index.html"><strong aria-hidden="true">91.</strong> Agent Overview</a></li><li class="chapter-item expanded "><a href="../swift/advanced-patterns.html"><strong aria-hidden="true">92.</strong> Advanced Swift Patterns</a></li></ol>
+            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -126,14 +130,13 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -147,7 +150,7 @@
                         <a href="https://github.com/durellwilson/swift-2026-course" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/ios-dev/swiftui-essentials.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/ios-dev/swiftui-essentials.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -156,12 +159,7 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
-                            <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
-                            </div>
-                        </div>
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -182,6 +180,1004 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="swiftui-essentials"><a class="header" href="#swiftui-essentials">SwiftUI Essentials</a></h1>
+<blockquote>
+<p>Build modern iOS apps with declarative UI programming</p>
+</blockquote>
+<h2 id="-learning-objectives"><a class="header" href="#-learning-objectives">🎯 Learning Objectives</a></h2>
+<p>Master SwiftUI fundamentals to create beautiful, responsive iOS applications:</p>
+<ul>
+<li>Understand declarative UI programming concepts</li>
+<li>Build complex layouts with stacks and containers</li>
+<li>Manage app state effectively</li>
+<li>Create reusable custom components</li>
+<li>Implement navigation and data flow</li>
+</ul>
+<h2 id="-swiftui-architecture"><a class="header" href="#-swiftui-architecture">🏗️ SwiftUI Architecture</a></h2>
+<h3 id="declarative-vs-imperative-ui"><a class="header" href="#declarative-vs-imperative-ui">Declarative vs Imperative UI</a></h3>
+<pre><code class="language-swift">// ❌ Imperative (UIKit way)
+let label = UILabel()
+label.text = &quot;Hello, World!&quot;
+label.textColor = .blue
+label.font = UIFont.systemFont(ofSize: 24)
+view.addSubview(label)
+
+// ✅ Declarative (SwiftUI way)
+Text(&quot;Hello, World!&quot;)
+    .foregroundColor(.blue)
+    .font(.title)
+</code></pre>
+<h3 id="view-protocol-and-body"><a class="header" href="#view-protocol-and-body">View Protocol and Body</a></h3>
+<pre><code class="language-swift">import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        Text(&quot;Hello, SwiftUI!&quot;)
+            .font(.largeTitle)
+            .foregroundColor(.primary)
+    }
+}
+
+// Custom view with parameters
+struct WelcomeView: View {
+    let userName: String
+    let isFirstTime: Bool
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text(&quot;Welcome, \(userName)!&quot;)
+                .font(.title)
+                .fontWeight(.bold)
+            
+            if isFirstTime {
+                Text(&quot;Thanks for joining us!&quot;)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding()
+    }
+}
+</code></pre>
+<h2 id="-basic-ui-components"><a class="header" href="#-basic-ui-components">📱 Basic UI Components</a></h2>
+<h3 id="text-and-styling"><a class="header" href="#text-and-styling">Text and Styling</a></h3>
+<pre><code class="language-swift">struct TextExamples: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Basic text
+            Text(&quot;Simple text&quot;)
+            
+            // Styled text
+            Text(&quot;Styled Text&quot;)
+                .font(.title2)
+                .fontWeight(.semibold)
+                .foregroundColor(.blue)
+            
+            // Multi-line text
+            Text(&quot;This is a longer text that will wrap to multiple lines when the content is too wide for the screen.&quot;)
+                .lineLimit(nil)
+                .multilineTextAlignment(.leading)
+            
+            // Text with formatting
+            Text(&quot;**Bold** and *italic* text&quot;)
+                .font(.body)
+            
+            // Concatenated text with different styles
+            Text(&quot;Price: &quot;)
+                .font(.body) +
+            Text(&quot;$29.99&quot;)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.green)
+        }
+        .padding()
+    }
+}
+</code></pre>
+<h3 id="images-and-sf-symbols"><a class="header" href="#images-and-sf-symbols">Images and SF Symbols</a></h3>
+<pre><code class="language-swift">struct ImageExamples: View {
+    var body: some View {
+        VStack(spacing: 20) {
+            // SF Symbol
+            Image(systemName: &quot;heart.fill&quot;)
+                .font(.largeTitle)
+                .foregroundColor(.red)
+            
+            // Custom image
+            Image(&quot;app-logo&quot;)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 100)
+                .clipShape(Circle())
+            
+            // Async image loading (iOS 15+)
+            AsyncImage(url: URL(string: &quot;https://picsum.photos/200&quot;)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                ProgressView()
+            }
+            .frame(width: 200, height: 200)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+    }
+}
+</code></pre>
+<h3 id="buttons-and-actions"><a class="header" href="#buttons-and-actions">Buttons and Actions</a></h3>
+<pre><code class="language-swift">struct ButtonExamples: View {
+    @State private var counter = 0
+    @State private var isLiked = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Basic button
+            Button(&quot;Tap Me&quot;) {
+                counter += 1
+            }
+            .buttonStyle(.borderedProminent)
+            
+            // Custom button with icon
+            Button(action: {
+                isLiked.toggle()
+            }) {
+                HStack {
+                    Image(systemName: isLiked ? &quot;heart.fill&quot; : &quot;heart&quot;)
+                    Text(isLiked ? &quot;Liked&quot; : &quot;Like&quot;)
+                }
+                .foregroundColor(isLiked ? .red : .primary)
+            }
+            .buttonStyle(.bordered)
+            
+            // Counter display
+            Text(&quot;Counter: \(counter)&quot;)
+                .font(.title2)
+            
+            // Destructive button
+            Button(&quot;Reset&quot;, role: .destructive) {
+                counter = 0
+                isLiked = false
+            }
+        }
+        .padding()
+    }
+}
+</code></pre>
+<h2 id="-layout-system"><a class="header" href="#-layout-system">📐 Layout System</a></h2>
+<h3 id="stacks---the-foundation"><a class="header" href="#stacks---the-foundation">Stacks - The Foundation</a></h3>
+<pre><code class="language-swift">struct StackExamples: View {
+    var body: some View {
+        VStack(spacing: 20) {
+            // HStack - Horizontal arrangement
+            HStack(spacing: 16) {
+                Image(systemName: &quot;person.circle.fill&quot;)
+                    .font(.title)
+                VStack(alignment: .leading) {
+                    Text(&quot;John Doe&quot;)
+                        .font(.headline)
+                    Text(&quot;iOS Developer&quot;)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+                Button(&quot;Follow&quot;) { }
+                    .buttonStyle(.bordered)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // ZStack - Layered arrangement
+            ZStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(LinearGradient(
+                        colors: [.blue, .purple],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ))
+                    .frame(height: 150)
+                
+                VStack {
+                    Text(&quot;Featured&quot;)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                    Text(&quot;Special Offer&quot;)
+                        .font(.subheadline)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+            }
+        }
+        .padding()
+    }
+}
+</code></pre>
+<h3 id="lazyvstack-and-lazyhstack"><a class="header" href="#lazyvstack-and-lazyhstack">LazyVStack and LazyHStack</a></h3>
+<pre><code class="language-swift">struct LazyStackExample: View {
+    let items = Array(1...1000)
+    
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 8) {
+                ForEach(items, id: \.self) { item in
+                    HStack {
+                        Text(&quot;Item \(item)&quot;)
+                        Spacer()
+                        Text(&quot;Value&quot;)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                }
+            }
+            .padding()
+        }
+    }
+}
+</code></pre>
+<h3 id="grid-layouts"><a class="header" href="#grid-layouts">Grid Layouts</a></h3>
+<pre><code class="language-swift">struct GridExample: View {
+    let colors: [Color] = [.red, .blue, .green, .orange, .purple, .pink]
+    
+    let columns = [
+        GridItem(.adaptive(minimum: 100))
+    ]
+    
+    var body: some View {
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 16) {
+                ForEach(colors.indices, id: \.self) { index in
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(colors[index])
+                        .frame(height: 100)
+                        .overlay(
+                            Text(&quot;Item \(index + 1)&quot;)
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
+                        )
+                }
+            }
+            .padding()
+        }
+    }
+}
+</code></pre>
+<h2 id="-state-management"><a class="header" href="#-state-management">🔄 State Management</a></h2>
+<h3 id="state---local-state"><a class="header" href="#state---local-state">@State - Local State</a></h3>
+<pre><code class="language-swift">struct CounterView: View {
+    @State private var count = 0
+    @State private var isAnimating = false
+    
+    var body: some View {
+        VStack(spacing: 30) {
+            Text(&quot;\(count)&quot;)
+                .font(.system(size: 60, weight: .bold, design: .rounded))
+                .scaleEffect(isAnimating ? 1.2 : 1.0)
+                .animation(.spring(response: 0.3), value: isAnimating)
+            
+            HStack(spacing: 20) {
+                Button(&quot;-&quot;) {
+                    count -= 1
+                    animateChange()
+                }
+                .buttonStyle(.bordered)
+                .disabled(count &lt;= 0)
+                
+                Button(&quot;+&quot;) {
+                    count += 1
+                    animateChange()
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            
+            Button(&quot;Reset&quot;) {
+                count = 0
+                animateChange()
+            }
+            .buttonStyle(.bordered)
+        }
+        .padding()
+    }
+    
+    private func animateChange() {
+        isAnimating = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            isAnimating = false
+        }
+    }
+}
+</code></pre>
+<h3 id="binding---shared-state"><a class="header" href="#binding---shared-state">@Binding - Shared State</a></h3>
+<pre><code class="language-swift">struct SettingsView: View {
+    @State private var isNotificationsEnabled = true
+    @State private var isDarkModeEnabled = false
+    @State private var fontSize: Double = 16
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(&quot;Preferences&quot;) {
+                    ToggleRow(
+                        title: &quot;Notifications&quot;,
+                        isOn: $isNotificationsEnabled
+                    )
+                    
+                    ToggleRow(
+                        title: &quot;Dark Mode&quot;,
+                        isOn: $isDarkModeEnabled
+                    )
+                }
+                
+                Section(&quot;Appearance&quot;) {
+                    SliderRow(
+                        title: &quot;Font Size&quot;,
+                        value: $fontSize,
+                        range: 12...24
+                    )
+                }
+            }
+            .navigationTitle(&quot;Settings&quot;)
+        }
+    }
+}
+
+struct ToggleRow: View {
+    let title: String
+    @Binding var isOn: Bool
+    
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Toggle(&quot;&quot;, isOn: $isOn)
+        }
+    }
+}
+
+struct SliderRow: View {
+    let title: String
+    @Binding var value: Double
+    let range: ClosedRange&lt;Double&gt;
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text(title)
+                Spacer()
+                Text(&quot;\(Int(value))&quot;)
+                    .foregroundColor(.secondary)
+            }
+            Slider(value: $value, in: range, step: 1)
+        }
+    }
+}
+</code></pre>
+<h3 id="observableobject-and-stateobject"><a class="header" href="#observableobject-and-stateobject">@ObservableObject and @StateObject</a></h3>
+<pre><code class="language-swift">import Combine
+
+class UserStore: ObservableObject {
+    @Published var users: [User] = []
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+    
+    func loadUsers() {
+        isLoading = true
+        errorMessage = nil
+        
+        // Simulate network request
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.users = [
+                User(name: &quot;Alice&quot;, email: &quot;alice@example.com&quot;),
+                User(name: &quot;Bob&quot;, email: &quot;bob@example.com&quot;),
+                User(name: &quot;Charlie&quot;, email: &quot;charlie@example.com&quot;)
+            ]
+            self.isLoading = false
+        }
+    }
+    
+    func addUser(_ user: User) {
+        users.append(user)
+    }
+    
+    func deleteUser(at indexSet: IndexSet) {
+        users.remove(atOffsets: indexSet)
+    }
+}
+
+struct User: Identifiable {
+    let id = UUID()
+    let name: String
+    let email: String
+}
+
+struct UserListView: View {
+    @StateObject private var userStore = UserStore()
+    @State private var showingAddUser = false
+    
+    var body: some View {
+        NavigationView {
+            Group {
+                if userStore.isLoading {
+                    ProgressView(&quot;Loading users...&quot;)
+                } else if userStore.users.isEmpty {
+                    ContentUnavailableView(
+                        &quot;No Users&quot;,
+                        systemImage: &quot;person.slash&quot;,
+                        description: Text(&quot;Tap the + button to add users&quot;)
+                    )
+                } else {
+                    List {
+                        ForEach(userStore.users) { user in
+                            UserRow(user: user)
+                        }
+                        .onDelete(perform: userStore.deleteUser)
+                    }
+                }
+            }
+            .navigationTitle(&quot;Users&quot;)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(&quot;Add&quot;) {
+                        showingAddUser = true
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddUser) {
+                AddUserView(userStore: userStore)
+            }
+            .onAppear {
+                if userStore.users.isEmpty {
+                    userStore.loadUsers()
+                }
+            }
+        }
+    }
+}
+
+struct UserRow: View {
+    let user: User
+    
+    var body: some View {
+        HStack {
+            Circle()
+                .fill(Color.blue)
+                .frame(width: 40, height: 40)
+                .overlay(
+                    Text(String(user.name.prefix(1)))
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                )
+            
+            VStack(alignment: .leading) {
+                Text(user.name)
+                    .font(.headline)
+                Text(user.email)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+struct AddUserView: View {
+    @ObservedObject var userStore: UserStore
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var name = &quot;&quot;
+    @State private var email = &quot;&quot;
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(&quot;User Information&quot;) {
+                    TextField(&quot;Name&quot;, text: $name)
+                    TextField(&quot;Email&quot;, text: $email)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                }
+            }
+            .navigationTitle(&quot;Add User&quot;)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(&quot;Cancel&quot;) {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(&quot;Save&quot;) {
+                        let newUser = User(name: name, email: email)
+                        userStore.addUser(newUser)
+                        dismiss()
+                    }
+                    .disabled(name.isEmpty || email.isEmpty)
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="-navigation"><a class="header" href="#-navigation">🧭 Navigation</a></h2>
+<h3 id="navigationview-and-navigationlink"><a class="header" href="#navigationview-and-navigationlink">NavigationView and NavigationLink</a></h3>
+<pre><code class="language-swift">struct NavigationExample: View {
+    let categories = [&quot;Technology&quot;, &quot;Science&quot;, &quot;Sports&quot;, &quot;Entertainment&quot;]
+    
+    var body: some View {
+        NavigationView {
+            List(categories, id: \.self) { category in
+                NavigationLink(destination: CategoryDetailView(category: category)) {
+                    HStack {
+                        Image(systemName: iconForCategory(category))
+                            .foregroundColor(.blue)
+                            .frame(width: 30)
+                        Text(category)
+                            .font(.headline)
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+            .navigationTitle(&quot;Categories&quot;)
+        }
+    }
+    
+    private func iconForCategory(_ category: String) -&gt; String {
+        switch category {
+        case &quot;Technology&quot;: return &quot;laptopcomputer&quot;
+        case &quot;Science&quot;: return &quot;atom&quot;
+        case &quot;Sports&quot;: return &quot;sportscourt&quot;
+        case &quot;Entertainment&quot;: return &quot;tv&quot;
+        default: return &quot;folder&quot;
+        }
+    }
+}
+
+struct CategoryDetailView: View {
+    let category: String
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: &quot;star.fill&quot;)
+                .font(.system(size: 60))
+                .foregroundColor(.yellow)
+            
+            Text(&quot;Welcome to \(category)&quot;)
+                .font(.title)
+                .fontWeight(.bold)
+            
+            Text(&quot;This is the detail view for the \(category) category.&quot;)
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .padding()
+        }
+        .navigationTitle(category)
+        .navigationBarTitleDisplayMode(.large)
+    }
+}
+</code></pre>
+<h3 id="tabview"><a class="header" href="#tabview">TabView</a></h3>
+<pre><code class="language-swift">struct MainTabView: View {
+    var body: some View {
+        TabView {
+            HomeView()
+                .tabItem {
+                    Image(systemName: &quot;house&quot;)
+                    Text(&quot;Home&quot;)
+                }
+            
+            SearchView()
+                .tabItem {
+                    Image(systemName: &quot;magnifyingglass&quot;)
+                    Text(&quot;Search&quot;)
+                }
+            
+            FavoritesView()
+                .tabItem {
+                    Image(systemName: &quot;heart&quot;)
+                    Text(&quot;Favorites&quot;)
+                }
+            
+            ProfileView()
+                .tabItem {
+                    Image(systemName: &quot;person&quot;)
+                    Text(&quot;Profile&quot;)
+                }
+        }
+    }
+}
+
+struct HomeView: View {
+    var body: some View {
+        NavigationView {
+            Text(&quot;Home Content&quot;)
+                .navigationTitle(&quot;Home&quot;)
+        }
+    }
+}
+
+struct SearchView: View {
+    var body: some View {
+        NavigationView {
+            Text(&quot;Search Content&quot;)
+                .navigationTitle(&quot;Search&quot;)
+        }
+    }
+}
+
+struct FavoritesView: View {
+    var body: some View {
+        NavigationView {
+            Text(&quot;Favorites Content&quot;)
+                .navigationTitle(&quot;Favorites&quot;)
+        }
+    }
+}
+
+struct ProfileView: View {
+    var body: some View {
+        NavigationView {
+            Text(&quot;Profile Content&quot;)
+                .navigationTitle(&quot;Profile&quot;)
+        }
+    }
+}
+</code></pre>
+<h2 id="-styling-and-modifiers"><a class="header" href="#-styling-and-modifiers">🎨 Styling and Modifiers</a></h2>
+<h3 id="custom-modifiers"><a class="header" href="#custom-modifiers">Custom Modifiers</a></h3>
+<pre><code class="language-swift">struct CardModifier: ViewModifier {
+    func body(content: Content) -&gt; some View {
+        content
+            .padding()
+            .background(Color(.systemBackground))
+            .cornerRadius(12)
+            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+    }
+}
+
+extension View {
+    func cardStyle() -&gt; some View {
+        modifier(CardModifier())
+    }
+}
+
+// Usage
+struct StyledView: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            Text(&quot;Card 1&quot;)
+                .cardStyle()
+            
+            Text(&quot;Card 2&quot;)
+                .cardStyle()
+        }
+        .padding()
+    }
+}
+</code></pre>
+<h3 id="environment-and-themes"><a class="header" href="#environment-and-themes">Environment and Themes</a></h3>
+<pre><code class="language-swift">struct ThemeKey: EnvironmentKey {
+    static let defaultValue = Theme.light
+}
+
+extension EnvironmentValues {
+    var theme: Theme {
+        get { self[ThemeKey.self] }
+        set { self[ThemeKey.self] = newValue }
+    }
+}
+
+struct Theme {
+    let backgroundColor: Color
+    let textColor: Color
+    let accentColor: Color
+    
+    static let light = Theme(
+        backgroundColor: .white,
+        textColor: .black,
+        accentColor: .blue
+    )
+    
+    static let dark = Theme(
+        backgroundColor: .black,
+        textColor: .white,
+        accentColor: .orange
+    )
+}
+
+struct ThemedView: View {
+    @Environment(\.theme) var theme
+    
+    var body: some View {
+        VStack {
+            Text(&quot;Themed Content&quot;)
+                .foregroundColor(theme.textColor)
+            
+            Button(&quot;Action&quot;) { }
+                .foregroundColor(theme.accentColor)
+        }
+        .background(theme.backgroundColor)
+    }
+}
+</code></pre>
+<h2 id="-real-world-project-weather-app"><a class="header" href="#-real-world-project-weather-app">🎯 Real-World Project: Weather App</a></h2>
+<pre><code class="language-swift">import SwiftUI
+
+struct WeatherApp: View {
+    @StateObject private var weatherStore = WeatherStore()
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    if let weather = weatherStore.currentWeather {
+                        CurrentWeatherCard(weather: weather)
+                        
+                        HourlyForecastView(forecast: weatherStore.hourlyForecast)
+                        
+                        DailyForecastView(forecast: weatherStore.dailyForecast)
+                    } else if weatherStore.isLoading {
+                        ProgressView(&quot;Loading weather...&quot;)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else {
+                        ContentUnavailableView(
+                            &quot;No Weather Data&quot;,
+                            systemImage: &quot;cloud.slash&quot;,
+                            description: Text(&quot;Pull to refresh&quot;)
+                        )
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle(&quot;Weather&quot;)
+            .refreshable {
+                await weatherStore.loadWeather()
+            }
+        }
+        .task {
+            await weatherStore.loadWeather()
+        }
+    }
+}
+
+struct CurrentWeatherCard: View {
+    let weather: Weather
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(weather.location)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    
+                    Text(&quot;Today&quot;)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing) {
+                    Text(&quot;\(weather.temperature)°&quot;)
+                        .font(.system(size: 48, weight: .thin))
+                    
+                    Text(weather.condition)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+            }
+            
+            HStack {
+                WeatherDetail(title: &quot;Feels like&quot;, value: &quot;\(weather.feelsLike)°&quot;)
+                Spacer()
+                WeatherDetail(title: &quot;Humidity&quot;, value: &quot;\(weather.humidity)%&quot;)
+                Spacer()
+                WeatherDetail(title: &quot;Wind&quot;, value: &quot;\(weather.windSpeed) mph&quot;)
+            }
+        }
+        .padding()
+        .background(
+            LinearGradient(
+                colors: [.blue.opacity(0.6), .purple.opacity(0.6)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .foregroundColor(.white)
+        .cornerRadius(16)
+    }
+}
+
+struct WeatherDetail: View {
+    let title: String
+    let value: String
+    
+    var body: some View {
+        VStack {
+            Text(title)
+                .font(.caption)
+                .opacity(0.8)
+            Text(value)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+        }
+    }
+}
+
+struct HourlyForecastView: View {
+    let forecast: [HourlyWeather]
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(&quot;Hourly Forecast&quot;)
+                .font(.headline)
+                .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(forecast) { hour in
+                        VStack(spacing: 8) {
+                            Text(hour.time)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            
+                            Image(systemName: hour.icon)
+                                .font(.title2)
+                                .foregroundColor(.blue)
+                            
+                            Text(&quot;\(hour.temperature)°&quot;)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                        }
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 16)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(12)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+    }
+}
+
+struct DailyForecastView: View {
+    let forecast: [DailyWeather]
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(&quot;7-Day Forecast&quot;)
+                .font(.headline)
+                .padding(.horizontal)
+            
+            VStack(spacing: 0) {
+                ForEach(forecast) { day in
+                    HStack {
+                        Text(day.day)
+                            .font(.subheadline)
+                            .frame(width: 60, alignment: .leading)
+                        
+                        Image(systemName: day.icon)
+                            .font(.title3)
+                            .foregroundColor(.blue)
+                            .frame(width: 30)
+                        
+                        Spacer()
+                        
+                        Text(&quot;\(day.low)°&quot;)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        Text(&quot;\(day.high)°&quot;)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .frame(width: 40, alignment: .trailing)
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 12)
+                    
+                    if day.id != forecast.last?.id {
+                        Divider()
+                            .padding(.horizontal)
+                    }
+                }
+            }
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            .padding(.horizontal)
+        }
+    }
+}
+
+// Data Models
+struct Weather {
+    let location: String
+    let temperature: Int
+    let condition: String
+    let feelsLike: Int
+    let humidity: Int
+    let windSpeed: Int
+}
+
+struct HourlyWeather: Identifiable {
+    let id = UUID()
+    let time: String
+    let temperature: Int
+    let icon: String
+}
+
+struct DailyWeather: Identifiable {
+    let id = UUID()
+    let day: String
+    let high: Int
+    let low: Int
+    let icon: String
+}
+
+// Store
+class WeatherStore: ObservableObject {
+    @Published var currentWeather: Weather?
+    @Published var hourlyForecast: [HourlyWeather] = []
+    @Published var dailyForecast: [DailyWeather] = []
+    @Published var isLoading = false
+    
+    func loadWeather() async {
+        await MainActor.run {
+            isLoading = true
+        }
+        
+        // Simulate API call
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        
+        await MainActor.run {
+            currentWeather = Weather(
+                location: &quot;San Francisco&quot;,
+                temperature: 72,
+                condition: &quot;Partly Cloudy&quot;,
+                feelsLike: 75,
+                humidity: 65,
+                windSpeed: 8
+            )
+            
+            hourlyForecast = [
+                HourlyWeather(time: &quot;Now&quot;, temperature: 72, icon: &quot;cloud.sun&quot;),
+                HourlyWeather(time: &quot;1 PM&quot;, temperature: 74, icon: &quot;sun.max&quot;),
+                HourlyWeather(time: &quot;2 PM&quot;, temperature: 76, icon: &quot;sun.max&quot;),
+                HourlyWeather(time: &quot;3 PM&quot;, temperature: 75, icon: &quot;cloud.sun&quot;),
+                HourlyWeather(time: &quot;4 PM&quot;, temperature: 73, icon: &quot;cloud&quot;)
+            ]
+            
+            dailyForecast = [
+                DailyWeather(day: &quot;Today&quot;, high: 76, low: 62, icon: &quot;cloud.sun&quot;),
+                DailyWeather(day: &quot;Tue&quot;, high: 78, low: 64, icon: &quot;sun.max&quot;),
+                DailyWeather(day: &quot;Wed&quot;, high: 75, low: 61, icon: &quot;cloud.rain&quot;),
+                DailyWeather(day: &quot;Thu&quot;, high: 73, low: 59, icon: &quot;cloud.rain&quot;),
+                DailyWeather(day: &quot;Fri&quot;, high: 71, low: 58, icon: &quot;cloud&quot;),
+                DailyWeather(day: &quot;Sat&quot;, high: 74, low: 60, icon: &quot;sun.max&quot;),
+                DailyWeather(day: &quot;Sun&quot;, high: 77, low: 63, icon: &quot;sun.max&quot;)
+            ]
+            
+            isLoading = false
+        }
+    }
+}
+</code></pre>
+<h2 id="-key-takeaways"><a class="header" href="#-key-takeaways">📚 Key Takeaways</a></h2>
+<ol>
+<li><strong>Think Declaratively</strong> - Describe what the UI should look like, not how to build it</li>
+<li><strong>Use @State for Local Data</strong> - Keep component state private when possible</li>
+<li><strong>Leverage @Binding for Shared State</strong> - Pass data between parent and child views</li>
+<li><strong>Embrace Single Source of Truth</strong> - Use @ObservableObject for shared app state</li>
+<li><strong>Compose Views</strong> - Break complex UIs into smaller, reusable components</li>
+<li><strong>Use Environment for Themes</strong> - Share configuration across the app hierarchy</li>
+</ol>
+<h2 id="-whats-next"><a class="header" href="#-whats-next">🔗 What's Next?</a></h2>
+<p>In the next chapter, we'll explore <strong>Navigation &amp; User Input</strong>, covering advanced navigation patterns, form handling, and user interaction techniques.</p>
+<hr />
+<p><em>Practice building these examples in Xcode to master SwiftUI fundamentals!</em></p>
 
                     </main>
 
@@ -229,7 +1225,6 @@
         <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-
 
 
     </div>

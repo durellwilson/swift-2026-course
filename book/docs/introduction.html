@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="navy sidebar-visible" dir="ltr">
+<html lang="en" class="navy" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
 
         <!-- Custom HTML head -->
-
+        
         <meta name="description" content="Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms with ML, open-source frameworks, and monetization strategies">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -24,41 +24,26 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
-
-        <!-- Provide site root and default themes to javascript -->
-        <script>
-            const path_to_root = "";
-            const default_light_theme = "navy";
-            const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex.js";
-        </script>
-        <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
     </head>
-    <body>
-    <div id="mdbook-help-container">
-        <div id="mdbook-help-popup">
-            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
-            <div>
-                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
-                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
-                <p>Press <kbd>?</kbd> to show this help</p>
-                <p>Press <kbd>Esc</kbd> to hide this help</p>
-            </div>
-        </div>
-    </div>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                let theme = localStorage.getItem('mdbook-theme');
-                let sidebar = localStorage.getItem('mdbook-sidebar');
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -72,51 +57,70 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
-            let theme;
+            var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            const html = document.documentElement;
+            var html = document.querySelector('html');
             html.classList.remove('navy')
             html.classList.add(theme);
-            html.classList.add("js");
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
-                sidebar_toggle.checked = false;
             }
-            if (sidebar === 'visible') {
-                sidebar_toggle.checked = true;
-            } else {
-                html.classList.remove('sidebar-visible');
-            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <!-- populated by js -->
-            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
-            <noscript>
-                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
-            </noscript>
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html" class="active">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple's Develop in Swift Framework</li><li class="chapter-item expanded "><a href="apple-framework/getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started with Swift</a></li><li class="chapter-item expanded "><a href="apple-framework/2025-updates.html"><strong aria-hidden="true">2.</strong> 2025 Developer Updates</a></li><li class="chapter-item expanded "><a href="apple-framework/playgrounds.html"><strong aria-hidden="true">3.</strong> Swift Playgrounds Integration</a></li><li class="chapter-item expanded "><a href="apple-framework/learning-path.html"><strong aria-hidden="true">4.</strong> Apple's Learning Path</a></li><li class="chapter-item expanded affix "><li class="part-title">Swift Fundamentals (Apple Curriculum)</li><li class="chapter-item expanded "><a href="swift/basics.html"><strong aria-hidden="true">5.</strong> Swift Language Basics</a></li><li class="chapter-item expanded "><a href="swift/collections.html"><strong aria-hidden="true">6.</strong> Collections & Control Flow</a></li><li class="chapter-item expanded "><a href="swift/functions.html"><strong aria-hidden="true">7.</strong> Functions & Closures</a></li><li class="chapter-item expanded "><a href="swift/structures.html"><strong aria-hidden="true">8.</strong> Structures & Classes</a></li><li class="chapter-item expanded "><a href="swift/protocols.html"><strong aria-hidden="true">9.</strong> Protocols & Generics</a></li><li class="chapter-item expanded "><a href="swift/concurrency.html"><strong aria-hidden="true">10.</strong> Concurrency & Actors</a></li><li class="chapter-item expanded affix "><li class="part-title">Performance Mastery</li><li class="chapter-item expanded "><a href="performance/launch-optimization.html"><strong aria-hidden="true">11.</strong> Launch Time Optimization</a></li><li class="chapter-item expanded "><a href="performance/memory-optimization.html"><strong aria-hidden="true">12.</strong> Memory Management</a></li><li class="chapter-item expanded "><a href="performance/battery-optimization.html"><strong aria-hidden="true">13.</strong> Battery Efficiency</a></li><li class="chapter-item expanded "><a href="performance/network-optimization.html"><strong aria-hidden="true">14.</strong> Network Performance</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Intelligence & AI Integration</li><li class="chapter-item expanded "><a href="ai/apple-intelligence.html"><strong aria-hidden="true">15.</strong> Apple Intelligence Overview</a></li><li class="chapter-item expanded "><a href="ai/coreml-8.html"><strong aria-hidden="true">16.</strong> Core ML 8 Features</a></li><li class="chapter-item expanded "><a href="ai/on-device.html"><strong aria-hidden="true">17.</strong> On-Device Processing</a></li><li class="chapter-item expanded "><a href="ai/siri-intents.html"><strong aria-hidden="true">18.</strong> Siri App Intents</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Frameworks Integration</li><li class="chapter-item expanded "><a href="frameworks/swiftdata.html"><strong aria-hidden="true">19.</strong> SwiftData (Data Persistence)</a></li><li class="chapter-item expanded "><a href="frameworks/cloudkit.html"><strong aria-hidden="true">20.</strong> CloudKit (Cloud Services)</a></li><li class="chapter-item expanded "><a href="frameworks/coreml.html"><strong aria-hidden="true">21.</strong> Core ML (Machine Learning)</a></li><li class="chapter-item expanded "><a href="frameworks/widgetkit.html"><strong aria-hidden="true">22.</strong> WidgetKit (Home Screen Widgets)</a></li><li class="chapter-item expanded "><a href="frameworks/appintents.html"><strong aria-hidden="true">23.</strong> AppIntents (Siri & Shortcuts)</a></li><li class="chapter-item expanded "><a href="frameworks/swiftcharts.html"><strong aria-hidden="true">24.</strong> SwiftCharts (Data Visualization)</a></li><li class="chapter-item expanded affix "><li class="part-title">Monetization Engineering</li><li class="chapter-item expanded "><a href="monetization/paywall-psychology.html"><strong aria-hidden="true">25.</strong> Paywall Psychology</a></li><li class="chapter-item expanded "><a href="monetization/subscription-retention.html"><strong aria-hidden="true">26.</strong> Subscription Retention</a></li><li class="chapter-item expanded "><a href="monetization/ab-testing.html"><strong aria-hidden="true">27.</strong> A/B Testing Framework</a></li><li class="chapter-item expanded "><a href="monetization/revenue-analytics.html"><strong aria-hidden="true">28.</strong> Revenue Analytics</a></li><li class="chapter-item expanded affix "><li class="part-title">Scale Architecture</li><li class="chapter-item expanded "><a href="scale/data-architecture.html"><strong aria-hidden="true">29.</strong> Data Architecture</a></li><li class="chapter-item expanded "><a href="scale/caching-strategies.html"><strong aria-hidden="true">30.</strong> Caching Strategies</a></li><li class="chapter-item expanded "><a href="scale/background-processing.html"><strong aria-hidden="true">31.</strong> Background Processing</a></li><li class="chapter-item expanded "><a href="scale/api-design.html"><strong aria-hidden="true">32.</strong> API Design</a></li><li class="chapter-item expanded affix "><li class="part-title">Swift 6.0 & Modern Development</li><li class="chapter-item expanded "><a href="swift6/testing.html"><strong aria-hidden="true">33.</strong> Swift Testing Framework</a></li><li class="chapter-item expanded "><a href="swift6/concurrency.html"><strong aria-hidden="true">34.</strong> Concurrency & Data Race Safety</a></li><li class="chapter-item expanded "><a href="swift6/typed-throws.html"><strong aria-hidden="true">35.</strong> Typed Throws</a></li><li class="chapter-item expanded "><a href="swift6/noncopyable.html"><strong aria-hidden="true">36.</strong> Noncopyable Types</a></li><li class="chapter-item expanded affix "><li class="part-title">Production Swift</li><li class="chapter-item expanded "><a href="swift/concurrency-patterns.html"><strong aria-hidden="true">37.</strong> Swift 6 Concurrency</a></li><li class="chapter-item expanded "><a href="swift/swiftui-performance.html"><strong aria-hidden="true">38.</strong> SwiftUI Performance</a></li><li class="chapter-item expanded "><a href="swift/error-handling.html"><strong aria-hidden="true">39.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="swift/testing-strategies.html"><strong aria-hidden="true">40.</strong> Testing Strategies</a></li><li class="chapter-item expanded affix "><li class="part-title">iOS App Development (Apple Tutorials)</li><li class="chapter-item expanded "><a href="ios-dev/first-app.html"><strong aria-hidden="true">41.</strong> Your First iOS App</a></li><li class="chapter-item expanded "><a href="ios-dev/swiftui-essentials.html"><strong aria-hidden="true">42.</strong> SwiftUI Essentials</a></li><li class="chapter-item expanded "><a href="ios-dev/navigation.html"><strong aria-hidden="true">43.</strong> Navigation & User Input</a></li><li class="chapter-item expanded "><a href="ios-dev/data.html"><strong aria-hidden="true">44.</strong> Working with Data</a></li><li class="chapter-item expanded "><a href="ios-dev/networking.html"><strong aria-hidden="true">45.</strong> Networking & APIs</a></li><li class="chapter-item expanded affix "><li class="part-title">Platform-Specific Development</li><li class="chapter-item expanded "><a href="platforms/ios.html"><strong aria-hidden="true">46.</strong> iOS 18+ Features</a></li><li class="chapter-item expanded "><a href="platforms/macos.html"><strong aria-hidden="true">47.</strong> macOS Sequoia</a></li><li class="chapter-item expanded "><a href="platforms/watchos.html"><strong aria-hidden="true">48.</strong> watchOS 11</a></li><li class="chapter-item expanded "><a href="platforms/visionos.html"><strong aria-hidden="true">49.</strong> visionOS 2</a></li><li class="chapter-item expanded affix "><li class="part-title">App Store Mastery</li><li class="chapter-item expanded "><a href="app-store/aso-optimization.html"><strong aria-hidden="true">50.</strong> ASO Optimization</a></li><li class="chapter-item expanded "><a href="app-store/feature-strategy.html"><strong aria-hidden="true">51.</strong> Feature Strategy</a></li><li class="chapter-item expanded "><a href="app-store/review-management.html"><strong aria-hidden="true">52.</strong> Review Management</a></li><li class="chapter-item expanded "><a href="app-store/launch-strategy.html"><strong aria-hidden="true">53.</strong> Launch Strategy</a></li><li class="chapter-item expanded "><a href="app-store/guidelines.html"><strong aria-hidden="true">54.</strong> App Store Guidelines</a></li><li class="chapter-item expanded "><a href="app-store/review.html"><strong aria-hidden="true">55.</strong> App Review Process</a></li><li class="chapter-item expanded "><a href="app-store/storekit.html"><strong aria-hidden="true">56.</strong> StoreKit & Monetization</a></li><li class="chapter-item expanded "><a href="app-store/testflight.html"><strong aria-hidden="true">57.</strong> TestFlight Beta Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Development Workflow</li><li class="chapter-item expanded "><a href="workflow/xcode.html"><strong aria-hidden="true">58.</strong> Xcode 16+ Best Practices</a></li><li class="chapter-item expanded "><a href="workflow/swift-testing.html"><strong aria-hidden="true">59.</strong> Swift Testing</a></li><li class="chapter-item expanded "><a href="workflow/debugging.html"><strong aria-hidden="true">60.</strong> Debugging Techniques</a></li><li class="chapter-item expanded "><a href="workflow/performance.html"><strong aria-hidden="true">61.</strong> Performance Optimization</a></li><li class="chapter-item expanded "><a href="workflow/xcode-cloud.html"><strong aria-hidden="true">62.</strong> Xcode Cloud CI/CD</a></li><li class="chapter-item expanded affix "><li class="part-title">Accessibility & Inclusive Design</li><li class="chapter-item expanded "><a href="accessibility/guidelines.html"><strong aria-hidden="true">63.</strong> Apple's Accessibility Guidelines</a></li><li class="chapter-item expanded "><a href="accessibility/voiceover.html"><strong aria-hidden="true">64.</strong> VoiceOver Integration</a></li><li class="chapter-item expanded "><a href="accessibility/dynamic-type.html"><strong aria-hidden="true">65.</strong> Dynamic Type Support</a></li><li class="chapter-item expanded "><a href="accessibility/color-contrast.html"><strong aria-hidden="true">66.</strong> Color & Contrast</a></li><li class="chapter-item expanded affix "><li class="part-title">Real-World Projects</li><li class="chapter-item expanded "><a href="projects/photo-editor.html"><strong aria-hidden="true">67.</strong> Photo Editor App</a></li><li class="chapter-item expanded "><a href="projects/news-app.html"><strong aria-hidden="true">68.</strong> Subscription News App</a></li><li class="chapter-item expanded "><a href="projects/social-app.html"><strong aria-hidden="true">69.</strong> Social Media App</a></li><li class="chapter-item expanded "><a href="projects/productivity-app.html"><strong aria-hidden="true">70.</strong> Productivity App</a></li><li class="chapter-item expanded "><a href="projects/scrumdinger.html"><strong aria-hidden="true">71.</strong> Scrumdinger (Meeting App)</a></li><li class="chapter-item expanded "><a href="projects/landmarks.html"><strong aria-hidden="true">72.</strong> Landmarks (SwiftUI Tutorial)</a></li><li class="chapter-item expanded "><a href="projects/earthquake.html"><strong aria-hidden="true">73.</strong> Earthquake (Data Visualization)</a></li><li class="chapter-item expanded "><a href="projects/ml-classifier.html"><strong aria-hidden="true">74.</strong> ML Classifier (Core ML)</a></li><li class="chapter-item expanded affix "><li class="part-title">Advanced Topics</li><li class="chapter-item expanded "><a href="advanced/security.html"><strong aria-hidden="true">75.</strong> Security Implementation</a></li><li class="chapter-item expanded "><a href="advanced/accessibility.html"><strong aria-hidden="true">76.</strong> Accessibility Excellence</a></li><li class="chapter-item expanded "><a href="advanced/internationalization.html"><strong aria-hidden="true">77.</strong> Internationalization</a></li><li class="chapter-item expanded "><a href="advanced/analytics.html"><strong aria-hidden="true">78.</strong> Analytics & Monitoring</a></li><li class="chapter-item expanded "><a href="advanced/spm.html"><strong aria-hidden="true">79.</strong> Swift Package Manager 6.0</a></li><li class="chapter-item expanded "><a href="advanced/frameworks.html"><strong aria-hidden="true">80.</strong> Custom Frameworks</a></li><li class="chapter-item expanded "><a href="advanced/profiling.html"><strong aria-hidden="true">81.</strong> Performance Profiling</a></li><li class="chapter-item expanded affix "><li class="part-title">2025-2026 Research & Updates</li><li class="chapter-item expanded "><a href="research-2025-2026.html"><strong aria-hidden="true">82.</strong> Latest Research & Findings</a></li><li class="chapter-item expanded affix "><li class="part-title">2025 Video Resources</li><li class="chapter-item expanded "><a href="videos/apple-intelligence.html"><strong aria-hidden="true">83.</strong> Apple Intelligence Deep Dive</a></li><li class="chapter-item expanded "><a href="videos/swiftui-performance.html"><strong aria-hidden="true">84.</strong> SwiftUI Performance Tips</a></li><li class="chapter-item expanded "><a href="videos/concurrency.html"><strong aria-hidden="true">85.</strong> Concurrency Best Practices</a></li><li class="chapter-item expanded "><a href="videos/cross-platform.html"><strong aria-hidden="true">86.</strong> Cross-Platform Development</a></li><li class="chapter-item expanded affix "><li class="part-title">Resources & Community</li><li class="chapter-item expanded "><a href="resources/apple-resources.html"><strong aria-hidden="true">87.</strong> Apple Developer Resources</a></li><li class="chapter-item expanded "><a href="resources/wwdc.html"><strong aria-hidden="true">88.</strong> WWDC Session References</a></li><li class="chapter-item expanded "><a href="resources/community.html"><strong aria-hidden="true">89.</strong> Swift Community</a></li><li class="chapter-item expanded "><a href="resources/certification.html"><strong aria-hidden="true">90.</strong> Certification Preparation</a></li><li class="chapter-item expanded affix "><li class="part-title">Autonomous Content System</li><li class="chapter-item expanded "><a href="auto-generated/index.html"><strong aria-hidden="true">91.</strong> Agent Overview</a></li><li class="chapter-item expanded "><a href="swift/advanced-patterns.html"><strong aria-hidden="true">92.</strong> Advanced Swift Patterns</a></li></ol>
+            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -126,14 +130,13 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -147,7 +150,7 @@
                         <a href="https://github.com/durellwilson/swift-2026-course" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/introduction.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/introduction.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -156,12 +159,7 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
-                            <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
-                            </div>
-                        </div>
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -181,176 +179,200 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="swift-production-mastery-2026"><a class="header" href="#swift-production-mastery-2026">Swift Production Mastery 2026</a></h1>
+                        <h1 id="swift-development-mastery-2026"><a class="header" href="#swift-development-mastery-2026">Swift Development Mastery 2026</a></h1>
 <blockquote>
-<p><strong>Real-world patterns, performance secrets, and monetization strategies Apple doesn't teach</strong></p>
+<p>The complete guide to building production-ready iOS apps with Swift 6.0, SwiftUI, and modern Apple frameworks</p>
 </blockquote>
-<h2 id="-why-this-course-exists"><a class="header" href="#-why-this-course-exists">🎯 Why This Course Exists</a></h2>
-<p>Apple's documentation tells you <strong>what</strong> to do. This course shows you <strong>how to do it profitably</strong> in production with real apps making real money.</p>
-<h3 id="what-you-wont-find-in-apple-docs"><a class="header" href="#what-you-wont-find-in-apple-docs">What You Won't Find in Apple Docs</a></h3>
+<h2 id="-what-youll-master"><a class="header" href="#-what-youll-master">🎯 What You'll Master</a></h2>
+<p>This comprehensive course transforms you from a Swift learner into a production-ready iOS developer. You'll build real apps, optimize performance, implement monetization, and deploy to the App Store with confidence.</p>
+<h3 id="-core-competencies"><a class="header" href="#-core-competencies">🚀 Core Competencies</a></h3>
+<p><strong>Swift Language Mastery</strong></p>
 <ul>
-<li><strong>Performance bottlenecks</strong> and how to fix them before they hit production</li>
-<li><strong>Monetization patterns</strong> that actually convert users to paying customers</li>
-<li><strong>Architecture decisions</strong> that scale from 1K to 1M+ users</li>
-<li><strong>App Store optimization</strong> tactics that get you featured</li>
-<li><strong>Production debugging</strong> techniques for issues Apple's tools miss</li>
+<li>Swift 6.0 features including strict concurrency and typed throws</li>
+<li>Advanced patterns: generics, protocols, and memory management</li>
+<li>Error handling and testing strategies that prevent production bugs</li>
 </ul>
-<h2 id="-proven-results"><a class="header" href="#-proven-results">💰 Proven Results</a></h2>
-<p>This course is built from patterns used in apps that have:</p>
+<p><strong>SwiftUI &amp; UI Development</strong></p>
 <ul>
-<li>Generated <strong>$10M+</strong> in App Store revenue</li>
-<li>Scaled to <strong>millions of users</strong> without breaking</li>
-<li>Achieved <strong>#1 rankings</strong> in competitive categories</li>
-<li>Been <strong>featured by Apple</strong> multiple times</li>
+<li>Declarative UI programming with SwiftUI</li>
+<li>Complex layouts, animations, and custom components</li>
+<li>Navigation patterns and state management at scale</li>
 </ul>
-<h2 id="-what-makes-this-different"><a class="header" href="#-what-makes-this-different">🚀 What Makes This Different</a></h2>
-<h3 id="1-production-first-approach"><a class="header" href="#1-production-first-approach">1. Production-First Approach</a></h3>
-<p>Every pattern is battle-tested in real apps with real users paying real money.</p>
-<h3 id="2-performance-obsessed"><a class="header" href="#2-performance-obsessed">2. Performance Obsessed</a></h3>
-<p>Learn the micro-optimizations that make apps feel native and fast.</p>
-<h3 id="3-monetization-focused"><a class="header" href="#3-monetization-focused">3. Monetization Focused</a></h3>
-<p>Understand how technical decisions directly impact revenue.</p>
-<h3 id="4-scale-ready-architecture"><a class="header" href="#4-scale-ready-architecture">4. Scale-Ready Architecture</a></h3>
-<p>Build apps that handle growth without rewrites.</p>
-<h2 id="-immediate-value"><a class="header" href="#-immediate-value">📊 Immediate Value</a></h2>
-<h3 id="week-1-performance-edge"><a class="header" href="#week-1-performance-edge">Week 1: Performance Edge</a></h3>
+<p><strong>Performance Engineering</strong></p>
 <ul>
-<li><strong>Memory optimization</strong> techniques that reduce crashes by 80%</li>
-<li><strong>Launch time</strong> improvements that boost retention 25%</li>
-<li><strong>Battery efficiency</strong> patterns that prevent App Store rejection</li>
+<li>Launch time optimization (target: &lt;400ms cold launch)</li>
+<li>Memory management and leak prevention</li>
+<li>Battery efficiency and network optimization</li>
+<li>Profiling with Instruments and MetricKit</li>
 </ul>
-<h3 id="week-2-monetization-mastery"><a class="header" href="#week-2-monetization-mastery">Week 2: Monetization Mastery</a></h3>
+<p><strong>Apple Intelligence Integration</strong></p>
 <ul>
-<li><strong>Paywall psychology</strong> that converts 15%+ of free users</li>
-<li><strong>Subscription retention</strong> strategies hitting 80%+ monthly retention</li>
-<li><strong>A/B testing</strong> frameworks for data-driven growth</li>
+<li>Core ML 8 for on-device machine learning</li>
+<li>Natural Language processing and Siri integration</li>
+<li>App Intents for Shortcuts and system integration</li>
+<li>Privacy-first AI implementation</li>
 </ul>
-<h3 id="week-3-scale-secrets"><a class="header" href="#week-3-scale-secrets">Week 3: Scale Secrets</a></h3>
+<p><strong>Monetization &amp; Business</strong></p>
 <ul>
-<li><strong>Data architecture</strong> that handles 10x user growth</li>
-<li><strong>Caching strategies</strong> that reduce server costs 70%</li>
-<li><strong>Background processing</strong> that keeps apps responsive</li>
+<li>Psychology-driven paywall design and A/B testing</li>
+<li>StoreKit 2 implementation for subscriptions</li>
+<li>Revenue analytics and retention strategies</li>
+<li>App Store optimization and feature strategies</li>
 </ul>
-<h3 id="week-4-app-store-domination"><a class="header" href="#week-4-app-store-domination">Week 4: App Store Domination</a></h3>
+<p><strong>Production Deployment</strong></p>
 <ul>
-<li><strong>ASO techniques</strong> that 3x organic downloads</li>
-<li><strong>Feature optimization</strong> that gets Apple's attention</li>
-<li><strong>Review management</strong> that maintains 4.8+ ratings</li>
+<li>Xcode Cloud CI/CD pipelines</li>
+<li>App Store review process and guidelines</li>
+<li>TestFlight beta testing workflows</li>
+<li>Analytics, crash reporting, and monitoring</li>
 </ul>
-<h2 id="-who-this-is-for"><a class="header" href="#-who-this-is-for">🎓 Who This Is For</a></h2>
-<h3 id="indie-developers"><a class="header" href="#indie-developers">Indie Developers</a></h3>
+<h2 id="-real-world-projects"><a class="header" href="#-real-world-projects">📱 Real-World Projects</a></h2>
+<p>You'll build complete, production-ready applications:</p>
+<h3 id="1-weather-intelligence-app"><a class="header" href="#1-weather-intelligence-app">1. <strong>Weather Intelligence App</strong></a></h3>
 <ul>
-<li>Building apps to generate meaningful revenue</li>
-<li>Need to compete with well-funded teams</li>
-<li>Want technical advantages that matter</li>
+<li>SwiftUI interface with complex layouts</li>
+<li>Core ML weather prediction models</li>
+<li>Widget extensions and Live Activities</li>
+<li>Subscription monetization with paywalls</li>
 </ul>
-<h3 id="senior-ios-engineers"><a class="header" href="#senior-ios-engineers">Senior iOS Engineers</a></h3>
+<h3 id="2-productivity-suite"><a class="header" href="#2-productivity-suite">2. <strong>Productivity Suite</strong></a></h3>
 <ul>
-<li>Leading teams building production apps</li>
-<li>Responsible for performance and scale</li>
-<li>Need to make architecture decisions that last</li>
+<li>Multi-platform app (iOS, macOS, watchOS)</li>
+<li>CloudKit sync and offline capabilities</li>
+<li>App Intents for Siri integration</li>
+<li>Advanced performance optimization</li>
 </ul>
-<h3 id="technical-founders"><a class="header" href="#technical-founders">Technical Founders</a></h3>
+<h3 id="3-social-media-platform"><a class="header" href="#3-social-media-platform">3. <strong>Social Media Platform</strong></a></h3>
 <ul>
-<li>Building the MVP that needs to scale</li>
-<li>Making technical decisions that impact business</li>
-<li>Want to avoid expensive rewrites</li>
+<li>Real-time messaging and notifications</li>
+<li>Image processing with Core Image</li>
+<li>Video streaming and compression</li>
+<li>Scalable architecture patterns</li>
 </ul>
-<h2 id="-real-examples-real-code"><a class="header" href="#-real-examples-real-code">🔧 Real Examples, Real Code</a></h2>
-<h3 id="performance-launch-time-optimization"><a class="header" href="#performance-launch-time-optimization">Performance: Launch Time Optimization</a></h3>
-<pre><code class="language-swift">// Apple docs show basic app lifecycle
-// This shows how to optimize for sub-2-second launches
-
-class OptimizedAppDelegate: UIApplicationDelegate {
-    func application(_ application: UIApplication, 
-                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -&gt; Bool {
-        
-        // Critical path only - defer everything else
-        setupCriticalServices()
-        
-        // Async initialization for non-critical services
-        Task.detached(priority: .utility) {
-            await self.setupNonCriticalServices()
-        }
-        
-        return true
-    }
-    
-    private func setupCriticalServices() {
-        // Only services needed for first screen
-        AuthenticationManager.shared.initializeFromKeychain()
-        ThemeManager.shared.loadCachedTheme()
-    }
-}
-</code></pre>
-<h3 id="monetization-smart-paywall-timing"><a class="header" href="#monetization-smart-paywall-timing">Monetization: Smart Paywall Timing</a></h3>
-<pre><code class="language-swift">// Apple docs show StoreKit basics
-// This shows when and how to present paywalls for maximum conversion
-
-class PaywallStrategy {
-    func shouldShowPaywall(for user: User, action: UserAction) -&gt; Bool {
-        // Show paywall at moment of highest intent
-        switch action {
-        case .exportingProject where user.projectCount &gt;= 3:
-            return true // High intent moment
-        case .accessingPremiumFeature where user.sessionDuration &gt; 300:
-            return true // Engaged user
-        default:
-            return false
-        }
-    }
-}
-</code></pre>
-<h3 id="scale-efficient-data-loading"><a class="header" href="#scale-efficient-data-loading">Scale: Efficient Data Loading</a></h3>
-<pre><code class="language-swift">// Apple docs show basic Core Data
-// This shows how to handle millions of records efficiently
-
-class ScalableDataManager {
-    func loadItems(page: Int, limit: Int = 50) async -&gt; [Item] {
-        // Pagination + prefetching + memory management
-        let request: NSFetchRequest&lt;Item&gt; = Item.fetchRequest()
-        request.fetchLimit = limit
-        request.fetchOffset = page * limit
-        request.relationshipKeyPathsForPrefetching = ["category", "tags"]
-        
-        // Use background context to avoid blocking UI
-        return await backgroundContext.perform {
-            try? self.backgroundContext.fetch(request) ?? []
-        }
-    }
-}
-</code></pre>
-<h2 id="-measurable-outcomes"><a class="header" href="#-measurable-outcomes">📈 Measurable Outcomes</a></h2>
-<p>After completing this course, you'll have:</p>
-<h3 id="technical-skills"><a class="header" href="#technical-skills">Technical Skills</a></h3>
+<h3 id="4-ai-powered-photo-editor"><a class="header" href="#4-ai-powered-photo-editor">4. <strong>AI-Powered Photo Editor</strong></a></h3>
 <ul>
-<li><strong>50% faster</strong> app launch times</li>
-<li><strong>30% lower</strong> memory usage</li>
-<li><strong>Zero</strong> production crashes from common issues</li>
+<li>Core ML image classification and enhancement</li>
+<li>Metal shaders for real-time effects</li>
+<li>In-app purchases and subscription tiers</li>
+<li>App Store feature optimization</li>
 </ul>
-<h3 id="business-impact"><a class="header" href="#business-impact">Business Impact</a></h3>
+<h2 id="-technology-stack"><a class="header" href="#-technology-stack">🛠️ Technology Stack</a></h2>
+<p><strong>Languages &amp; Frameworks</strong></p>
 <ul>
-<li><strong>3x higher</strong> conversion rates on paywalls</li>
-<li><strong>25% better</strong> App Store rankings</li>
-<li><strong>80%+</strong> user retention at 30 days</li>
+<li>Swift 6.0 with strict concurrency</li>
+<li>SwiftUI for declarative UI</li>
+<li>UIKit for advanced customization</li>
+<li>Combine for reactive programming</li>
 </ul>
-<h3 id="career-growth"><a class="header" href="#career-growth">Career Growth</a></h3>
+<p><strong>Apple Frameworks</strong></p>
 <ul>
-<li>Portfolio of production-ready patterns</li>
-<li>Understanding of business-technical tradeoffs</li>
-<li>Ability to lead technical decisions that drive revenue</li>
+<li>Core ML 8 for machine learning</li>
+<li>SwiftData for data persistence</li>
+<li>CloudKit for cloud synchronization</li>
+<li>WidgetKit for home screen widgets</li>
+<li>App Intents for system integration</li>
+<li>StoreKit 2 for monetization</li>
 </ul>
-<h2 id="-course-structure"><a class="header" href="#-course-structure">🎯 Course Structure</a></h2>
-<h3 id="module-1-performance-mastery-week-1"><a class="header" href="#module-1-performance-mastery-week-1">Module 1: Performance Mastery (Week 1)</a></h3>
-<p>Real techniques for apps that feel native and fast</p>
-<h3 id="module-2-monetization-engineering-week-2"><a class="header" href="#module-2-monetization-engineering-week-2">Module 2: Monetization Engineering (Week 2)</a></h3>
-<p>Technical implementation of revenue-generating features</p>
-<h3 id="module-3-scale-architecture-week-3"><a class="header" href="#module-3-scale-architecture-week-3">Module 3: Scale Architecture (Week 3)</a></h3>
-<p>Building apps that handle explosive growth</p>
-<h3 id="module-4-app-store-success-week-4"><a class="header" href="#module-4-app-store-success-week-4">Module 4: App Store Success (Week 4)</a></h3>
-<p>Technical optimizations that drive organic growth</p>
+<p><strong>Development Tools</strong></p>
+<ul>
+<li>Xcode 16+ with latest features</li>
+<li>Instruments for performance profiling</li>
+<li>TestFlight for beta distribution</li>
+<li>Xcode Cloud for CI/CD</li>
+</ul>
+<p><strong>Third-Party Integration</strong></p>
+<ul>
+<li>Firebase for analytics and crash reporting</li>
+<li>RevenueCat for subscription management</li>
+<li>Amplitude for user behavior tracking</li>
+</ul>
+<h2 id="-learning-approach"><a class="header" href="#-learning-approach">📊 Learning Approach</a></h2>
+<h3 id="theory--practice"><a class="header" href="#theory--practice">Theory + Practice</a></h3>
+<p>Every concept is immediately applied in real code examples. No abstract theory without practical implementation.</p>
+<h3 id="performance-first"><a class="header" href="#performance-first">Performance-First</a></h3>
+<p>All code examples are optimized for production use. Learn to write performant code from day one.</p>
+<h3 id="test-driven-development"><a class="header" href="#test-driven-development">Test-Driven Development</a></h3>
+<p>Build reliable apps with comprehensive testing strategies, from unit tests to UI automation.</p>
+<h3 id="industry-best-practices"><a class="header" href="#industry-best-practices">Industry Best Practices</a></h3>
+<p>Learn patterns used by top iOS teams at companies like Apple, Spotify, and Airbnb.</p>
+<h2 id="-prerequisites"><a class="header" href="#-prerequisites">🎓 Prerequisites</a></h2>
+<p><strong>Required Knowledge</strong></p>
+<ul>
+<li>Basic programming concepts (variables, functions, loops)</li>
+<li>Familiarity with object-oriented programming</li>
+<li>Basic understanding of mobile app concepts</li>
+</ul>
+<p><strong>Recommended Experience</strong></p>
+<ul>
+<li>Some Swift or iOS development experience (helpful but not required)</li>
+<li>Understanding of MVC or similar architectural patterns</li>
+<li>Basic Git version control knowledge</li>
+</ul>
+<p><strong>Development Environment</strong></p>
+<ul>
+<li>Mac with macOS Sonoma or later</li>
+<li>Xcode 16+ (free from Mac App Store)</li>
+<li>Apple Developer account ($99/year for App Store deployment)</li>
+<li>iOS device for testing (recommended)</li>
+</ul>
+<h2 id="-learning-path"><a class="header" href="#-learning-path">📈 Learning Path</a></h2>
+<h3 id="phase-1-foundation-weeks-1-3"><a class="header" href="#phase-1-foundation-weeks-1-3">Phase 1: Foundation (Weeks 1-3)</a></h3>
+<ul>
+<li>Swift language fundamentals and modern features</li>
+<li>SwiftUI essentials and layout systems</li>
+<li>Basic app architecture and data flow</li>
+</ul>
+<h3 id="phase-2-intermediate-weeks-4-6"><a class="header" href="#phase-2-intermediate-weeks-4-6">Phase 2: Intermediate (Weeks 4-6)</a></h3>
+<ul>
+<li>Advanced SwiftUI patterns and custom components</li>
+<li>Data persistence with SwiftData</li>
+<li>Networking and API integration</li>
+</ul>
+<h3 id="phase-3-advanced-weeks-7-9"><a class="header" href="#phase-3-advanced-weeks-7-9">Phase 3: Advanced (Weeks 7-9)</a></h3>
+<ul>
+<li>Performance optimization and profiling</li>
+<li>Apple Intelligence and Core ML integration</li>
+<li>Complex navigation and state management</li>
+</ul>
+<h3 id="phase-4-production-weeks-10-12"><a class="header" href="#phase-4-production-weeks-10-12">Phase 4: Production (Weeks 10-12)</a></h3>
+<ul>
+<li>Monetization implementation and optimization</li>
+<li>App Store deployment and optimization</li>
+<li>Analytics, monitoring, and maintenance</li>
+</ul>
+<h2 id="-certification-track"><a class="header" href="#-certification-track">🏆 Certification Track</a></h2>
+<p>Complete the course with:</p>
+<ul>
+<li>4 production-ready apps in your portfolio</li>
+<li>Performance benchmarks meeting Apple's standards</li>
+<li>Successful App Store submissions</li>
+<li>Monetization implementation with real revenue data</li>
+</ul>
+<h2 id="-success-metrics"><a class="header" href="#-success-metrics">💡 Success Metrics</a></h2>
+<p>By course completion, you'll achieve:</p>
+<ul>
+<li><strong>App Launch Time</strong>: &lt;400ms cold launch consistently</li>
+<li><strong>Crash Rate</strong>: &lt;0.1% (industry-leading stability)</li>
+<li><strong>App Store Rating</strong>: 4.5+ stars with optimized listings</li>
+<li><strong>Conversion Rate</strong>: 5%+ paywall conversion (industry average: 2-3%)</li>
+<li><strong>Revenue</strong>: Implemented subscription system capable of generating revenue</li>
+</ul>
+<h2 id="-what-makes-this-course-different"><a class="header" href="#-what-makes-this-course-different">🌟 What Makes This Course Different</a></h2>
+<p><strong>Real Production Code</strong>
+Every example uses actual Apple frameworks and APIs available today. No theoretical or outdated code.</p>
+<p><strong>Performance Obsessed</strong>
+All implementations are optimized for real-world performance. Learn to build apps that feel fast and responsive.</p>
+<p><strong>Business-Focused</strong>
+Beyond just coding, learn to build apps that generate revenue and succeed in the App Store.</p>
+<p><strong>Continuously Updated</strong>
+Course content stays current with the latest iOS releases, Xcode updates, and Apple guidelines.</p>
+<p><strong>Community Driven</strong>
+Join a community of developers building real apps and sharing experiences.</p>
+<h2 id="-ready-to-start"><a class="header" href="#-ready-to-start">🚀 Ready to Start?</a></h2>
+<p>Your journey to iOS development mastery begins with understanding Swift fundamentals. In the next chapter, we'll dive into Swift language basics with hands-on examples and real-world applications.</p>
+<p><strong>Let's build something amazing together.</strong></p>
 <hr />
-<p><strong>Ready to build apps that make money?</strong> Start with <a href="./performance/launch-optimization.html">Performance Mastery →</a></p>
+<p><em>This course is designed for developers who want to build production-quality iOS apps, not just learn syntax. Every lesson moves you closer to shipping real apps that users love and pay for.</em></p>
 
                     </main>
 
@@ -392,7 +414,6 @@ class ScalableDataManager {
         <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
-
 
 
     </div>

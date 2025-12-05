@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="navy sidebar-visible" dir="ltr">
+<html lang="en" class="navy" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
 
         <!-- Custom HTML head -->
-
+        
         <meta name="description" content="Production-ready Swift development for iOS 26, macOS 26, and all Apple platforms with ML, open-source frameworks, and monetization strategies">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -24,41 +24,26 @@
         <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
-
-        <!-- Provide site root and default themes to javascript -->
-        <script>
-            const path_to_root = "../";
-            const default_light_theme = "navy";
-            const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
-        </script>
-        <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
     </head>
-    <body>
-    <div id="mdbook-help-container">
-        <div id="mdbook-help-popup">
-            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
-            <div>
-                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
-                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
-                <p>Press <kbd>?</kbd> to show this help</p>
-                <p>Press <kbd>Esc</kbd> to hide this help</p>
-            </div>
-        </div>
-    </div>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "navy";
+        </script>
+
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                let theme = localStorage.getItem('mdbook-theme');
-                let sidebar = localStorage.getItem('mdbook-sidebar');
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -72,51 +57,70 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
-            let theme;
+            var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            const html = document.documentElement;
+            var html = document.querySelector('html');
             html.classList.remove('navy')
             html.classList.add(theme);
-            html.classList.add("js");
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
-                sidebar_toggle.checked = false;
             }
-            if (sidebar === 'visible') {
-                sidebar_toggle.checked = true;
-            } else {
-                html.classList.remove('sidebar-visible');
-            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <!-- populated by js -->
-            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
-            <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
-            </noscript>
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple's Develop in Swift Framework</li><li class="chapter-item expanded "><a href="../apple-framework/getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started with Swift</a></li><li class="chapter-item expanded "><a href="../apple-framework/2025-updates.html"><strong aria-hidden="true">2.</strong> 2025 Developer Updates</a></li><li class="chapter-item expanded "><a href="../apple-framework/playgrounds.html"><strong aria-hidden="true">3.</strong> Swift Playgrounds Integration</a></li><li class="chapter-item expanded "><a href="../apple-framework/learning-path.html"><strong aria-hidden="true">4.</strong> Apple's Learning Path</a></li><li class="chapter-item expanded affix "><li class="part-title">Swift Fundamentals (Apple Curriculum)</li><li class="chapter-item expanded "><a href="../swift/basics.html" class="active"><strong aria-hidden="true">5.</strong> Swift Language Basics</a></li><li class="chapter-item expanded "><a href="../swift/collections.html"><strong aria-hidden="true">6.</strong> Collections & Control Flow</a></li><li class="chapter-item expanded "><a href="../swift/functions.html"><strong aria-hidden="true">7.</strong> Functions & Closures</a></li><li class="chapter-item expanded "><a href="../swift/structures.html"><strong aria-hidden="true">8.</strong> Structures & Classes</a></li><li class="chapter-item expanded "><a href="../swift/protocols.html"><strong aria-hidden="true">9.</strong> Protocols & Generics</a></li><li class="chapter-item expanded "><a href="../swift/concurrency.html"><strong aria-hidden="true">10.</strong> Concurrency & Actors</a></li><li class="chapter-item expanded affix "><li class="part-title">Performance Mastery</li><li class="chapter-item expanded "><a href="../performance/launch-optimization.html"><strong aria-hidden="true">11.</strong> Launch Time Optimization</a></li><li class="chapter-item expanded "><a href="../performance/memory-optimization.html"><strong aria-hidden="true">12.</strong> Memory Management</a></li><li class="chapter-item expanded "><a href="../performance/battery-optimization.html"><strong aria-hidden="true">13.</strong> Battery Efficiency</a></li><li class="chapter-item expanded "><a href="../performance/network-optimization.html"><strong aria-hidden="true">14.</strong> Network Performance</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Intelligence & AI Integration</li><li class="chapter-item expanded "><a href="../ai/apple-intelligence.html"><strong aria-hidden="true">15.</strong> Apple Intelligence Overview</a></li><li class="chapter-item expanded "><a href="../ai/coreml-8.html"><strong aria-hidden="true">16.</strong> Core ML 8 Features</a></li><li class="chapter-item expanded "><a href="../ai/on-device.html"><strong aria-hidden="true">17.</strong> On-Device Processing</a></li><li class="chapter-item expanded "><a href="../ai/siri-intents.html"><strong aria-hidden="true">18.</strong> Siri App Intents</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Frameworks Integration</li><li class="chapter-item expanded "><a href="../frameworks/swiftdata.html"><strong aria-hidden="true">19.</strong> SwiftData (Data Persistence)</a></li><li class="chapter-item expanded "><a href="../frameworks/cloudkit.html"><strong aria-hidden="true">20.</strong> CloudKit (Cloud Services)</a></li><li class="chapter-item expanded "><a href="../frameworks/coreml.html"><strong aria-hidden="true">21.</strong> Core ML (Machine Learning)</a></li><li class="chapter-item expanded "><a href="../frameworks/widgetkit.html"><strong aria-hidden="true">22.</strong> WidgetKit (Home Screen Widgets)</a></li><li class="chapter-item expanded "><a href="../frameworks/appintents.html"><strong aria-hidden="true">23.</strong> AppIntents (Siri & Shortcuts)</a></li><li class="chapter-item expanded "><a href="../frameworks/swiftcharts.html"><strong aria-hidden="true">24.</strong> SwiftCharts (Data Visualization)</a></li><li class="chapter-item expanded affix "><li class="part-title">Monetization Engineering</li><li class="chapter-item expanded "><a href="../monetization/paywall-psychology.html"><strong aria-hidden="true">25.</strong> Paywall Psychology</a></li><li class="chapter-item expanded "><a href="../monetization/subscription-retention.html"><strong aria-hidden="true">26.</strong> Subscription Retention</a></li><li class="chapter-item expanded "><a href="../monetization/ab-testing.html"><strong aria-hidden="true">27.</strong> A/B Testing Framework</a></li><li class="chapter-item expanded "><a href="../monetization/revenue-analytics.html"><strong aria-hidden="true">28.</strong> Revenue Analytics</a></li><li class="chapter-item expanded affix "><li class="part-title">Scale Architecture</li><li class="chapter-item expanded "><a href="../scale/data-architecture.html"><strong aria-hidden="true">29.</strong> Data Architecture</a></li><li class="chapter-item expanded "><a href="../scale/caching-strategies.html"><strong aria-hidden="true">30.</strong> Caching Strategies</a></li><li class="chapter-item expanded "><a href="../scale/background-processing.html"><strong aria-hidden="true">31.</strong> Background Processing</a></li><li class="chapter-item expanded "><a href="../scale/api-design.html"><strong aria-hidden="true">32.</strong> API Design</a></li><li class="chapter-item expanded affix "><li class="part-title">Swift 6.0 & Modern Development</li><li class="chapter-item expanded "><a href="../swift6/testing.html"><strong aria-hidden="true">33.</strong> Swift Testing Framework</a></li><li class="chapter-item expanded "><a href="../swift6/concurrency.html"><strong aria-hidden="true">34.</strong> Concurrency & Data Race Safety</a></li><li class="chapter-item expanded "><a href="../swift6/typed-throws.html"><strong aria-hidden="true">35.</strong> Typed Throws</a></li><li class="chapter-item expanded "><a href="../swift6/noncopyable.html"><strong aria-hidden="true">36.</strong> Noncopyable Types</a></li><li class="chapter-item expanded affix "><li class="part-title">Production Swift</li><li class="chapter-item expanded "><a href="../swift/concurrency-patterns.html"><strong aria-hidden="true">37.</strong> Swift 6 Concurrency</a></li><li class="chapter-item expanded "><a href="../swift/swiftui-performance.html"><strong aria-hidden="true">38.</strong> SwiftUI Performance</a></li><li class="chapter-item expanded "><a href="../swift/error-handling.html"><strong aria-hidden="true">39.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="../swift/testing-strategies.html"><strong aria-hidden="true">40.</strong> Testing Strategies</a></li><li class="chapter-item expanded affix "><li class="part-title">iOS App Development (Apple Tutorials)</li><li class="chapter-item expanded "><a href="../ios-dev/first-app.html"><strong aria-hidden="true">41.</strong> Your First iOS App</a></li><li class="chapter-item expanded "><a href="../ios-dev/swiftui-essentials.html"><strong aria-hidden="true">42.</strong> SwiftUI Essentials</a></li><li class="chapter-item expanded "><a href="../ios-dev/navigation.html"><strong aria-hidden="true">43.</strong> Navigation & User Input</a></li><li class="chapter-item expanded "><a href="../ios-dev/data.html"><strong aria-hidden="true">44.</strong> Working with Data</a></li><li class="chapter-item expanded "><a href="../ios-dev/networking.html"><strong aria-hidden="true">45.</strong> Networking & APIs</a></li><li class="chapter-item expanded affix "><li class="part-title">Platform-Specific Development</li><li class="chapter-item expanded "><a href="../platforms/ios.html"><strong aria-hidden="true">46.</strong> iOS 18+ Features</a></li><li class="chapter-item expanded "><a href="../platforms/macos.html"><strong aria-hidden="true">47.</strong> macOS Sequoia</a></li><li class="chapter-item expanded "><a href="../platforms/watchos.html"><strong aria-hidden="true">48.</strong> watchOS 11</a></li><li class="chapter-item expanded "><a href="../platforms/visionos.html"><strong aria-hidden="true">49.</strong> visionOS 2</a></li><li class="chapter-item expanded affix "><li class="part-title">App Store Mastery</li><li class="chapter-item expanded "><a href="../app-store/aso-optimization.html"><strong aria-hidden="true">50.</strong> ASO Optimization</a></li><li class="chapter-item expanded "><a href="../app-store/feature-strategy.html"><strong aria-hidden="true">51.</strong> Feature Strategy</a></li><li class="chapter-item expanded "><a href="../app-store/review-management.html"><strong aria-hidden="true">52.</strong> Review Management</a></li><li class="chapter-item expanded "><a href="../app-store/launch-strategy.html"><strong aria-hidden="true">53.</strong> Launch Strategy</a></li><li class="chapter-item expanded "><a href="../app-store/guidelines.html"><strong aria-hidden="true">54.</strong> App Store Guidelines</a></li><li class="chapter-item expanded "><a href="../app-store/review.html"><strong aria-hidden="true">55.</strong> App Review Process</a></li><li class="chapter-item expanded "><a href="../app-store/storekit.html"><strong aria-hidden="true">56.</strong> StoreKit & Monetization</a></li><li class="chapter-item expanded "><a href="../app-store/testflight.html"><strong aria-hidden="true">57.</strong> TestFlight Beta Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Apple Development Workflow</li><li class="chapter-item expanded "><a href="../workflow/xcode.html"><strong aria-hidden="true">58.</strong> Xcode 16+ Best Practices</a></li><li class="chapter-item expanded "><a href="../workflow/swift-testing.html"><strong aria-hidden="true">59.</strong> Swift Testing</a></li><li class="chapter-item expanded "><a href="../workflow/debugging.html"><strong aria-hidden="true">60.</strong> Debugging Techniques</a></li><li class="chapter-item expanded "><a href="../workflow/performance.html"><strong aria-hidden="true">61.</strong> Performance Optimization</a></li><li class="chapter-item expanded "><a href="../workflow/xcode-cloud.html"><strong aria-hidden="true">62.</strong> Xcode Cloud CI/CD</a></li><li class="chapter-item expanded affix "><li class="part-title">Accessibility & Inclusive Design</li><li class="chapter-item expanded "><a href="../accessibility/guidelines.html"><strong aria-hidden="true">63.</strong> Apple's Accessibility Guidelines</a></li><li class="chapter-item expanded "><a href="../accessibility/voiceover.html"><strong aria-hidden="true">64.</strong> VoiceOver Integration</a></li><li class="chapter-item expanded "><a href="../accessibility/dynamic-type.html"><strong aria-hidden="true">65.</strong> Dynamic Type Support</a></li><li class="chapter-item expanded "><a href="../accessibility/color-contrast.html"><strong aria-hidden="true">66.</strong> Color & Contrast</a></li><li class="chapter-item expanded affix "><li class="part-title">Real-World Projects</li><li class="chapter-item expanded "><a href="../projects/photo-editor.html"><strong aria-hidden="true">67.</strong> Photo Editor App</a></li><li class="chapter-item expanded "><a href="../projects/news-app.html"><strong aria-hidden="true">68.</strong> Subscription News App</a></li><li class="chapter-item expanded "><a href="../projects/social-app.html"><strong aria-hidden="true">69.</strong> Social Media App</a></li><li class="chapter-item expanded "><a href="../projects/productivity-app.html"><strong aria-hidden="true">70.</strong> Productivity App</a></li><li class="chapter-item expanded "><a href="../projects/scrumdinger.html"><strong aria-hidden="true">71.</strong> Scrumdinger (Meeting App)</a></li><li class="chapter-item expanded "><a href="../projects/landmarks.html"><strong aria-hidden="true">72.</strong> Landmarks (SwiftUI Tutorial)</a></li><li class="chapter-item expanded "><a href="../projects/earthquake.html"><strong aria-hidden="true">73.</strong> Earthquake (Data Visualization)</a></li><li class="chapter-item expanded "><a href="../projects/ml-classifier.html"><strong aria-hidden="true">74.</strong> ML Classifier (Core ML)</a></li><li class="chapter-item expanded affix "><li class="part-title">Advanced Topics</li><li class="chapter-item expanded "><a href="../advanced/security.html"><strong aria-hidden="true">75.</strong> Security Implementation</a></li><li class="chapter-item expanded "><a href="../advanced/accessibility.html"><strong aria-hidden="true">76.</strong> Accessibility Excellence</a></li><li class="chapter-item expanded "><a href="../advanced/internationalization.html"><strong aria-hidden="true">77.</strong> Internationalization</a></li><li class="chapter-item expanded "><a href="../advanced/analytics.html"><strong aria-hidden="true">78.</strong> Analytics & Monitoring</a></li><li class="chapter-item expanded "><a href="../advanced/spm.html"><strong aria-hidden="true">79.</strong> Swift Package Manager 6.0</a></li><li class="chapter-item expanded "><a href="../advanced/frameworks.html"><strong aria-hidden="true">80.</strong> Custom Frameworks</a></li><li class="chapter-item expanded "><a href="../advanced/profiling.html"><strong aria-hidden="true">81.</strong> Performance Profiling</a></li><li class="chapter-item expanded affix "><li class="part-title">2025-2026 Research & Updates</li><li class="chapter-item expanded "><a href="../research-2025-2026.html"><strong aria-hidden="true">82.</strong> Latest Research & Findings</a></li><li class="chapter-item expanded affix "><li class="part-title">2025 Video Resources</li><li class="chapter-item expanded "><a href="../videos/apple-intelligence.html"><strong aria-hidden="true">83.</strong> Apple Intelligence Deep Dive</a></li><li class="chapter-item expanded "><a href="../videos/swiftui-performance.html"><strong aria-hidden="true">84.</strong> SwiftUI Performance Tips</a></li><li class="chapter-item expanded "><a href="../videos/concurrency.html"><strong aria-hidden="true">85.</strong> Concurrency Best Practices</a></li><li class="chapter-item expanded "><a href="../videos/cross-platform.html"><strong aria-hidden="true">86.</strong> Cross-Platform Development</a></li><li class="chapter-item expanded affix "><li class="part-title">Resources & Community</li><li class="chapter-item expanded "><a href="../resources/apple-resources.html"><strong aria-hidden="true">87.</strong> Apple Developer Resources</a></li><li class="chapter-item expanded "><a href="../resources/wwdc.html"><strong aria-hidden="true">88.</strong> WWDC Session References</a></li><li class="chapter-item expanded "><a href="../resources/community.html"><strong aria-hidden="true">89.</strong> Swift Community</a></li><li class="chapter-item expanded "><a href="../resources/certification.html"><strong aria-hidden="true">90.</strong> Certification Preparation</a></li><li class="chapter-item expanded affix "><li class="part-title">Autonomous Content System</li><li class="chapter-item expanded "><a href="../auto-generated/index.html"><strong aria-hidden="true">91.</strong> Agent Overview</a></li><li class="chapter-item expanded "><a href="../swift/advanced-patterns.html"><strong aria-hidden="true">92.</strong> Advanced Swift Patterns</a></li></ol>
+            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -126,14 +130,13 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -147,7 +150,7 @@
                         <a href="https://github.com/durellwilson/swift-2026-course" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/swift/basics.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/durellwilson/swift-2026-course/edit/main/book/src/swift/basics.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -156,12 +159,7 @@
 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
-                            <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
-                            </div>
-                        </div>
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -182,6 +180,494 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="swift-language-basics"><a class="header" href="#swift-language-basics">Swift Language Basics</a></h1>
+<blockquote>
+<p>Master Swift fundamentals with hands-on examples and real-world applications</p>
+</blockquote>
+<h2 id="-learning-objectives"><a class="header" href="#-learning-objectives">🎯 Learning Objectives</a></h2>
+<p>By the end of this chapter, you'll be able to:</p>
+<ul>
+<li>Write clean, idiomatic Swift code</li>
+<li>Understand Swift's type system and memory management</li>
+<li>Use optionals safely and effectively</li>
+<li>Apply Swift's modern features in real projects</li>
+</ul>
+<h2 id="-variables-and-constants"><a class="header" href="#-variables-and-constants">📝 Variables and Constants</a></h2>
+<h3 id="the-let-vs-var-decision-tree"><a class="header" href="#the-let-vs-var-decision-tree">The <code>let</code> vs <code>var</code> Decision Tree</a></h3>
+<pre><code class="language-swift">// Use 'let' by default - Swift encourages immutability
+let appName = &quot;MyApp&quot;           // ✅ Won't change
+let maxRetries = 3              // ✅ Configuration constant
+let userID = UUID()             // ✅ Generated once
+
+// Use 'var' only when you need to modify
+var currentScore = 0            // ✅ Will change during game
+var isLoading = false           // ✅ State that toggles
+var items: [String] = []        // ✅ Collection that grows
+</code></pre>
+<h3 id="type-inference-vs-explicit-types"><a class="header" href="#type-inference-vs-explicit-types">Type Inference vs Explicit Types</a></h3>
+<pre><code class="language-swift">// Swift infers types intelligently
+let message = &quot;Hello, World!&quot;              // String
+let count = 42                             // Int
+let price = 19.99                          // Double
+let isActive = true                        // Bool
+
+// Be explicit when needed for clarity
+let timeout: TimeInterval = 30.0           // More descriptive than Double
+let userAge: Int8 = 25                     // Specific integer size
+let coordinates: (Double, Double) = (0, 0) // Tuple type
+</code></pre>
+<h2 id="-swifts-type-system"><a class="header" href="#-swifts-type-system">🔢 Swift's Type System</a></h2>
+<h3 id="numeric-types---choose-wisely"><a class="header" href="#numeric-types---choose-wisely">Numeric Types - Choose Wisely</a></h3>
+<pre><code class="language-swift">// Default integer type
+let regularNumber = 100                    // Int (64-bit on modern devices)
+
+// Specific sizes when memory matters
+let smallValue: Int8 = 127                 // -128 to 127
+let mediumValue: Int16 = 32767             // -32,768 to 32,767
+let largeValue: Int64 = 9223372036854775807
+
+// Unsigned when you need only positive values
+let arrayIndex: UInt = 5                   // 0 to max positive
+let colorComponent: UInt8 = 255            // RGB values (0-255)
+
+// Floating point precision
+let roughCalculation: Float = 3.14159      // 32-bit, ~6 decimal digits
+let preciseCalculation: Double = 3.14159265359 // 64-bit, ~15 decimal digits
+</code></pre>
+<h3 id="string-manipulation---modern-swift-way"><a class="header" href="#string-manipulation---modern-swift-way">String Manipulation - Modern Swift Way</a></h3>
+<pre><code class="language-swift">// String interpolation (preferred over concatenation)
+let name = &quot;Alice&quot;
+let age = 30
+let greeting = &quot;Hello, \(name)! You are \(age) years old.&quot;
+
+// Multi-line strings
+let poem = &quot;&quot;&quot;
+    Roses are red,
+    Violets are blue,
+    Swift is awesome,
+    And so are you!
+    &quot;&quot;&quot;
+
+// String methods you'll use daily
+let email = &quot;  user@example.com  &quot;
+let cleanEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+let isValidEmail = cleanEmail.contains(&quot;@&quot;) &amp;&amp; cleanEmail.contains(&quot;.&quot;)
+
+// String formatting for UI
+let formattedPrice = String(format: &quot;%.2f&quot;, 29.99)  // &quot;29.99&quot;
+let paddedNumber = String(format: &quot;%03d&quot;, 7)        // &quot;007&quot;
+</code></pre>
+<h2 id="-optionals---swifts-safety-net"><a class="header" href="#-optionals---swifts-safety-net">❓ Optionals - Swift's Safety Net</a></h2>
+<h3 id="understanding-optionals"><a class="header" href="#understanding-optionals">Understanding Optionals</a></h3>
+<pre><code class="language-swift">// Optionals represent &quot;might have a value, might not&quot;
+var userName: String? = nil                // No value yet
+userName = &quot;john_doe&quot;                      // Now has a value
+
+// Dictionary lookups return optionals
+let userAges = [&quot;Alice&quot;: 30, &quot;Bob&quot;: 25]
+let aliceAge = userAges[&quot;Alice&quot;]           // Optional(30)
+let charlieAge = userAges[&quot;Charlie&quot;]       // nil
+</code></pre>
+<h3 id="safe-unwrapping-techniques"><a class="header" href="#safe-unwrapping-techniques">Safe Unwrapping Techniques</a></h3>
+<pre><code class="language-swift">// 1. Optional binding (if let) - Most common
+if let age = userAges[&quot;Alice&quot;] {
+    print(&quot;Alice is \(age) years old&quot;)
+} else {
+    print(&quot;Alice's age is unknown&quot;)
+}
+
+// 2. Guard statements - Early exit pattern
+func processUser(name: String?) {
+    guard let userName = name else {
+        print(&quot;Invalid user name&quot;)
+        return
+    }
+    
+    // userName is safely unwrapped here
+    print(&quot;Processing user: \(userName)&quot;)
+}
+
+// 3. Nil coalescing - Provide defaults
+let displayName = userName ?? &quot;Guest&quot;
+let itemCount = items.count &gt; 0 ? items.count : 0
+
+// 4. Optional chaining - Safe property access
+struct User {
+    let profile: Profile?
+}
+
+struct Profile {
+    let avatar: String?
+}
+
+let user = User(profile: Profile(avatar: &quot;avatar.jpg&quot;))
+let avatarURL = user.profile?.avatar ?? &quot;default.jpg&quot;
+</code></pre>
+<h3 id="when-not-to-force-unwrap"><a class="header" href="#when-not-to-force-unwrap">When NOT to Force Unwrap</a></h3>
+<pre><code class="language-swift">// ❌ Dangerous - will crash if nil
+let forcedAge = userAges[&quot;Charlie&quot;]!       // Runtime crash!
+
+// ✅ Safe alternatives
+let safeAge = userAges[&quot;Charlie&quot;] ?? 0     // Default value
+if let age = userAges[&quot;Charlie&quot;] {         // Optional binding
+    // Use age safely
+}
+
+// ⚠️ Force unwrapping is OK only when you're 100% certain
+let url = URL(string: &quot;https://apple.com&quot;)! // URL is valid
+</code></pre>
+<h2 id="-functions---building-blocks"><a class="header" href="#-functions---building-blocks">🏗️ Functions - Building Blocks</a></h2>
+<h3 id="function-syntax-and-best-practices"><a class="header" href="#function-syntax-and-best-practices">Function Syntax and Best Practices</a></h3>
+<pre><code class="language-swift">// Basic function with clear parameter names
+func calculateTip(billAmount: Double, tipPercentage: Double) -&gt; Double {
+    return billAmount * (tipPercentage / 100)
+}
+
+// External and internal parameter names
+func send(message: String, to recipient: String) {
+    print(&quot;Sending '\(message)' to \(recipient)&quot;)
+}
+
+// Usage reads like English
+send(message: &quot;Hello!&quot;, to: &quot;Alice&quot;)
+
+// Default parameters
+func createUser(name: String, age: Int = 18, isActive: Bool = true) -&gt; User {
+    return User(name: name, age: age, isActive: isActive)
+}
+
+// Multiple ways to call
+let user1 = createUser(name: &quot;Alice&quot;)
+let user2 = createUser(name: &quot;Bob&quot;, age: 25)
+let user3 = createUser(name: &quot;Charlie&quot;, age: 30, isActive: false)
+</code></pre>
+<h3 id="advanced-function-features"><a class="header" href="#advanced-function-features">Advanced Function Features</a></h3>
+<pre><code class="language-swift">// Variadic parameters
+func average(of numbers: Double...) -&gt; Double {
+    let sum = numbers.reduce(0, +)
+    return sum / Double(numbers.count)
+}
+
+let avg = average(of: 1.0, 2.0, 3.0, 4.0, 5.0)
+
+// In-out parameters (modify the original)
+func swapValues&lt;T&gt;(_ a: inout T, _ b: inout T) {
+    let temp = a
+    a = b
+    b = temp
+}
+
+var x = 5
+var y = 10
+swapValues(&amp;x, &amp;y)  // x is now 10, y is now 5
+
+// Functions as first-class citizens
+func applyOperation(_ a: Int, _ b: Int, operation: (Int, Int) -&gt; Int) -&gt; Int {
+    return operation(a, b)
+}
+
+let result = applyOperation(5, 3, operation: +)  // 8
+</code></pre>
+<h2 id="-control-flow"><a class="header" href="#-control-flow">🎮 Control Flow</a></h2>
+<h3 id="conditional-statements"><a class="header" href="#conditional-statements">Conditional Statements</a></h3>
+<pre><code class="language-swift">// Traditional if-else
+let temperature = 75
+if temperature &gt; 80 {
+    print(&quot;It's hot!&quot;)
+} else if temperature &gt; 60 {
+    print(&quot;It's warm&quot;)
+} else {
+    print(&quot;It's cool&quot;)
+}
+
+// Switch statements - Powerful pattern matching
+let grade = &quot;A&quot;
+switch grade {
+case &quot;A&quot;, &quot;A+&quot;:
+    print(&quot;Excellent!&quot;)
+case &quot;B&quot;, &quot;B+&quot;:
+    print(&quot;Good job!&quot;)
+case &quot;C&quot;:
+    print(&quot;Average&quot;)
+default:
+    print(&quot;Needs improvement&quot;)
+}
+
+// Switch with ranges
+let score = 85
+switch score {
+case 90...100:
+    print(&quot;A grade&quot;)
+case 80..&lt;90:
+    print(&quot;B grade&quot;)
+case 70..&lt;80:
+    print(&quot;C grade&quot;)
+default:
+    print(&quot;Below C&quot;)
+}
+</code></pre>
+<h3 id="loops-and-iteration"><a class="header" href="#loops-and-iteration">Loops and Iteration</a></h3>
+<pre><code class="language-swift">// For-in loops (most common)
+let fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;orange&quot;]
+for fruit in fruits {
+    print(&quot;I like \(fruit)&quot;)
+}
+
+// With indices when needed
+for (index, fruit) in fruits.enumerated() {
+    print(&quot;\(index + 1). \(fruit)&quot;)
+}
+
+// Range-based loops
+for i in 1...5 {
+    print(&quot;Count: \(i)&quot;)
+}
+
+// While loops for unknown iterations
+var attempts = 0
+while attempts &lt; 3 {
+    print(&quot;Attempt \(attempts + 1)&quot;)
+    attempts += 1
+}
+
+// Repeat-while (do-while equivalent)
+var input: String
+repeat {
+    input = readLine() ?? &quot;&quot;
+} while input.isEmpty
+</code></pre>
+<h2 id="-collections"><a class="header" href="#-collections">🧮 Collections</a></h2>
+<h3 id="arrays---ordered-collections"><a class="header" href="#arrays---ordered-collections">Arrays - Ordered Collections</a></h3>
+<pre><code class="language-swift">// Creating arrays
+var numbers: [Int] = []                    // Empty array
+var colors = [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]      // Array literal
+var scores = Array(repeating: 0, count: 5) // [0, 0, 0, 0, 0]
+
+// Common operations
+colors.append(&quot;yellow&quot;)                     // Add to end
+colors.insert(&quot;purple&quot;, at: 1)             // Insert at index
+colors.remove(at: 0)                       // Remove by index
+colors.removeAll { $0.hasPrefix(&quot;g&quot;) }     // Remove matching elements
+
+// Useful array methods
+let evenNumbers = numbers.filter { $0 % 2 == 0 }
+let doubled = numbers.map { $0 * 2 }
+let sum = numbers.reduce(0, +)
+let hasLargeNumber = numbers.contains { $0 &gt; 100 }
+</code></pre>
+<h3 id="dictionaries---key-value-storage"><a class="header" href="#dictionaries---key-value-storage">Dictionaries - Key-Value Storage</a></h3>
+<pre><code class="language-swift">// Creating dictionaries
+var userScores: [String: Int] = [:]
+var capitals = [
+    &quot;France&quot;: &quot;Paris&quot;,
+    &quot;Japan&quot;: &quot;Tokyo&quot;,
+    &quot;Brazil&quot;: &quot;Brasília&quot;
+]
+
+// Safe access with optionals
+if let capital = capitals[&quot;France&quot;] {
+    print(&quot;Capital of France is \(capital)&quot;)
+}
+
+// Updating values
+capitals[&quot;Germany&quot;] = &quot;Berlin&quot;              // Add new
+capitals[&quot;Japan&quot;] = &quot;Tokyo&quot;                 // Update existing
+capitals.removeValue(forKey: &quot;Brazil&quot;)      // Remove
+
+// Iterating over dictionaries
+for (country, capital) in capitals {
+    print(&quot;\(capital) is the capital of \(country)&quot;)
+}
+</code></pre>
+<h3 id="sets---unique-collections"><a class="header" href="#sets---unique-collections">Sets - Unique Collections</a></h3>
+<pre><code class="language-swift">// Creating sets
+var uniqueNumbers: Set&lt;Int&gt; = []
+var vowels: Set&lt;Character&gt; = [&quot;a&quot;, &quot;e&quot;, &quot;i&quot;, &quot;o&quot;, &quot;u&quot;]
+
+// Set operations
+let setA: Set = [1, 2, 3, 4]
+let setB: Set = [3, 4, 5, 6]
+
+let union = setA.union(setB)               // [1, 2, 3, 4, 5, 6]
+let intersection = setA.intersection(setB)  // [3, 4]
+let difference = setA.subtracting(setB)     // [1, 2]
+</code></pre>
+<h2 id="-real-world-example-todo-app-model"><a class="header" href="#-real-world-example-todo-app-model">🎯 Real-World Example: Todo App Model</a></h2>
+<pre><code class="language-swift">import Foundation
+
+// Enum for task priority
+enum Priority: String, CaseIterable {
+    case low = &quot;Low&quot;
+    case medium = &quot;Medium&quot;
+    case high = &quot;High&quot;
+    
+    var color: String {
+        switch self {
+        case .low: return &quot;green&quot;
+        case .medium: return &quot;orange&quot;
+        case .high: return &quot;red&quot;
+        }
+    }
+}
+
+// Task model
+struct Task {
+    let id = UUID()
+    var title: String
+    var isCompleted: Bool = false
+    var priority: Priority = .medium
+    let createdAt = Date()
+    var dueDate: Date?
+    
+    // Computed property
+    var isOverdue: Bool {
+        guard let dueDate = dueDate else { return false }
+        return !isCompleted &amp;&amp; dueDate &lt; Date()
+    }
+    
+    // Method to toggle completion
+    mutating func toggleCompletion() {
+        isCompleted.toggle()
+    }
+}
+
+// Todo manager
+class TodoManager {
+    private var tasks: [Task] = []
+    
+    func addTask(title: String, priority: Priority = .medium, dueDate: Date? = nil) {
+        let task = Task(title: title, priority: priority, dueDate: dueDate)
+        tasks.append(task)
+    }
+    
+    func completeTask(withId id: UUID) {
+        if let index = tasks.firstIndex(where: { $0.id == id }) {
+            tasks[index].toggleCompletion()
+        }
+    }
+    
+    func deleteTask(withId id: UUID) {
+        tasks.removeAll { $0.id == id }
+    }
+    
+    // Computed properties for different views
+    var completedTasks: [Task] {
+        tasks.filter { $0.isCompleted }
+    }
+    
+    var pendingTasks: [Task] {
+        tasks.filter { !$0.isCompleted }
+    }
+    
+    var overdueTasks: [Task] {
+        tasks.filter { $0.isOverdue }
+    }
+    
+    var highPriorityTasks: [Task] {
+        tasks.filter { $0.priority == .high &amp;&amp; !$0.isCompleted }
+    }
+}
+
+// Usage example
+let todoManager = TodoManager()
+todoManager.addTask(title: &quot;Learn Swift&quot;, priority: .high)
+todoManager.addTask(title: &quot;Build an app&quot;, priority: .medium, dueDate: Date().addingTimeInterval(86400 * 7))
+todoManager.addTask(title: &quot;Submit to App Store&quot;, priority: .high, dueDate: Date().addingTimeInterval(86400 * 30))
+
+print(&quot;High priority tasks: \(todoManager.highPriorityTasks.count)&quot;)
+print(&quot;Overdue tasks: \(todoManager.overdueTasks.count)&quot;)
+</code></pre>
+<h2 id="-common-patterns-and-idioms"><a class="header" href="#-common-patterns-and-idioms">🔍 Common Patterns and Idioms</a></h2>
+<h3 id="error-handling-preview"><a class="header" href="#error-handling-preview">Error Handling Preview</a></h3>
+<pre><code class="language-swift">enum ValidationError: Error {
+    case emptyTitle
+    case titleTooLong
+    case invalidEmail
+}
+
+func validateTask(title: String, email: String?) throws -&gt; Bool {
+    guard !title.isEmpty else {
+        throw ValidationError.emptyTitle
+    }
+    
+    guard title.count &lt;= 100 else {
+        throw ValidationError.titleTooLong
+    }
+    
+    if let email = email {
+        guard email.contains(&quot;@&quot;) else {
+            throw ValidationError.invalidEmail
+        }
+    }
+    
+    return true
+}
+
+// Usage with do-catch
+do {
+    try validateTask(title: &quot;Learn Swift&quot;, email: &quot;user@example.com&quot;)
+    print(&quot;Task is valid!&quot;)
+} catch ValidationError.emptyTitle {
+    print(&quot;Title cannot be empty&quot;)
+} catch ValidationError.titleTooLong {
+    print(&quot;Title is too long&quot;)
+} catch {
+    print(&quot;Validation failed: \(error)&quot;)
+}
+</code></pre>
+<h2 id="-practice-exercises"><a class="header" href="#-practice-exercises">🎯 Practice Exercises</a></h2>
+<h3 id="exercise-1-grade-calculator"><a class="header" href="#exercise-1-grade-calculator">Exercise 1: Grade Calculator</a></h3>
+<pre><code class="language-swift">// Create a function that calculates letter grade from percentage
+func calculateGrade(percentage: Double) -&gt; String {
+    // Your implementation here
+    switch percentage {
+    case 90...100: return &quot;A&quot;
+    case 80..&lt;90: return &quot;B&quot;
+    case 70..&lt;80: return &quot;C&quot;
+    case 60..&lt;70: return &quot;D&quot;
+    default: return &quot;F&quot;
+    }
+}
+
+// Test cases
+assert(calculateGrade(percentage: 95) == &quot;A&quot;)
+assert(calculateGrade(percentage: 85) == &quot;B&quot;)
+assert(calculateGrade(percentage: 55) == &quot;F&quot;)
+</code></pre>
+<h3 id="exercise-2-word-counter"><a class="header" href="#exercise-2-word-counter">Exercise 2: Word Counter</a></h3>
+<pre><code class="language-swift">// Count word frequency in a text
+func wordFrequency(in text: String) -&gt; [String: Int] {
+    let words = text.lowercased()
+        .components(separatedBy: .punctuationCharacters)
+        .joined()
+        .components(separatedBy: .whitespacesAndNewlines)
+        .filter { !$0.isEmpty }
+    
+    var frequency: [String: Int] = [:]
+    for word in words {
+        frequency[word, default: 0] += 1
+    }
+    
+    return frequency
+}
+
+// Test
+let text = &quot;Swift is great. Swift is powerful. Swift is fun!&quot;
+let result = wordFrequency(in: text)
+print(result) // [&quot;swift&quot;: 3, &quot;is&quot;: 3, &quot;great&quot;: 1, &quot;powerful&quot;: 1, &quot;fun&quot;: 1]
+</code></pre>
+<h2 id="-key-takeaways"><a class="header" href="#-key-takeaways">📚 Key Takeaways</a></h2>
+<ol>
+<li><strong>Prefer <code>let</code> over <code>var</code></strong> - Immutability makes code safer and more predictable</li>
+<li><strong>Use optionals safely</strong> - Never force unwrap unless you're absolutely certain</li>
+<li><strong>Leverage type inference</strong> - Let Swift figure out types when it's clear</li>
+<li><strong>Write descriptive function names</strong> - Code should read like English</li>
+<li><strong>Use collections appropriately</strong> - Arrays for order, Sets for uniqueness, Dictionaries for lookup</li>
+<li><strong>Handle errors gracefully</strong> - Use Swift's error handling system</li>
+</ol>
+<h2 id="-whats-next"><a class="header" href="#-whats-next">🔗 What's Next?</a></h2>
+<p>In the next chapter, we'll explore <strong>Collections &amp; Control Flow</strong> in depth, learning advanced array operations, functional programming concepts, and complex control flow patterns.</p>
+<hr />
+<p><em>Practice these concepts in Swift Playgrounds or Xcode to reinforce your learning!</em></p>
 
                     </main>
 
@@ -229,7 +715,6 @@
         <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-
 
 
     </div>
