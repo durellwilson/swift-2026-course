@@ -19,8 +19,8 @@ jobs:
         if [ -d "book/book" ]; then cp -r book/book/* dist/; fi
         if [ -d "build" ]; then cp -r build/* dist/; fi
         if [ -d "docs" ]; then cp -r docs/* dist/; fi
-        echo "# Deployed $(date)" > dist/index.html 2>/dev/null || true
     - uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: dist
+
