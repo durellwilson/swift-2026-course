@@ -79,7 +79,7 @@
 
 # Platform-Specific Development
 
-- [iOS 26 Features](./platforms/ios.md)
+- [iOS 18+ Features](./platforms/ios.md)
 - [macOS Sequoia](./platforms/macos.md)
 - [watchOS 11](./platforms/watchos.md)
 - [visionOS 2](./platforms/visionos.md)
@@ -153,4 +153,5 @@
 
 - [Agent Overview](./auto-generated/README.md)
 - [Advanced Swift Patterns](./swift/advanced-patterns.md)
+
 
