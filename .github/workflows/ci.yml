@@ -12,68 +12,33 @@ permissions:
   id-token: write
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     
-    - name: Setup Node.js
-      if: hashFiles('package.json') != ''
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Setup Python
-      if: hashFiles('requirements.txt', '*.py') != ''
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        cache: 'pip'
-    
-    - name: Install dependencies
+    - name: Build mdBook
       run: |
-        if [ -f "package.json" ]; then
-          npm ci || true
-        fi
-        if [ -f "requirements.txt" ]; then
-          pip install -r requirements.txt || true
-        fi
-    
-    - name: Run tests
-      run: |
-        if [ -f "package.json" ]; then
-          npm run test --if-present || true
-        fi
-        if [ -f "requirements.txt" ]; then
-          python -m pytest --tb=short 2>/dev/null || true
-        fi
+        curl -L https://github.com/rust-lang/mdBook/releases/download/v0.4.36/mdbook-v0.4.36-x86_64-unknown-linux-gnu.tar.gz | tar xz
+        cd book && ../mdbook build
 
   deploy:
-    needs: test
+    needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     
     steps:
     - uses: actions/checkout@v4
     
-    - name: Setup Node.js
-      if: hashFiles('package.json') != ''
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Build
+    - name: Build mdBook
       run: |
-        if [ -f "package.json" ]; then
-          npm ci || true
-          npm run build --if-present || true
-        fi
+        curl -L https://github.com/rust-lang/mdBook/releases/download/v0.4.36/mdbook-v0.4.36-x86_64-unknown-linux-gnu.tar.gz | tar xz
+        cd book && ../mdbook build
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dist
+        publish_dir: ./book/docs
+
 
