@@ -79,7 +79,7 @@
 
 # Platform-Specific Development
 
-- [iOS 18+ Features](./platforms/ios.md)
+- [iOS 26 Features](./platforms/ios.md)
 - [macOS Sequoia](./platforms/macos.md)
 - [watchOS 11](./platforms/watchos.md)
 - [visionOS 2](./platforms/visionos.md)
@@ -131,6 +131,10 @@
 - [Custom Frameworks](./advanced/frameworks.md)
 - [Performance Profiling](./advanced/profiling.md)
 
+# 2025-2026 Research & Updates
+
+- [Latest Research & Findings](./research-2025-2026.md)
+
 # 2025 Video Resources
 
 - [Apple Intelligence Deep Dive](./videos/apple-intelligence.md)
@@ -149,3 +153,4 @@
 
 - [Agent Overview](./auto-generated/README.md)
 - [Advanced Swift Patterns](./swift/advanced-patterns.md)
+
