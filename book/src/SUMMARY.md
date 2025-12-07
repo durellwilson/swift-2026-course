@@ -135,6 +135,14 @@
 
 - [Latest Research & Findings](./research-2025-2026.md)
 
+# Research Quality & Methodology
+
+- [Research Quality Standards](./research-quality.md)
+- [Research Methodology](./research-methodology.md)
+- [Peer Review Process](./peer-review-process.md)
+- [Source Verification](./source-verification.md)
+- [Benchmarking Standards](./benchmarking-standards.md)
+
 # 2025 Video Resources
 
 - [Apple Intelligence Deep Dive](./videos/apple-intelligence.md)
