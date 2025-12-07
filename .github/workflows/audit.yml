@@ -10,6 +10,9 @@ permissions:
   contents: read
   issues: write
 
+env:
+  MDBOOK_VERSION: v0.4.36
+
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -18,7 +21,7 @@ jobs:
       
       - name: Install mdBook
         run: |
-          curl -L https://github.com/rust-lang/mdBook/releases/download/v0.4.36/mdbook-v0.4.36-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          curl -L https://github.com/rust-lang/mdBook/releases/download/${{ env.MDBOOK_VERSION }}/mdbook-${{ env.MDBOOK_VERSION }}-x86_64-unknown-linux-gnu.tar.gz | tar xz
           chmod +x mdbook
           
       - name: Verify book structure
@@ -57,7 +60,7 @@ jobs:
       - name: Check GitHub Pages deployment
         run: |
           echo "Checking GitHub Pages URL..."
-          curl -I https://durellwilson.github.io/swift-2026-course/ || echo "Pages may not be deployed yet"
+          curl -I https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/ || echo "Pages may not be deployed yet"
           
       - name: Audit summary
         run: |

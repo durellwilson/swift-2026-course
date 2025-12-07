@@ -1,8 +1,3 @@
-# mdBook build artifacts
-# Note: book/docs/ is currently tracked in git but should be built by CI
-# Consider removing from git in a future cleanup
-# book/docs/
-
 # mdBook binary
 mdbook
 
