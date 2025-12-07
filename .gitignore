@@ -1,0 +1,21 @@
+# mdBook build artifacts
+# Note: book/docs/ is currently tracked in git but should be built by CI
+# Consider removing from git in a future cleanup
+# book/docs/
+
+# mdBook binary
+mdbook
+
+# macOS
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+.*.tmp
