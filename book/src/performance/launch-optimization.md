@@ -1,482 +1,40 @@
 # Launch Time Optimization
 
-> Achieve sub-second app launch times with proven optimization techniques
+> Target: <400ms cold launch for exceptional user experience
 
-## 🎯 Learning Objectives
+## Overview
 
-Master app launch optimization to create lightning-fast user experiences:
-- Understand the app launch process and measurement techniques
-- Implement cold and warm launch optimizations
-- Optimize binary size and loading performance
-- Use Xcode tools for performance profiling
-- Apply real-world optimization strategies
+App launch time is the first impression users have of your app. Studies show that 80% of users will uninstall an app that crashes or performs poorly during launch. Optimizing launch time is critical for user retention and App Store ratings.
 
-## ⏱️ Understanding App Launch
+**Industry Standards**:
+- Excellent: <400ms
+- Good: 400-800ms
+- Acceptable: 800-1200ms
+- Poor: >1200ms
 
-### Launch Types and Phases
+## Measuring Launch Time
 
-```swift
-// App launch phases (measured by Xcode Organizer)
-/*
-1. Pre-main (System work before main() is called)
-   - Dynamic library loading
-   - Objective-C runtime setup
-   - Static initializers
-   - +load methods
+### Using Instruments
 
-2. Main (Your code execution)
-   - main() function
-   - UIApplicationMain
-   - App delegate methods
-   - First frame render
+**App Launch Template**:
+1. Open Xcode → Product → Profile (⌘I)
+2. Select "App Launch" template
+3. Record app launch
+4. Analyze time breakdown
 
-3. Post-main (First interaction)
-   - View controller loading
-   - Initial data loading
-   - UI setup completion
-*/
+**Key Metrics**:
+- **Total Time**: Process creation to first frame
+- **Pre-main Time**: Dynamic linking, initializers
+- **Main Time**: `main()` to `applicationDidFinishLaunching`
+- **First Frame**: Initial UI render
 
-import UIKit
-
-@main
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        // 🚀 CRITICAL: Keep this method under 400ms
-        let startTime = CFAbsoluteTimeGetCurrent()
-        
-        // Essential initialization only
-        setupCrashReporting()
-        setupAnalytics()
-        
-        // Defer heavy work
-        DispatchQueue.main.async {
-            self.performDeferredSetup()
-        }
-        
-        let endTime = CFAbsoluteTimeGetCurrent()
-        print("didFinishLaunching took: \((endTime - startTime) * 1000)ms")
-        
-        return true
-    }
-    
-    private func setupCrashReporting() {
-        // Lightweight crash reporting setup
-        // FirebaseCrashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
-    }
-    
-    private func setupAnalytics() {
-        // Minimal analytics initialization
-        // Analytics.configure()
-    }
-    
-    private func performDeferredSetup() {
-        // Heavy initialization after launch
-        setupNetworking()
-        preloadCriticalData()
-        setupLocationServices()
-    }
-}
-```
-
-### Measuring Launch Performance
-
-```swift
-import os.signpost
-
-class LaunchProfiler {
-    private static let subsystem = "com.yourapp.performance"
-    private static let category = "Launch"
-    private static let log = OSLog(subsystem: subsystem, category: category)
-    
-    static func beginLaunchMeasurement() {
-        os_signpost(.begin, log: log, name: "AppLaunch")
-    }
-    
-    static func endLaunchMeasurement() {
-        os_signpost(.end, log: log, name: "AppLaunch")
-    }
-    
-    static func measureCriticalPath<T>(_ name: String, operation: () throws -> T) rethrows -> T {
-        let signpostID = OSSignpostID(log: log)
-        os_signpost(.begin, log: log, name: "CriticalPath", signpostID: signpostID, "%{public}s", name)
-        
-        let result = try operation()
-        
-        os_signpost(.end, log: log, name: "CriticalPath", signpostID: signpostID)
-        return result
-    }
-}
-
-// Usage in SceneDelegate
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
-        LaunchProfiler.beginLaunchMeasurement()
-        
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-        
-        let window = UIWindow(windowScene: windowScene)
-        
-        // Measure critical UI setup
-        let rootViewController = LaunchProfiler.measureCriticalPath("RootViewController") {
-            return createRootViewController()
-        }
-        
-        window.rootViewController = rootViewController
-        window.makeKeyAndVisible()
-        self.window = window
-        
-        // End measurement when first frame is ready
-        DispatchQueue.main.async {
-            LaunchProfiler.endLaunchMeasurement()
-        }
-    }
-    
-    private func createRootViewController() -> UIViewController {
-        // Lightweight root view controller
-        return MainTabBarController()
-    }
-}
-```
-
-## 🚀 Pre-Main Optimizations
-
-### Reducing Dynamic Library Loading
-
-```swift
-// ❌ Avoid importing unnecessary frameworks
-import UIKit
-import Foundation
-// import SomeHeavyFramework  // Only import if actually used
-
-// ✅ Use @_implementationOnly for internal dependencies
-@_implementationOnly import InternalUtilities
-
-// ✅ Lazy framework loading
-class FrameworkManager {
-    private var heavyFramework: AnyObject?
-    
-    func getHeavyFramework() -> AnyObject? {
-        if heavyFramework == nil {
-            // Load framework only when needed
-            heavyFramework = loadHeavyFrameworkDynamically()
-        }
-        return heavyFramework
-    }
-    
-    private func loadHeavyFrameworkDynamically() -> AnyObject? {
-        // Dynamic loading implementation
-        return nil
-    }
-}
-```
-
-### Optimizing Static Initializers
-
-```swift
-// ❌ Heavy work in static initializers
-class BadExample {
-    static let expensiveResource = createExpensiveResource() // Runs at launch!
-    
-    static func createExpensiveResource() -> SomeResource {
-        // This runs during pre-main phase
-        return SomeResource()
-    }
-}
-
-// ✅ Lazy initialization
-class GoodExample {
-    private static var _expensiveResource: SomeResource?
-    
-    static var expensiveResource: SomeResource {
-        if _expensiveResource == nil {
-            _expensiveResource = createExpensiveResource()
-        }
-        return _expensiveResource!
-    }
-    
-    private static func createExpensiveResource() -> SomeResource {
-        return SomeResource()
-    }
-}
-
-// ✅ Even better: Use lazy property
-class BestExample {
-    static let expensiveResource: SomeResource = {
-        return SomeResource()
-    }()
-}
-```
-
-### Eliminating +load Methods
-
-```swift
-// ❌ Avoid +load methods (they block launch)
-extension UIViewController {
-    @objc static func load() {
-        // This runs during pre-main and blocks launch
-        setupSwizzling()
-    }
-}
-
-// ✅ Use +initialize or lazy setup instead
-extension UIViewController {
-    @objc static func initialize() {
-        // Runs when class is first used
-        if self == UIViewController.self {
-            setupSwizzling()
-        }
-    }
-}
-
-// ✅ Or defer setup until needed
-class ViewControllerSetup {
-    private static var isSetup = false
-    
-    static func ensureSetup() {
-        guard !isSetup else { return }
-        setupSwizzling()
-        isSetup = true
-    }
-}
-```
-
-## 📱 Main Phase Optimizations
-
-### Optimizing App Delegate
-
-```swift
-@main
-class OptimizedAppDelegate: UIResponder, UIApplicationDelegate {
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        // ✅ Only essential, synchronous setup
-        setupCrashReporting()
-        
-        // ✅ Defer everything else
-        deferHeavySetup()
-        
-        return true
-    }
-    
-    private func deferHeavySetup() {
-        // Use different queues based on priority
-        
-        // High priority - needed soon
-        DispatchQueue.main.async {
-            self.setupAnalytics()
-            self.setupPushNotifications()
-        }
-        
-        // Medium priority - can wait a bit
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.setupNetworking()
-            self.preloadCriticalData()
-        }
-        
-        // Low priority - background setup
-        DispatchQueue.global(qos: .utility).async {
-            self.setupLocationServices()
-            self.cleanupOldFiles()
-        }
-    }
-    
-    private func setupCrashReporting() {
-        // Minimal crash reporting - must be synchronous
-    }
-    
-    private func setupAnalytics() {
-        // Analytics can be async
-    }
-    
-    private func setupPushNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { _, _ in }
-    }
-    
-    private func setupNetworking() {
-        // Configure URLSession, etc.
-    }
-    
-    private func preloadCriticalData() {
-        // Load data that will be needed immediately
-    }
-    
-    private func setupLocationServices() {
-        // Heavy location setup
-    }
-    
-    private func cleanupOldFiles() {
-        // File cleanup can happen in background
-    }
-}
-```
-
-### Optimizing Root View Controller
-
-```swift
-class FastRootViewController: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // ✅ Minimal UI setup only
-        setupBasicUI()
-        
-        // ✅ Defer heavy operations
-        DispatchQueue.main.async {
-            self.setupComplexUI()
-        }
-        
-        // ✅ Load data asynchronously
-        loadInitialData()
-    }
-    
-    private func setupBasicUI() {
-        // Only essential UI elements
-        view.backgroundColor = .systemBackground
-        
-        // Show loading state immediately
-        showLoadingState()
-    }
-    
-    private func setupComplexUI() {
-        // Complex UI setup after first frame
-        setupNavigationBar()
-        setupTabBar()
-        setupGestures()
-    }
-    
-    private func showLoadingState() {
-        let loadingView = UIActivityIndicatorView(style: .large)
-        loadingView.startAnimating()
-        loadingView.center = view.center
-        view.addSubview(loadingView)
-    }
-    
-    private func loadInitialData() {
-        Task {
-            do {
-                let data = try await DataManager.shared.loadCriticalData()
-                await MainActor.run {
-                    self.updateUI(with: data)
-                }
-            } catch {
-                await MainActor.run {
-                    self.showError(error)
-                }
-            }
-        }
-    }
-}
-```
-
-## 🗂️ Binary Size Optimization
-
-### Asset Optimization
-
-```swift
-// ✅ Use asset catalogs for automatic optimization
-// Assets.xcassets automatically provides:
-// - Image compression
-// - Device-specific variants
-// - App thinning support
-
-class ImageManager {
-    // ✅ Lazy image loading
-    private static var imageCache: [String: UIImage] = [:]
-    
-    static func image(named name: String) -> UIImage? {
-        if let cached = imageCache[name] {
-            return cached
-        }
-        
-        let image = UIImage(named: name)
-        imageCache[name] = image
-        return image
-    }
-    
-    // ✅ Async image loading for large images
-    static func loadLargeImage(named name: String) async -> UIImage? {
-        return await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .userInitiated).async {
-                let image = UIImage(named: name)
-                continuation.resume(returning: image)
-            }
-        }
-    }
-}
-
-// ✅ Use SF Symbols when possible (zero binary size impact)
-extension UIImage {
-    static func systemIcon(_ name: String, size: CGFloat = 24) -> UIImage? {
-        let config = UIImage.SymbolConfiguration(pointSize: size)
-        return UIImage(systemName: name, withConfiguration: config)
-    }
-}
-```
-
-### Code Size Optimization
-
-```swift
-// ✅ Use generics to reduce code duplication
-protocol Cacheable {
-    associatedtype Key: Hashable
-    var cacheKey: Key { get }
-}
-
-class GenericCache<T: Cacheable> {
-    private var cache: [T.Key: T] = [:]
-    
-    func store(_ item: T) {
-        cache[item.cacheKey] = item
-    }
-    
-    func retrieve(key: T.Key) -> T? {
-        return cache[key]
-    }
-}
-
-// ✅ Use protocol extensions for shared behavior
-protocol ViewConfigurable {
-    func configure()
-}
-
-extension ViewConfigurable where Self: UIView {
-    func applyCommonStyling() {
-        layer.cornerRadius = 8
-        layer.shadowOpacity = 0.1
-        layer.shadowRadius = 4
-    }
-}
-
-// ✅ Avoid large switch statements - use lookup tables
-class IconProvider {
-    private static let iconMap: [String: String] = [
-        "home": "house",
-        "profile": "person.circle",
-        "settings": "gear",
-        "search": "magnifyingglass"
-    ]
-    
-    static func icon(for type: String) -> String {
-        return iconMap[type] ?? "questionmark"
-    }
-}
-```
-
-## 📊 Performance Monitoring
-
-### Real-Time Launch Metrics
+### MetricKit Integration
 
 ```swift
 import MetricKit
 
-class LaunchMetrics: NSObject, MXMetricManagerSubscriber {
-    static let shared = LaunchMetrics()
+class MetricsManager: NSObject, MXMetricManagerSubscriber {
+    static let shared = MetricsManager()
     
     override init() {
         super.init()
@@ -486,297 +44,430 @@ class LaunchMetrics: NSObject, MXMetricManagerSubscriber {
     func didReceive(_ payloads: [MXMetricPayload]) {
         for payload in payloads {
             if let launchMetrics = payload.applicationLaunchMetrics {
-                processlLaunchMetrics(launchMetrics)
+                let avgLaunch = launchMetrics.histogrammedTimeToFirstDraw
+                    .averageBucketValue()
+                print("Average launch: \(avgLaunch)ms")
             }
         }
     }
-    
-    private func processlLaunchMetrics(_ metrics: MXApplicationLaunchMetrics) {
-        // Track launch time trends
-        let timeToFirstDraw = metrics.histogrammedTimeToFirstDraw
-        let resumeTime = metrics.histogrammedApplicationResumeTime
-        
-        // Send to analytics
-        Analytics.track("app_launch_performance", parameters: [
-            "time_to_first_draw": timeToFirstDraw.averageValue,
-            "resume_time": resumeTime?.averageValue ?? 0
-        ])
-        
-        // Alert if performance degrades
-        if timeToFirstDraw.averageValue > 2.0 { // 2 seconds
-            reportPerformanceIssue("Slow launch detected")
-        }
-    }
-    
-    private func reportPerformanceIssue(_ message: String) {
-        // Report to crash reporting service
-        print("Performance Issue: \(message)")
+}
+```
+
+### XCTest Performance Measurement
+
+```swift
+func testLaunchPerformance() {
+    measure(metrics: [XCTApplicationLaunchMetric()]) {
+        XCUIApplication().launch()
     }
 }
 ```
 
-### Custom Launch Timing
+## Pre-Main Optimization
+
+### Reduce Dynamic Libraries
 
 ```swift
-class LaunchTimer {
-    private static var startTime: CFAbsoluteTime = 0
-    private static var milestones: [String: CFAbsoluteTime] = [:]
-    
-    static func start() {
-        startTime = CFAbsoluteTimeGetCurrent()
-    }
-    
-    static func milestone(_ name: String) {
-        let currentTime = CFAbsoluteTimeGetCurrent()
-        milestones[name] = currentTime - startTime
-        
-        print("Launch milestone '\(name)': \((currentTime - startTime) * 1000)ms")
-    }
-    
-    static func complete() {
-        let totalTime = CFAbsoluteTimeGetCurrent() - startTime
-        print("Total launch time: \((totalTime) * 1000)ms")
-        
-        // Send metrics to analytics
-        Analytics.track("app_launch_complete", parameters: [
-            "total_time": totalTime,
-            "milestones": milestones
-        ])
+// ❌ Many dynamic frameworks
+import FrameworkA
+import FrameworkB
+import FrameworkC
+// Each adds ~50-100ms
+
+// ✅ Merge or use static linking
+// Build Settings → Mach-O Type → Static Library
+```
+
+**Impact**: Each dynamic framework adds 50-100ms to pre-main time.
+
+### Minimize +load Methods
+
+```swift
+// ❌ Avoid +load (Objective-C)
+@objc class MyClass: NSObject {
+    @objc override class func load() {
+        // Runs at launch - blocks startup
     }
 }
 
-// Usage throughout app launch
-@main
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        LaunchTimer.start()
-        LaunchTimer.milestone("app_delegate_start")
-        
-        // Setup code...
-        
-        LaunchTimer.milestone("app_delegate_complete")
-        return true
+// ✅ Use +initialize or lazy initialization
+@objc class MyClass: NSObject {
+    @objc override class func initialize() {
+        // Runs on first use
     }
 }
 ```
 
-## 🛠️ Xcode Optimization Tools
-
-### Using Instruments for Launch Analysis
+### Optimize Static Initializers
 
 ```swift
-// Add this to measure specific code paths
-import os.signpost
+// ❌ Heavy computation at startup
+let expensiveGlobal = computeExpensiveValue()
 
-class InstrumentsProfiler {
-    private static let log = OSLog(subsystem: "com.yourapp.performance", category: "Launch")
-    
-    static func measureBlock<T>(_ name: String, block: () throws -> T) rethrows -> T {
-        os_signpost(.begin, log: log, name: "LaunchBlock", "%{public}s", name)
-        let result = try block()
-        os_signpost(.end, log: log, name: "LaunchBlock")
-        return result
-    }
-    
-    static func measureAsync<T>(_ name: String, block: () async throws -> T) async rethrows -> T {
-        os_signpost(.begin, log: log, name: "AsyncLaunchBlock", "%{public}s", name)
-        let result = try await block()
-        os_signpost(.end, log: log, name: "AsyncLaunchBlock")
-        return result
-    }
-}
+// ✅ Lazy initialization
+lazy var expensiveValue: Value = {
+    computeExpensiveValue()
+}()
+```
 
-// Usage
-class DataLoader {
-    func loadCriticalData() async throws -> [DataModel] {
-        return try await InstrumentsProfiler.measureAsync("LoadCriticalData") {
-            // Your data loading code
-            return try await performNetworkRequest()
-        }
+## Main Thread Optimization
+
+### Defer Non-Critical Work
+
+```swift
+func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+) -> Bool {
+    
+    // ✅ Critical: Window setup
+    window = UIWindow(frame: UIScreen.main.bounds)
+    window?.rootViewController = MainViewController()
+    window?.makeKeyAndVisible()
+    
+    // ✅ Defer analytics
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        Analytics.initialize()
     }
+    
+    // ✅ Background: Database migration
+    Task.detached(priority: .utility) {
+        await DatabaseManager.migrate()
+    }
+    
+    return true
 }
 ```
 
-### Build Settings for Launch Optimization
+### Lazy Load Dependencies
 
 ```swift
-/*
-Recommended Xcode build settings for launch optimization:
-
-1. Optimization Level: 
-   - Debug: -Onone (for debugging)
-   - Release: -O (for performance)
-
-2. Link-Time Optimization: YES
-   - Enables cross-module optimizations
-
-3. Strip Debug Symbols: YES (Release only)
-   - Reduces binary size
-
-4. Dead Code Stripping: YES
-   - Removes unused code
-
-5. Asset Catalog Compiler Options:
-   - Optimization: space
-   - Output Format: automatic
-
-6. Swift Compilation Mode:
-   - Debug: Incremental
-   - Release: Whole Module
-
-Build Settings in code (for reference):
-*/
-
-// You can check these at runtime
-#if DEBUG
-let isOptimized = false
-#else
-let isOptimized = true
-#endif
+class AppCoordinator {
+    // ❌ Eager initialization
+    let networkManager = NetworkManager()
+    let cacheManager = CacheManager()
+    let analyticsManager = AnalyticsManager()
+    
+    // ✅ Lazy initialization
+    lazy var networkManager = NetworkManager()
+    lazy var cacheManager = CacheManager()
+    lazy var analyticsManager = AnalyticsManager()
+}
 ```
 
-## 🎯 Real-World Launch Optimization
-
-### Complete Optimized App Structure
+### Optimize View Hierarchy
 
 ```swift
-import UIKit
-import os.signpost
-
-@main
-class OptimizedAppDelegate: UIResponder, UIApplicationDelegate {
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        // Start performance monitoring
-        LaunchProfiler.beginLaunchMeasurement()
-        
-        // Only critical setup
-        setupCrashReporting()
-        
-        // Defer everything else
-        scheduleBackgroundSetup()
-        
-        LaunchProfiler.milestone("app_delegate_complete")
-        return true
-    }
-    
-    private func setupCrashReporting() {
-        // Minimal crash reporting setup
-        // Must be synchronous and fast
-    }
-    
-    private func scheduleBackgroundSetup() {
-        // Prioritized background setup
-        DispatchQueue.main.async { [weak self] in
-            self?.setupHighPriorityServices()
-        }
-        
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.setupMediumPriorityServices()
-        }
-        
-        DispatchQueue.global(qos: .utility).async { [weak self] in
-            self?.setupLowPriorityServices()
-        }
-    }
-    
-    private func setupHighPriorityServices() {
-        LaunchProfiler.measureCriticalPath("HighPrioritySetup") {
-            // Analytics, push notifications
-            Analytics.configure()
-            NotificationManager.setup()
-        }
-    }
-    
-    private func setupMediumPriorityServices() {
-        LaunchProfiler.measureCriticalPath("MediumPrioritySetup") {
-            // Networking, data preloading
-            NetworkManager.configure()
-            DataCache.preloadCriticalData()
-        }
-    }
-    
-    private func setupLowPriorityServices() {
-        LaunchProfiler.measureCriticalPath("LowPrioritySetup") {
-            // Location, file cleanup, etc.
-            LocationManager.setup()
-            FileManager.cleanupOldFiles()
-        }
-    }
-}
-
-class OptimizedSceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
-    
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-        
-        // Fast UI setup
-        let window = UIWindow(windowScene: windowScene)
-        
-        // Lightweight root controller
-        let rootController = LaunchProfiler.measureCriticalPath("CreateRootController") {
-            return createOptimizedRootController()
-        }
-        
-        window.rootViewController = rootController
-        window.makeKeyAndVisible()
-        self.window = window
-        
-        // Complete launch measurement
-        DispatchQueue.main.async {
-            LaunchProfiler.endLaunchMeasurement()
-        }
-    }
-    
-    private func createOptimizedRootController() -> UIViewController {
-        // Return lightweight controller that shows loading state
-        return LaunchViewController()
-    }
-}
-
+// ❌ Complex initial view
 class LaunchViewController: UIViewController {
-    private let loadingView = UIActivityIndicatorView(style: .large)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Minimal UI setup
-        setupLoadingUI()
-        
-        // Load main interface asynchronously
-        loadMainInterface()
+        setupComplexUI()  // Blocks first frame
+        loadData()
+        configureAnimations()
+    }
+}
+
+// ✅ Minimal initial view
+class LaunchViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupMinimalUI()  // Fast first frame
     }
     
-    private func setupLoadingUI() {
-        view.backgroundColor = .systemBackground
-        
-        loadingView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loadingView)
-        
-        NSLayoutConstraint.activate([
-            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-        
-        loadingView.startAnimating()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadData()  // After first frame
+        configureAnimations()
+    }
+}
+```
+
+## SwiftUI Launch Optimization
+
+### Minimize @main Body Work
+
+```swift
+@main
+struct MyApp: App {
+    // ❌ Heavy initialization
+    @StateObject var store = Store()  // Blocks launch
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environmentObject(store)
+        }
+    }
+}
+
+// ✅ Lazy initialization
+@main
+struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environmentObject(Store.shared)  // Lazy singleton
+        }
+    }
+}
+
+class Store: ObservableObject {
+    static let shared = Store()
+    private init() {}  // Lazy initialization
+}
+```
+
+### Defer Heavy Views
+
+```swift
+struct ContentView: View {
+    @State private var isReady = false
+    
+    var body: some View {
+        if isReady {
+            ComplexView()  // Heavy view
+        } else {
+            SplashView()  // Lightweight
+                .onAppear {
+                    Task {
+                        await prepareData()
+                        isReady = true
+                    }
+                }
+        }
+    }
+}
+```
+
+## Network Optimization
+
+### Defer API Calls
+
+```swift
+// ❌ Block launch with network
+func application(...) -> Bool {
+    let config = try await fetchConfig()  // Blocks!
+    return true
+}
+
+// ✅ Use cached config, update async
+func application(...) -> Bool {
+    ConfigManager.useCached()
+    
+    Task {
+        await ConfigManager.fetchLatest()
     }
     
-    private func loadMainInterface() {
-        Task {
-            // Load critical data
-            await DataManager.shared.loadInitialData()
-            
-            // Switch to main interface
-            await MainActor.run {
-                let mainController = MainTabBarController()
+    return true
+}
+```
+
+### Parallel Loading
+
+```swift
+func loadInitialData() async {
+    // ❌ Sequential loading
+    let user = await fetchUser()
+    let settings = await fetchSettings()
+    let content = await fetchContent()
+    
+    // ✅ Parallel loading
+    async let user = fetchUser()
+    async let settings = fetchSettings()
+    async let content = fetchContent()
+    
+    let (userData, settingsData, contentData) = await (user, settings, content)
+}
+```
+
+## Image Optimization
+
+### Lazy Image Loading
+
+```swift
+// ❌ Load all images at launch
+let images = [
+    UIImage(named: "image1")!,
+    UIImage(named: "image2")!,
+    UIImage(named: "image3")!
+]
+
+// ✅ Load on demand
+func image(named: String) -> UIImage {
+    UIImage(named: named) ?? placeholderImage
+}
+```
+
+### Use Asset Catalogs
+
+- Enable "Preserve Vector Data" for scalable assets
+- Use "On Demand Resources" for large assets
+- Compress images appropriately
+
+## Database Optimization
+
+### Defer Migrations
+
+```swift
+class DatabaseManager {
+    static func initialize() {
+        // ✅ Open database quickly
+        openDatabase()
+        
+        // ✅ Migrate in background
+        Task.detached(priority: .utility) {
+            await runMigrations()
+        }
+    }
+}
+```
+
+### Use WAL Mode (SQLite)
+
+```swift
+// Enable Write-Ahead Logging for better concurrency
+try db.execute("PRAGMA journal_mode=WAL")
+```
+
+## Third-Party SDK Optimization
+
+### Audit SDK Impact
+
+```swift
+// Measure SDK initialization time
+let start = CFAbsoluteTimeGetCurrent()
+Firebase.configure()
+let duration = CFAbsoluteTimeGetCurrent() - start
+print("Firebase init: \(duration * 1000)ms")
+```
+
+### Defer SDK Initialization
+
+```swift
+func application(...) -> Bool {
+    // ✅ Critical SDKs only
+    CrashReporter.initialize()
+    
+    // ✅ Defer analytics
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        Analytics.initialize()
+        AdSDK.initialize()
+    }
+    
+    return true
+}
+```
+
+## Benchmarking
+
+### Baseline Measurement
+
+```swift
+class LaunchBenchmark {
+    static var launchStart: CFAbsoluteTime = 0
+    
+    static func recordLaunchStart() {
+        launchStart = CFAbsoluteTimeGetCurrent()
+    }
+    
+    static func recordFirstFrame() {
+        let duration = CFAbsoluteTimeGetCurrent() - launchStart
+        print("Launch time: \(duration * 1000)ms")
+        
+        // Send to analytics
+        Analytics.track("app_launch_time", value: duration)
+    }
+}
+
+// In AppDelegate
+func application(...) -> Bool {
+    LaunchBenchmark.recordLaunchStart()
+    // ... setup
+    return true
+}
+
+// In first view controller
+override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    LaunchBenchmark.recordFirstFrame()
+}
+```
+
+## Best Practices
+
+1. **Measure First**: Use Instruments to identify bottlenecks
+2. **Defer Everything**: Only critical UI setup in launch path
+3. **Lazy Load**: Initialize on first use, not at launch
+4. **Background Work**: Move heavy tasks off main thread
+5. **Cache Aggressively**: Use cached data, update async
+6. **Minimize Dependencies**: Fewer frameworks = faster launch
+7. **Profile Regularly**: Track launch time in CI/CD
+
+## Common Pitfalls
+
+### Pitfall 1: Synchronous Network Calls
+
+```swift
+// ❌ Never do this
+func application(...) -> Bool {
+    let config = URLSession.shared.dataTask(...)  // Blocks!
+    return true
+}
+```
+
+### Pitfall 2: Heavy View Controllers
+
+```swift
+// ❌ Complex initial VC
+class InitialVC: UIViewController {
+    let tableView = UITableView()
+    let collectionView = UICollectionView()
+    let mapView = MKMapView()
+    // All initialized at launch!
+}
+```
+
+### Pitfall 3: Eager Singletons
+
+```swift
+// ❌ Initialized at launch
+class Manager {
+    static let shared = Manager()  // Runs immediately
+    
+    init() {
+        // Heavy setup
+    }
+}
+```
+
+## Performance Targets
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| Cold Launch | <400ms | Instruments |
+| Warm Launch | <200ms | Instruments |
+| Pre-main | <100ms | Instruments |
+| First Frame | <16ms | MetricKit |
+
+## Monitoring in Production
+
+```swift
+class PerformanceMonitor {
+    static func trackLaunch() {
+        MXMetricManager.shared.add(self)
+    }
+    
+    func didReceive(_ payloads: [MXMetricPayload]) {
+        for payload in payloads {
+            if let launch = payload.applicationLaunchMetrics {
+                let p50 = launch.histogrammedTimeToFirstDraw
+                    .bucketEnumerator
+                    .percentile(50)
                 
-                // Smooth transition
-                UIView.transition(with: view.window!, duration: 0.3, options: .transitionCrossDissolve) {
-                    self.view.window?.rootViewController = mainController
+                if p50 > 400 {
+                    // Alert: Launch time degraded
+                    alertTeam("Launch time: \(p50)ms")
                 }
             }
         }
@@ -784,68 +475,16 @@ class LaunchViewController: UIViewController {
 }
 ```
 
-## 📈 Performance Targets
+## Resources
 
-### Industry Benchmarks
+- [Apple: Reducing Your App's Launch Time](https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time)
+- [WWDC: App Startup Time](https://developer.apple.com/videos/)
+- [Instruments User Guide](https://help.apple.com/instruments/)
 
-```swift
-struct LaunchPerformanceTargets {
-    // Apple's recommendations
-    static let coldLaunchTarget: TimeInterval = 0.4  // 400ms
-    static let warmLaunchTarget: TimeInterval = 0.2  // 200ms
-    
-    // Real-world targets
-    static let goodColdLaunch: TimeInterval = 1.0    // 1 second
-    static let acceptableColdLaunch: TimeInterval = 2.0  // 2 seconds
-    
-    // Binary size targets
-    static let maxBinarySize: Int = 100 * 1024 * 1024  // 100MB
-    static let idealBinarySize: Int = 50 * 1024 * 1024   // 50MB
-}
+## Next Steps
 
-class PerformanceValidator {
-    static func validateLaunchTime(_ time: TimeInterval) -> LaunchPerformance {
-        switch time {
-        case 0..<LaunchPerformanceTargets.coldLaunchTarget:
-            return .excellent
-        case LaunchPerformanceTargets.coldLaunchTarget..<LaunchPerformanceTargets.goodColdLaunch:
-            return .good
-        case LaunchPerformanceTargets.goodColdLaunch..<LaunchPerformanceTargets.acceptableColdLaunch:
-            return .acceptable
-        default:
-            return .poor
-        }
-    }
-}
-
-enum LaunchPerformance {
-    case excellent, good, acceptable, poor
-    
-    var description: String {
-        switch self {
-        case .excellent: return "Excellent (< 400ms)"
-        case .good: return "Good (< 1s)"
-        case .acceptable: return "Acceptable (< 2s)"
-        case .poor: return "Poor (> 2s)"
-        }
-    }
-}
-```
-
-## 📚 Key Takeaways
-
-1. **Measure First** - Use Instruments and MetricKit to identify bottlenecks
-2. **Defer Heavy Work** - Only essential setup in main thread during launch
-3. **Optimize Pre-Main** - Reduce dynamic libraries and static initializers
-4. **Lazy Loading** - Load resources only when needed
-5. **Binary Size Matters** - Smaller binaries launch faster
-6. **Monitor Continuously** - Track launch performance over time
-7. **Test on Real Devices** - Simulators don't reflect real performance
-
-## 🔗 What's Next?
-
-In the next chapter, we'll explore **Memory Management** techniques to keep your app running smoothly and avoid crashes due to memory pressure.
+Continue to [Memory Management](./memory-optimization.md) to optimize memory usage.
 
 ---
 
-*Use Xcode's Instruments to profile your app's launch performance and apply these optimizations systematically!*
+*Content rephrased for compliance with licensing restrictions. Based on Apple documentation and industry best practices.*
