@@ -1,97 +1,94 @@
-# SwiftData - Modern Data Persistence
+# SwiftData (Data Persistence)
 
-> Apple's declarative data modeling framework for Swift applications
+> Modern data persistence with Swift-native APIs
 
-## 🎯 What is SwiftData?
+## Overview
 
-SwiftData is Apple's modern replacement for Core Data, providing:
-- **Declarative syntax** with Swift macros
-- **Type safety** at compile time
-- **Automatic CloudKit sync** capabilities
-- **SwiftUI integration** out of the box
+SwiftData is Apple's modern framework for data persistence, built on Core Data but with a Swift-first API. It uses macros and property wrappers for a declarative approach to data modeling.
 
-## 🚀 Getting Started
+## Basic Setup
 
-### Basic Model Definition
+### Model Definition
 ```swift
 import SwiftData
 
 @Model
-class Task {
-    var title: String
-    var isCompleted: Bool
+class User {
+    var name: String
+    var email: String
+    var age: Int
     var createdAt: Date
-    var priority: Priority
     
-    init(title: String, priority: Priority = .medium) {
-        self.title = title
-        self.isCompleted = false
+    // Relationships
+    @Relationship(deleteRule: .cascade)
+    var posts: [Post] = []
+    
+    init(name: String, email: String, age: Int) {
+        self.name = name
+        self.email = email
+        self.age = age
         self.createdAt = Date()
-        self.priority = priority
     }
 }
 
-enum Priority: String, Codable, CaseIterable {
-    case low, medium, high
+@Model
+class Post {
+    var title: String
+    var content: String
+    var publishedAt: Date
+    
+    // Inverse relationship
+    var author: User?
+    
+    init(title: String, content: String, author: User) {
+        self.title = title
+        self.content = content
+        self.publishedAt = Date()
+        self.author = author
+    }
 }
 ```
 
-### App Setup
+### App Configuration
 ```swift
 import SwiftUI
 import SwiftData
 
 @main
-struct TaskApp: App {
+struct MyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: Task.self)
+        .modelContainer(for: [User.self, Post.self])
     }
 }
 ```
 
-## 📱 SwiftUI Integration
+## Data Operations
 
-### Querying Data
+### Creating Data
 ```swift
-struct TaskListView: View {
-    @Query private var tasks: [Task]
+struct CreateUserView: View {
     @Environment(\.modelContext) private var context
+    @State private var name = ""
+    @State private var email = ""
+    @State private var age = 18
     
     var body: some View {
-        List {
-            ForEach(tasks) { task in
-                TaskRow(task: task)
-            }
-            .onDelete(perform: deleteTasks)
-        }
-    }
-    
-    private func deleteTasks(offsets: IndexSet) {
-        for index in offsets {
-            context.delete(tasks[index])
-        }
-    }
-}
-```
-
-### Adding Data
-```swift
-struct AddTaskView: View {
-    @Environment(\.modelContext) private var context
-    @State private var title = ""
-    
-    var body: some View {
-        NavigationView {
-            Form {
-                TextField("Task Title", text: $title)
+        Form {
+            TextField("Name", text: $name)
+            TextField("Email", text: $email)
+            Stepper("Age: \(age)", value: $age, in: 13...120)
+            
+            Button("Create User") {
+                let user = User(name: name, email: email, age: age)
+                context.insert(user)
                 
-                Button("Save") {
-                    let task = Task(title: title)
-                    context.insert(task)
-                    try? context.save()
+                do {
+                    try context.save()
+                } catch {
+                    print("Failed to save: \(error)")
                 }
             }
         }
@@ -99,80 +96,39 @@ struct AddTaskView: View {
 }
 ```
 
-## 🔗 Relationships
-
-### One-to-Many
+### Querying Data
 ```swift
-@Model
-class Project {
-    var name: String
-    var tasks: [Task] = []
-    
-    init(name: String) {
-        self.name = name
-    }
-}
-
-@Model
-class Task {
-    var title: String
-    var project: Project?
-    
-    init(title: String, project: Project? = nil) {
-        self.title = title
-        self.project = project
-    }
-}
-```
-
-### Many-to-Many
-```swift
-@Model
-class Tag {
-    var name: String
-    var tasks: [Task] = []
-    
-    init(name: String) {
-        self.name = name
-    }
-}
-
-@Model
-class Task {
-    var title: String
-    var tags: [Tag] = []
-    
-    init(title: String) {
-        self.title = title
-    }
-}
-```
-
-## 🔍 Advanced Querying
-
-### Filtered Queries
-```swift
-struct CompletedTasksView: View {
-    @Query(filter: #Predicate<Task> { $0.isCompleted })
-    private var completedTasks: [Task]
+struct UserListView: View {
+    @Query private var users: [User]
     
     var body: some View {
-        List(completedTasks) { task in
-            Text(task.title)
+        List(users) { user in
+            VStack(alignment: .leading) {
+                Text(user.name)
+                    .font(.headline)
+                Text(user.email)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
         }
     }
 }
 ```
 
-### Sorted Queries
+### Advanced Queries
 ```swift
-struct TaskListView: View {
-    @Query(sort: \Task.createdAt, order: .reverse)
-    private var tasks: [Task]
+struct FilteredUsersView: View {
+    @Query(
+        filter: #Predicate<User> { user in
+            user.age >= 18 && user.name.contains("John")
+        },
+        sort: \User.createdAt,
+        order: .reverse
+    ) private var adults: [User]
     
     var body: some View {
-        List(tasks) { task in
-            TaskRow(task: task)
+        List(adults) { user in
+            UserRowView(user: user)
         }
     }
 }
@@ -180,183 +136,384 @@ struct TaskListView: View {
 
 ### Dynamic Queries
 ```swift
-struct FilteredTasksView: View {
-    let searchText: String
+struct SearchableUsersView: View {
+    @State private var searchText = ""
     
     var body: some View {
-        FilteredTasksList(searchText: searchText)
+        UserListView(searchText: searchText)
+            .searchable(text: $searchText)
     }
 }
 
-struct FilteredTasksList: View {
-    @Query private var tasks: [Task]
+struct UserListView: View {
+    let searchText: String
+    
+    @Query private var users: [User]
     
     init(searchText: String) {
-        let predicate = #Predicate<Task> { task in
-            searchText.isEmpty || task.title.localizedStandardContains(searchText)
+        self.searchText = searchText
+        
+        let predicate = #Predicate<User> { user in
+            searchText.isEmpty || user.name.localizedStandardContains(searchText)
         }
-        _tasks = Query(filter: predicate, sort: \Task.createdAt)
+        
+        _users = Query(filter: predicate, sort: \User.name)
     }
     
     var body: some View {
-        List(tasks) { task in
-            Text(task.title)
+        List(users) { user in
+            Text(user.name)
         }
     }
 }
 ```
 
-## ☁️ CloudKit Integration
+## Relationships
 
-### Enable CloudKit Sync
+### One-to-Many
 ```swift
+@Model
+class Category {
+    var name: String
+    
+    @Relationship(deleteRule: .cascade, inverse: \Item.category)
+    var items: [Item] = []
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
+@Model
+class Item {
+    var title: String
+    var category: Category?
+    
+    init(title: String, category: Category) {
+        self.title = title
+        self.category = category
+    }
+}
+```
+
+### Many-to-Many
+```swift
+@Model
+class Student {
+    var name: String
+    
+    @Relationship(inverse: \Course.students)
+    var courses: [Course] = []
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
+@Model
+class Course {
+    var title: String
+    var students: [Student] = []
+    
+    init(title: String) {
+        self.title = title
+    }
+}
+```
+
+## Data Validation
+
+### Custom Validation
+```swift
+@Model
+class Product {
+    var name: String {
+        didSet {
+            if name.isEmpty {
+                name = oldValue // Revert invalid change
+            }
+        }
+    }
+    
+    var price: Decimal {
+        didSet {
+            if price < 0 {
+                price = 0
+            }
+        }
+    }
+    
+    init(name: String, price: Decimal) {
+        self.name = name
+        self.price = max(price, 0)
+    }
+}
+```
+
+### Computed Properties
+```swift
+@Model
+class Order {
+    var items: [OrderItem] = []
+    var taxRate: Decimal = 0.08
+    
+    var subtotal: Decimal {
+        items.reduce(0) { $0 + $1.total }
+    }
+    
+    var tax: Decimal {
+        subtotal * taxRate
+    }
+    
+    var total: Decimal {
+        subtotal + tax
+    }
+}
+```
+
+## Migration
+
+### Schema Versions
+```swift
+enum SchemaV1: VersionedSchema {
+    static var versionIdentifier = Schema.Version(1, 0, 0)
+    
+    static var models: [any PersistentModel.Type] {
+        [User.self]
+    }
+    
+    @Model
+    class User {
+        var name: String
+        var email: String
+        
+        init(name: String, email: String) {
+            self.name = name
+            self.email = email
+        }
+    }
+}
+
+enum SchemaV2: VersionedSchema {
+    static var versionIdentifier = Schema.Version(2, 0, 0)
+    
+    static var models: [any PersistentModel.Type] {
+        [User.self]
+    }
+    
+    @Model
+    class User {
+        var name: String
+        var email: String
+        var age: Int // New field
+        
+        init(name: String, email: String, age: Int = 0) {
+            self.name = name
+            self.email = email
+            self.age = age
+        }
+    }
+}
+```
+
+### Migration Plan
+```swift
+enum MigrationPlan: SchemaMigrationPlan {
+    static var schemas: [any VersionedSchema.Type] {
+        [SchemaV1.self, SchemaV2.self]
+    }
+    
+    static var stages: [MigrationStage] {
+        [migrateV1toV2]
+    }
+    
+    static let migrateV1toV2 = MigrationStage.custom(
+        fromVersion: SchemaV1.self,
+        toVersion: SchemaV2.self,
+        willMigrate: { context in
+            // Pre-migration setup
+        },
+        didMigrate: { context in
+            // Post-migration cleanup
+        }
+    )
+}
+
+// App setup with migration
 @main
-struct TaskApp: App {
+struct MyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: Task.self) { result in
-            switch result {
-            case .success(let container):
-                // Enable CloudKit sync
-                container.mainContext.cloudKitContainer = CKContainer.default()
-            case .failure(let error):
-                print("Failed to create container: \(error)")
+        .modelContainer(for: [User.self], migrationPlan: MigrationPlan.self)
+    }
+}
+```
+
+## Performance Optimization
+
+### Batch Operations
+```swift
+func createManyUsers() {
+    let context = ModelContext(container)
+    
+    // Batch insert
+    for i in 1...1000 {
+        let user = User(name: "User \(i)", email: "user\(i)@example.com", age: 25)
+        context.insert(user)
+    }
+    
+    // Single save for all
+    try? context.save()
+}
+```
+
+### Fetch Limits
+```swift
+struct RecentUsersView: View {
+    @Query(
+        sort: \User.createdAt,
+        order: .reverse,
+        animation: .default
+    ) private var recentUsers: [User]
+    
+    var body: some View {
+        List(recentUsers.prefix(10)) { user in // Limit display
+            UserRowView(user: user)
+        }
+    }
+}
+```
+
+### Lazy Loading
+```swift
+struct UserDetailView: View {
+    let user: User
+    
+    var body: some View {
+        VStack {
+            Text(user.name)
+            
+            // Posts loaded on demand
+            LazyVStack {
+                ForEach(user.posts) { post in
+                    PostRowView(post: post)
+                }
             }
         }
     }
 }
 ```
 
-### CloudKit Configuration
-```swift
-// In your model
-@Model
-class Task {
-    @Attribute(.unique) var id: UUID
-    var title: String
-    var isCompleted: Bool
-    
-    init(title: String) {
-        self.id = UUID()
-        self.title = title
-        self.isCompleted = false
-    }
-}
-```
+## Background Processing
 
-## 🎯 Best Practices
-
-### Model Design
+### Background Context
 ```swift
-@Model
-class Task {
-    // Use @Attribute for special configurations
-    @Attribute(.unique) var id: UUID
-    @Attribute(.spotlight) var title: String
-    
-    // Use relationships for complex data
-    @Relationship(deleteRule: .cascade) var subtasks: [Subtask] = []
-    
-    // Computed properties for derived data
-    var isOverdue: Bool {
-        guard let dueDate = dueDate else { return false }
-        return dueDate < Date() && !isCompleted
-    }
-    
-    init(title: String) {
-        self.id = UUID()
-        self.title = title
-    }
-}
-```
-
-### Performance Optimization
-```swift
-// Use batch operations for large datasets
-extension ModelContext {
-    func batchDelete<T: PersistentModel>(_ type: T.Type, predicate: Predicate<T>) throws {
-        let descriptor = FetchDescriptor<T>(predicate: predicate)
-        let objects = try fetch(descriptor)
-        
-        for object in objects {
-            delete(object)
-        }
-        
-        try save()
-    }
-}
-```
-
-### Error Handling
-```swift
-class DataManager: ObservableObject {
+class DataManager {
     let container: ModelContainer
     
     init() {
-        do {
-            container = try ModelContainer(for: Task.self)
-        } catch {
-            fatalError("Failed to create ModelContainer: \(error)")
-        }
+        container = try! ModelContainer(for: User.self)
     }
     
-    func saveContext() {
-        do {
-            try container.mainContext.save()
-        } catch {
-            print("Failed to save context: \(error)")
+    func syncDataInBackground() {
+        Task.detached {
+            let context = ModelContext(self.container)
+            
+            // Perform background operations
+            let users = try await self.fetchUsersFromAPI()
+            
+            for userData in users {
+                let user = User(
+                    name: userData.name,
+                    email: userData.email,
+                    age: userData.age
+                )
+                context.insert(user)
+            }
+            
+            try context.save()
         }
     }
 }
 ```
 
-## 📊 Migration from Core Data
+## Testing
 
-### Model Conversion
+### In-Memory Store
 ```swift
-// Core Data (old)
-@NSManaged public var title: String?
-@NSManaged public var isCompleted: Bool
-
-// SwiftData (new)
-var title: String
-var isCompleted: Bool
-```
-
-### Context Usage
-```swift
-// Core Data (old)
-let context = persistentContainer.viewContext
-let task = Task(context: context)
-
-// SwiftData (new)
-@Environment(\.modelContext) private var context
-let task = Task(title: "New Task")
-context.insert(task)
-```
-
-## 🔧 Testing SwiftData
-
-### Unit Testing
-```swift
-import Testing
-import SwiftData
-
-@Test func testTaskCreation() throws {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try ModelContainer(for: Task.self, configurations: config)
-    let context = container.mainContext
+class DataManagerTests: XCTestCase {
+    var container: ModelContainer!
+    var context: ModelContext!
     
-    let task = Task(title: "Test Task")
-    context.insert(task)
+    override func setUp() {
+        super.setUp()
+        
+        // In-memory container for testing
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        container = try! ModelContainer(for: User.self, configurations: config)
+        context = ModelContext(container)
+    }
     
-    #expect(task.title == "Test Task")
-    #expect(task.isCompleted == false)
+    func testUserCreation() {
+        let user = User(name: "Test User", email: "test@example.com", age: 25)
+        context.insert(user)
+        
+        try! context.save()
+        
+        let descriptor = FetchDescriptor<User>()
+        let users = try! context.fetch(descriptor)
+        
+        XCTAssertEqual(users.count, 1)
+        XCTAssertEqual(users.first?.name, "Test User")
+    }
 }
 ```
 
----
+## Best Practices
 
-*SwiftData provides a modern, Swift-native approach to data persistence with seamless SwiftUI integration.*
+1. **Use @Model**: Always use the @Model macro for data classes
+2. **Define Relationships**: Use @Relationship for proper data modeling
+3. **Handle Errors**: Always handle save/fetch errors gracefully
+4. **Batch Operations**: Group multiple changes into single saves
+5. **Background Processing**: Use background contexts for heavy operations
+6. **Migration Planning**: Plan schema changes with proper migration
+7. **Test with In-Memory**: Use in-memory stores for unit testing
+
+## Common Patterns
+
+### Repository Pattern
+```swift
+protocol UserRepository {
+    func create(_ user: User) throws
+    func fetch(id: UUID) throws -> User?
+    func fetchAll() throws -> [User]
+    func update(_ user: User) throws
+    func delete(_ user: User) throws
+}
+
+class SwiftDataUserRepository: UserRepository {
+    private let context: ModelContext
+    
+    init(context: ModelContext) {
+        self.context = context
+    }
+    
+    func create(_ user: User) throws {
+        context.insert(user)
+        try context.save()
+    }
+    
+    func fetch(id: UUID) throws -> User? {
+        let descriptor = FetchDescriptor<User>(
+            predicate: #Predicate { $0.id == id }
+        )
+        return try context.fetch(descriptor).first
+    }
+    
+    // ... other methods
+}
+```
+
+SwiftData provides a modern, Swift-native approach to data persistence with excellent SwiftUI integration.
