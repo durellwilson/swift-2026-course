@@ -1,5 +1,5 @@
 # Missing Content Audit
-Generated: Tue Dec  9 00:04:43 UTC 2025
+Generated: Wed Dec 10 00:04:50 UTC 2025
 
 - [ ] `apple-framework/playgrounds.md` (stub - 1 lines)
 - [ ] `apple-framework/learning-path.md` (stub - 1 lines)
@@ -23,11 +23,8 @@ Generated: Tue Dec  9 00:04:43 UTC 2025
 - [ ] `scale/caching-strategies.md` (stub - 1 lines)
 - [ ] `scale/background-processing.md` (stub - 1 lines)
 - [ ] `scale/api-design.md` (stub - 1 lines)
-- [ ] `swift6/concurrency.md` (stub - 1 lines)
-- [ ] `swift6/typed-throws.md` (stub - 1 lines)
 - [ ] `swift6/noncopyable.md` (stub - 1 lines)
 - [ ] `swift/concurrency-patterns.md` (stub - 1 lines)
-- [ ] `swift/swiftui-performance.md` (stub - 1 lines)
 - [ ] `swift/error-handling.md` (stub - 1 lines)
 - [ ] `swift/testing-strategies.md` (stub - 1 lines)
 - [ ] `ios-dev/first-app.md` (stub - 1 lines)
