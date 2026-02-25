@@ -5,6 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
 [![Apple Framework](https://img.shields.io/badge/Apple-Develop%20in%20Swift-blue.svg)](https://developer.apple.com/tutorials/develop-in-swift/)
+[![Deploy](https://github.com/durellwilson/swift-2026-course/actions/workflows/deploy.yml/badge.svg)](https://github.com/durellwilson/swift-2026-course/actions/workflows/deploy.yml)
+[![Course Audit](https://github.com/durellwilson/swift-2026-course/actions/workflows/audit.yml/badge.svg)](https://github.com/durellwilson/swift-2026-course/actions/workflows/audit.yml)
 
 ## 📚 Course Website
 
