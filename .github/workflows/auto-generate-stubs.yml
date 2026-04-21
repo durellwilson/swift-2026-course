@@ -40,7 +40,7 @@ jobs:
           
       - name: Create Pull Request
         if: steps.missing.outputs.has_missing == 'true'
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "chore: generate stubs for missing content"
           title: "🤖 Auto-generated content stubs"
