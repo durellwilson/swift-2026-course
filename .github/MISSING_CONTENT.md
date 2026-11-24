@@ -1,5 +1,5 @@
 # Missing Content Audit
-Generated: Mon Nov 23 04:30:53 UTC 2026
+Generated: Tue Nov 24 07:24:53 UTC 2026
 
 - [ ] `apple-framework/playgrounds.md` (stub - 1 lines)
 - [ ] `apple-framework/learning-path.md` (stub - 1 lines)
